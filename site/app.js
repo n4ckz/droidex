@@ -333,6 +333,7 @@ function renderDroid(d){
   wishBtn.textContent=wishOn?'★':'☆';
   wishBtn.setAttribute('aria-label',t('wishAria')+' : '+d.n);
   wishBtn.setAttribute('aria-pressed',wishOn?'true':'false');
+  wishBtn.title=t('wishTip');
   wishBtn.addEventListener('click',()=>{
     if(state.wish[d.id]) delete state.wish[d.id]; else state.wish[d.id]=true;
     scheduleSave();renderAll();
@@ -345,6 +346,7 @@ function renderDroid(d){
   flawBtn.textContent='✨';
   flawBtn.setAttribute('aria-label',t('flawAria')+' : '+d.n);
   flawBtn.setAttribute('aria-pressed',flawOn?'true':'false');
+  flawBtn.title=t('flawTip');
   flawBtn.addEventListener('click',()=>{
     if(state.flawless[d.id]) delete state.flawless[d.id]; else state.flawless[d.id]=true;
     scheduleSave();renderAll();

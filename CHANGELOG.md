@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2 — 2026-07-11
+
+- Legend line explaining the ★ (wishlist) and ✨ (Flawless) toggles, plus hover tooltips
+
 ## 1.2.1 — 2026-07-11
 
 - Header now references Fortnite: "Fortnite · Star Wars: Droid Tycoon"
