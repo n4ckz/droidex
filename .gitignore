@@ -10,3 +10,5 @@ CLAUDE.md
 # artefacts de test
 tests/node_modules/
 tests/package-lock.json
+tools/__pycache__/
+__pycache__/

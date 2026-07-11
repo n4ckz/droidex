@@ -1,6 +1,7 @@
 FROM nginx:alpine
 
 COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY deploy/security-headers.conf /etc/nginx/security-headers.conf
 COPY site/ /usr/share/nginx/html/
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

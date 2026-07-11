@@ -139,16 +139,29 @@ def js_num(v):
     return str(int(v)) if float(v).is_integer() else str(v)
 
 
+# Les chaînes venant du site distant finissent dans du JavaScript exécuté par
+# tous les visiteurs : liste blanche stricte, tout caractère inattendu arrête net.
+SAFE_STR = re.compile(r"^[A-Za-z0-9 ×%+./-]+$")
+
+
+def js_str(s, origin):
+    if not SAFE_STR.match(s):
+        sys.exit(f'✗ Chaîne suspecte depuis tycoon-tools ({origin}) : {s!r} — '
+                 f'vérifier le site source avant de régénérer.')
+    return f"'{s}'"
+
+
 def droid_line(did, vals):
     v = vals[did]
-    parts = [f"id:'{did}'", f"n:'{DISPLAY[did]}'", f"t:'{v['type']}'", f"r:'{v['rarity']}'"]
+    parts = [f"id:'{did}'", f"n:'{DISPLAY[did]}'",
+             f"t:{js_str(v['type'], did + '.type')}", f"r:{js_str(v['rarity'], did + '.rarity')}"]
     if v['rarity'] == 'Iconic':
         parts.append('iconic:true')
     else:
         parts.append('inc:[' + ','.join(js_num(x) for x in v['inc']) + ']')
-        parts.append(f"bskCost:'{v['beskarCost']}'")
+        parts.append(f"bskCost:{js_str(v['beskarCost'], did + '.beskarCost')}")
     if v['perk']:
-        parts.append(f"perk:'{v['perk']}'")
+        parts.append(f"perk:{js_str(v['perk'], did + '.perk')}")
     return ' {' + ','.join(parts) + '},'
 
 
@@ -186,7 +199,7 @@ const DROIDS = [""")
     L.append('];')
     L.append('')
     L.append('/* Crédits requis par renaissance (identiques pour les 4 cycles) */')
-    L.append('const RB_CREDITS = {' + ','.join(f"{k}:'{credits[k]}'" for k in sorted(credits)) + '};')
+    L.append('const RB_CREDITS = {' + ','.join(f"{k}:{js_str(credits[k], f'credits[{k}]')}" for k in sorted(credits)) + '};')
     L.append('')
     L.append("""/* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
    Une variante supérieure valide toujours l'exigence. Après la renaissance 27
@@ -201,7 +214,7 @@ const REBIRTHS = {""")
     L.append('};')
     L.append('')
     L.append('/* Emplacements débloqués (cycle 1 uniquement) */')
-    L.append('const RB_UNLOCKS = {' + ','.join(f"{k}:'{unlocks[k]}'" for k in sorted(unlocks)) + '};')
+    L.append('const RB_UNLOCKS = {' + ','.join(f"{k}:{js_str(unlocks[k], f'unlocks[{k}]')}" for k in sorted(unlocks)) + '};')
     L.append('')
     L.append("const RARITY_ORDER = ['Common','Rare','Epic','Legendary','Mythic','Iconic'];")
     L.append('')

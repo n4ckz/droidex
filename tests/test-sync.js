@@ -16,6 +16,21 @@ let failures = 0;
 const assert = (c, m) => { if (c) console.log('  ✓ ' + m); else { failures++; console.log('  ✗ ÉCHEC : ' + m); } };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// La collection users est verrouillée en OAuth2-only (pas de login mot de passe) :
+// on obtient des jetons de test via l'impersonation superuser, plus fidèle au
+// vrai flux (les comptes viennent de Google) que l'ancien authWithPassword.
+const USER_IDS = {};
+async function tokenFor(email) {
+  const r = await fetch(PB + '/api/collections/users/impersonate/' + USER_IDS[email], {
+    method: 'POST', headers: { Authorization: ADMIN_TOKEN, 'Content-Type': 'application/json' }, body: '{"duration":3600}'
+  });
+  return r.json();  // { token, record }
+}
+async function authAs(w, email) {
+  const { token, record } = await tokenFor(email);
+  w.__t.pb().authStore.save(token, record);
+}
+
 function boot(localStorageSeed) {
   const dom = new JSDOM(html, { url: 'http://localhost:8080/', runScripts: 'outside-only' });
   const { window: w } = dom;
@@ -51,12 +66,17 @@ async function setup() {
       ADMIN_EMAIL + ' ' + ADMIN_PASS + ' --dir=/pb/pb_data');
   }
   ADMIN_TOKEN = (await r.json()).token;
-  // utilisateurs de test (idempotent : échoue silencieusement s'ils existent)
+  // utilisateurs de test (idempotent) créés via superuser — la createRule
+  // OAuth2-only est contournée par l'auth superuser. On récupère leurs id
+  // pour l'impersonation, qu'ils viennent d'être créés ou déjà présents.
   for (const u of ['alice', 'bob']) {
+    const email = u + '@test.local';
     await fetch(PB + '/api/collections/users/records', {
       method: 'POST', headers: { Authorization: ADMIN_TOKEN, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: u + '@test.local', password: 'motdepasse123', passwordConfirm: 'motdepasse123' })
+      body: JSON.stringify({ email, password: 'motdepasse123', passwordConfirm: 'motdepasse123', verified: true })
     });
+    const found = await adminGET('/api/collections/users/records?filter=' + encodeURIComponent(`email="${email}"`));
+    USER_IDS[email] = found.body.items[0].id;
   }
   // repartir d'un serveur sans sauvegardes
   const list = await adminGET('/api/collections/saves/records?fields=id&skipTotal=1&perPage=200');
@@ -75,7 +95,7 @@ async function setup() {
     const w = boot(seed);
     assert(!w.document.getElementById('syncBar').hidden, 'barre de synchro visible (PB_URL configurée)');
     assert(!w.document.getElementById('loginBtn').hidden, 'bouton connexion visible hors session');
-    await w.__t.pb().collection('users').authWithPassword('alice@test.local', 'motdepasse123');
+    await authAs(w, 'alice@test.local');
     await w.__t.reconcile(true);
     const saves = await adminGET('/api/collections/saves/records');
     assert(saves.body.totalItems === 1, '1 enregistrement saves créé (obtenu : ' + saves.body.totalItems + ')');
@@ -86,7 +106,7 @@ async function setup() {
   let wB;
   {
     wB = boot(null);
-    await wB.__t.pb().collection('users').authWithPassword('alice@test.local', 'motdepasse123');
+    await authAs(wB, 'alice@test.local');
     await wB.__t.reconcile(true);
     const dia = findCard(wB, 'Strike-Orb').querySelector('.tier[data-t="2"]');
     assert(dia.classList.contains('base'), 'Strike-Orb Diamant en base restauré depuis le compte');
@@ -109,11 +129,7 @@ async function setup() {
 
   console.log('\n[D] Isolation : bob ne voit pas la sauvegarde d\'alice');
   {
-    const r = await fetch(PB + '/api/collections/users/auth-with-password', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identity: 'bob@test.local', password: 'motdepasse123' })
-    });
-    const bobToken = (await r.json()).token;
+    const bobToken = (await tokenFor('bob@test.local')).token;
     const list = await fetch(PB + '/api/collections/saves/records', { headers: { Authorization: bobToken } });
     const listBody = await list.json();
     assert(listBody.totalItems === 0, 'liste des saves vide pour bob');
@@ -154,12 +170,25 @@ async function setup() {
 
   console.log('\n[G] Suppression de compte (RGPD)');
   {
-    await wB.__t.pb().collection('users').authWithPassword('alice@test.local', 'motdepasse123');
+    await authAs(wB, 'alice@test.local');
     await wB.__t.pb().collection('users').delete(wB.__t.pb().authStore.record.id);
     const saves = await adminGET('/api/collections/saves/records');
     assert(saves.body.totalItems === 0, 'sauvegarde supprimée en cascade avec le compte');
     const users = await adminGET('/api/collections/users/records');
     assert(!users.body.items.some(u => u.email === 'alice@test.local'), 'compte alice supprimé');
+  }
+
+  console.log('\n[H] Durcissement : inscription directe bloquée (OAuth2-only)');
+  {
+    const r = await fetch(PB + '/api/collections/users/records', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'intrus@example.com', password: 'xK9mP2vRq5tW', passwordConfirm: 'xK9mP2vRq5tW' })
+    });
+    assert(r.status === 400 || r.status === 403, 'POST users/records sans OAuth2 refusé (HTTP ' + r.status + ')');
+    const methods = await (await fetch(PB + '/api/collections/users/auth-methods')).json();
+    assert(methods.password && methods.password.enabled === false, 'login par mot de passe désactivé');
+    // NB : le provider Google se configure à la main en prod (client id/secret) ;
+    // il n'est pas présent sur l'instance de test, donc non vérifié ici.
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Synchronisation : tous les tests passent'));

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.3 — 2026-07-11
+
+### Security
+
+- **PocketBase users collection hardened** (migration `deploy/pb_migrations/1752000000_harden_users.js`): direct email/password sign-up is closed (`createRule` restricted to the OAuth2 context) and password login is disabled — the tracker is Google-only. Fixes the default PocketBase behaviour that left public account creation open. OAuth2 sign-in still creates new accounts normally.
+- **HTTP security headers** on every response (Content-Security-Policy, X-Content-Type-Options, Referrer-Policy, Permissions-Policy).
+- **Game-data generator** (`tools/update-gamedata.py`) now allow-lists the characters of any string coming from the remote source before writing it into `data.js`, so a compromised/altered source page cannot inject JavaScript.
+
 ## 1.2.2 — 2026-07-11
 
 - Legend line explaining the ★ (wishlist) and ✨ (Flawless) toggles, plus hover tooltips

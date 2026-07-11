@@ -151,6 +151,12 @@ The sync test creates its own test users (`alice@test.local`, `bob@test.local`) 
 
 `localStorage` remains the local cache and the offline mode. When signed in, every change is pushed (1 s debounce) to the `saves` collection; on load, the account backup is pulled. If the device and the account diverge at sign-in, the user picks which one to keep. Last write wins across devices.
 
+### Security
+
+- The `users` collection is **Google-only**: a migration disables password login and restricts account creation to the OAuth2 flow, so no one can spam the database with direct sign-ups (PocketBase leaves this open by default). To allow password sign-up on your own instance, revert `deploy/pb_migrations/1752000000_harden_users.js`.
+- The static site is served with a strict **Content-Security-Policy** (no inline scripts) plus `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy`.
+- The admin console is not reachable from the internet (see above).
+
 ### Personal data (GDPR)
 
 Accounts are optional. When one is created, PocketBase stores the Google email, the profile name and the collection registry — nothing else, no tracking. The "Delete my account" button removes the account **and** its backup (cascade deletion), with no admin intervention. If you host a public instance, remember to adapt the contact info in the footer.
