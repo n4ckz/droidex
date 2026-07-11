@@ -169,7 +169,10 @@ function setLang(lang){
 (function initLang(){
   let saved = null;
   try{ saved = localStorage.getItem(LANG_KEY); }catch(e){}
-  LANG = I18N[saved] ? saved : 'en';
+  /* première visite (aucun choix enregistré) : préselectionne le français
+     pour les navigateurs francophones, anglais sinon */
+  const detected = (navigator.language || '').toLowerCase().startsWith('fr') ? 'fr' : 'en';
+  LANG = I18N[saved] ? saved : detected;
   TIERS = I18N[LANG]._tiers;
   TIER_SHORT = I18N[LANG]._tierShort;
   RARITY_LABELS = I18N[LANG]._rarities;

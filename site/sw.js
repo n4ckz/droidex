@@ -1,6 +1,6 @@
 /* Service worker minimal : pré-cache du shell applicatif, stratégie cache-first.
    Incrémenter CACHE_VERSION à chaque mise à jour des fichiers du site. */
-const CACHE_VERSION = 'droidex-v3';
+const CACHE_VERSION = 'droidex-v4';
 const SHELL = [
   './',
   'index.html',

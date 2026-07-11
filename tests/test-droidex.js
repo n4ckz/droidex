@@ -15,11 +15,12 @@ function assert(cond, msg) {
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function boot(localStorageSeed, lang) {
+function boot(localStorageSeed, lang, navLang) {
   const errors = [];
   const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only' });
   const { window } = dom;
   window.confirm = () => true;
+  if (navLang) Object.defineProperty(window.navigator, 'language', { get: () => navLang });
   if (localStorageSeed) window.localStorage.setItem('droidex-tracker-v1', localStorageSeed);
   if (lang) window.localStorage.setItem('droidex-lang', lang);
   try {
@@ -193,6 +194,14 @@ const setTarget = (w, rb) => {
     w2.localStorage.setItem('droidex-lang', 'fr');
     const { window: w3 } = boot(savedJson, 'fr');
     assert(w3.document.documentElement.lang === 'fr', 'langue restaurée au rechargement');
+    // détection navigateur à la première visite (aucun choix enregistré)
+    const { window: w4 } = boot(null, null, 'fr-FR');
+    assert(w4.document.documentElement.lang === 'fr', 'navigateur fr-FR sans choix → français présélectionné');
+    const { window: w5 } = boot(null, null, 'de-DE');
+    assert(w5.document.documentElement.lang === 'en', 'navigateur de-DE sans choix → anglais');
+    // le choix explicite prime sur la détection
+    const { window: w6 } = boot(null, 'en', 'fr-FR');
+    assert(w6.document.documentElement.lang === 'en', 'choix enregistré "en" prime sur navigateur fr-FR');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
