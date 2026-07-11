@@ -55,7 +55,8 @@ services:
       - "traefik.http.routers.droidex-api-admin.priority=100"
       - "traefik.http.routers.droidex-api-admin.middlewares=droidex-admin-block"
       - "traefik.http.routers.droidex-api-admin.service=droidex-api"
-      - "traefik.http.middlewares.droidex-admin-block.ipallowlist.sourcerange=127.0.0.1/32"
+      # IPs autorisées sur la console d'admin (négociées via .env ; défaut : tunnel SSH uniquement)
+      - "traefik.http.middlewares.droidex-admin-block.ipallowlist.sourcerange=${DROIDEX_ADMIN_IPS:-127.0.0.1/32}"
 
 networks:
   proxy:

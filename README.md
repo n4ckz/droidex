@@ -77,6 +77,8 @@ ssh -L 8091:127.0.0.1:8091 your-vps
 # then open http://localhost:8091/_/
 ```
 
+Alternatively, allowlist your own public IP(s) via `DROIDEX_ADMIN_IPS` in `.env` (comma-separated CIDRs) to reach `https://api.<domain>/_/` directly. Keep `127.0.0.1/32` in the list so the SSH tunnel keeps working if your IP changes.
+
 ### Enabling Google sign-in (once the site is up)
 
 1. [Google Cloud Console](https://console.cloud.google.com/) → create a project → **APIs & Services › OAuth consent screen**: type "External", fill in name and email. Only basic scopes (email, profile) are used: **no Google verification is required**; publish the app ("In production").
