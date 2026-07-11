@@ -50,7 +50,7 @@ const setTarget = (w, rb) => {
     assert(cards.length === 68, '68 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '0 / 320 variants', 'progression "0 / 320 variants" (obtenu : "' + label + '")');
+    assert(label === '0 / 316 variants', 'progression "0 / 316 variants" (obtenu : "' + label + '")');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -148,7 +148,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '1 / 320 variants', 'progression 1 / 320 (obtenu : "' + label + '")');
+    assert(label === '1 / 316 variants', 'progression 1 / 320 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -202,6 +202,72 @@ const setTarget = (w, rb) => {
     // le choix explicite prime sur la détection
     const { window: w6 } = boot(null, 'en', 'fr-FR');
     assert(w6.document.documentElement.lang === 'en', 'choix enregistré "en" prime sur navigateur fr-FR');
+  }
+
+  /* ---- 11. Cycles de renaissance et données étendues ---- */
+  console.log('\n[11] Cycles et RB 24-27');
+  {
+    const { window: w } = boot(savedJson);
+    assert(w.document.getElementById('rbSelect').options.length === 27, 'sélecteur RB : 27 niveaux');
+    assert(w.document.getElementById('cycleSelect').options.length === 4, 'sélecteur cycle : 4 cycles');
+    // RB24 cycle 1 : BESKAR BB9, BESKAR CYCLO-GRAV, BASE MO-TRAK · 9T
+    const sel = w.document.getElementById('rbSelect');
+    sel.value = '24'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
+    const reqNames = [...w.document.querySelectorAll('.rb-req')].map(r => r.textContent);
+    assert(reqNames.some(x => x.includes('MO-TRAK')), 'panneau RB24 : MO-TRAK requis');
+    assert(w.document.getElementById('rbCredits').textContent.includes('9T'), 'crédits RB24 : 9T');
+    // bascule cycle 2 : RB1 = ID10, Mouse, Gonk
+    sel.value = '1'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
+    const cyc = w.document.getElementById('cycleSelect');
+    cyc.value = '2'; cyc.dispatchEvent(new w.Event('change', { bubbles: true }));
+    const names2 = [...w.document.querySelectorAll('.rb-req')].map(r => r.textContent).join(' ');
+    assert(names2.includes('ID10') && names2.includes('Gonk'), 'cycle 2 RB1 : exigences différentes (ID10, Gonk)');
+    await sleep(600);
+    assert(JSON.parse(w.localStorage.getItem('droidex-tracker-v1')).targetCycle === 2, 'targetCycle persisté');
+  }
+
+  /* ---- 12. Migration CB-23 -> Iconique ---- */
+  console.log('\n[12] Migration CB-23');
+  {
+    const seed = JSON.stringify({ owned: { cb23: [1, 0, 2, 0, 0] }, inBase: {}, targetRB: 1 });
+    const { window: w } = boot(seed);
+    const st = w.__test.getState();
+    assert(st.owned.cb23 === true, 'cb23 variantes -> possédé (true)');
+    assert(st.inBase.cb23 === true, 'cb23 variante en base -> inBase true');
+    const card = findCard(w, 'CB-23');
+    assert(card.querySelector('.iconic-own').classList.contains('on'), 'carte CB-23 : iconique possédé');
+  }
+
+  /* ---- 13. Flawless ✨ et wishlist ★ ---- */
+  console.log('\n[13] Flawless et wishlist');
+  {
+    const { window: w } = boot();
+    findCard(w, 'R6').querySelector('.icon-btn:not(.flaw)').click();     // wishlist
+    let card = findCard(w, 'R6');
+    assert(card.querySelector('.icon-btn').classList.contains('on-wish'), 'toggle wishlist actif');
+    card.querySelector('.icon-btn.flaw').click();                        // flawless
+    card = findCard(w, 'R6');
+    assert(card.querySelector('.icon-btn.flaw').classList.contains('on-flaw'), 'toggle flawless actif');
+    await sleep(600);
+    const st = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
+    assert(st.wish.r6 === true && st.flawless.r6 === true, 'wish + flawless persistés');
+    [...w.document.querySelectorAll('.chip')].find(c => c.dataset.filter === 'wish').click();
+    assert(w.document.querySelectorAll('.droid').length === 1, 'filtre Wishlist → 1 résultat');
+  }
+
+  /* ---- 14. Valeurs et bonus de collection ---- */
+  console.log('\n[14] Valeurs, tri et bonus de collection');
+  {
+    const { window: w } = boot(savedJson);   // strikeorb dia en base
+    const vline = findCard(w, 'Strike-Orb').querySelector('.value-line');
+    assert(vline && vline.textContent.includes('540/s') && vline.textContent.includes('18.4K/s'),
+      'ligne de valeur Strike-Orb : 540/s → 18.4K/s (obtenu : "' + (vline ? vline.textContent : 'absente') + '")');
+    assert(w.document.getElementById('collectionBonus').textContent.includes('+1%'),
+      'bonus de collection : 1 droïde distinct → +1%');
+    const sort = w.document.getElementById('sortSelect');
+    sort.value = 'income'; sort.dispatchEvent(new w.Event('change', { bubbles: true }));
+    const first = w.document.querySelector('.droid .droid-name').textContent;
+    assert(['Loadlifter', 'MO-TRAK', 'KX'].includes(first), 'tri par revenu : un 7.2K/s en tête (obtenu : ' + first + ')');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

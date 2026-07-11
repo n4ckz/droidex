@@ -1,9 +1,29 @@
 /* ================= STATE ================= */
 const STORAGE_KEY = 'droidex-tracker-v1';
-let state = { owned:{}, inBase:{}, targetRB:1 };  // owned[id] = [int x5] ou true pour iconic ; inBase[id] = bool
+let state = { owned:{}, inBase:{}, targetRB:1, targetCycle:1, flawless:{}, wish:{} };
+// owned[id] = [int x5] ou true pour iconic ; inBase[id] = bool ; flawless/wish[id] = bool
 let filter = 'all';
 let query = '';
+let sortMode = 'rarity';
 let saveTimer = null;
+
+/* Exigences par droïde, dérivées de REBIRTHS : DROID_REQS[id][cycle] = [[rb, tier], …] */
+const DROID_REQS = {};
+Object.entries(REBIRTHS).forEach(([cyc, levels])=>{
+  Object.entries(levels).forEach(([rb, reqs])=>{
+    reqs.forEach(([id, tier])=>{
+      const byCycle = DROID_REQS[id] = DROID_REQS[id] || {};
+      (byCycle[cyc] = byCycle[cyc] || []).push([parseInt(rb,10), tier]);
+    });
+  });
+});
+const DROID_BY_ID = {};
+DROIDS.forEach(d=>{ DROID_BY_ID[d.id] = d; });
+/* Exigences du droïde dans le cycle visé (null si aucune) */
+function reqsFor(d){
+  const byCycle = DROID_REQS[d.id];
+  return byCycle ? (byCycle[state.targetCycle] || null) : null;
+}
 
 function ownedTiers(id){
   const v = state.owned[id];
@@ -23,12 +43,22 @@ function inBaseReq(id, tier){
 function hasAnyInBase(id){
   return ownedTiers(id).some(v=>v===2);
 }
-/* Un droïde est "à garder" s'il a au moins une exigence de rebirth >= cible */
+/* Un droïde est "à garder" s'il a au moins une exigence de rebirth >= cible (cycle visé) */
 function keepInfo(d){
-  if(!d.reqs) return null;
-  const future = d.reqs.filter(([rb])=>rb>=state.targetRB);
+  const reqs = reqsFor(d);
+  if(!reqs) return null;
+  const future = reqs.filter(([rb])=>rb>=state.targetRB);
   if(!future.length) return null;
   return future;
+}
+/* Droïdes distincts possédés (bonus de collection : +1 % de revenus chacun) */
+function distinctOwned(){
+  return DROIDS.filter(d=> d.iconic ? state.owned[d.id]===true : ownedTiers(d.id).some(v=>v>=1)).length;
+}
+/* Formatage compact des revenus (972 -> "972", 8200 -> "8.2K") */
+function fmtInc(n){
+  if(n>=1000){ const k=Math.round(n/100)/10; return (k===Math.round(k)?Math.round(k):k)+'K'; }
+  return String(n);
 }
 
 /* ================= STORAGE ================= */
@@ -39,20 +69,30 @@ function applyParsedState(parsed){
   state.owned = parsed.owned || {};
   state.inBase = parsed.inBase || {};
   state.targetRB = parsed.targetRB || 1;
+  state.targetCycle = parsed.targetCycle || 1;
+  state.flawless = parsed.flawless || {};
+  state.wish = parsed.wish || {};
   /* migration : anciens booléens -> états numériques 0/1/2 */
   const iconicIds = new Set(DROIDS.filter(d=>d.iconic).map(d=>d.id));
   Object.keys(state.owned).forEach(id=>{
     const v = state.owned[id];
-    if(Array.isArray(v)){
+    if(Array.isArray(v) && !iconicIds.has(id)){
       state.owned[id] = v.map(x=>x===true?1:(typeof x==='number'?x:0));
       /* ancien toggle global "en base" -> promotion de la meilleure variante possédée */
-      if(state.inBase[id]===true && !iconicIds.has(id)){
+      if(state.inBase[id]===true){
         const arr = state.owned[id];
         for(let i=4;i>=0;i--){ if(arr[i]>=1){ arr[i]=2; break; } }
         delete state.inBase[id];
       }
     }
   });
+  /* migration : CB-23 reclassé Iconique (variantes -> possédé + en base) */
+  const cb23 = state.owned.cb23;
+  if(Array.isArray(cb23)){
+    const arr = cb23.map(x=>x===true?1:(typeof x==='number'?x:0));
+    if(arr.some(v=>v>=1)) state.owned.cb23 = true; else delete state.owned.cb23;
+    if(arr.some(v=>v===2) || state.inBase.cb23===true) state.inBase.cb23 = true;
+  }
   return true;
 }
 function loadState(){
@@ -128,7 +168,7 @@ function importStateFile(file){
 function renderRBPanel(){
   const sel = document.getElementById('rbSelect');
   if(!sel.options.length){
-    for(let i=1;i<=23;i++){
+    for(let i=1;i<=27;i++){
       const o=document.createElement('option');
       o.value=i;
       sel.appendChild(o);
@@ -141,14 +181,25 @@ function renderRBPanel(){
   [...sel.options].forEach((o,idx)=>{ o.textContent=t('rebirth')+' '+(idx+1); });
   sel.value=state.targetRB;
 
+  const cyc = document.getElementById('cycleSelect');
+  if(!cyc.options.length){
+    for(let i=1;i<=4;i++){
+      const o=document.createElement('option');
+      o.value=i;
+      cyc.appendChild(o);
+    }
+    cyc.addEventListener('change',()=>{
+      state.targetCycle=parseInt(cyc.value,10);
+      scheduleSave();renderAll();
+    });
+  }
+  [...cyc.options].forEach((o,idx)=>{ o.textContent=t('cycle')+' '+(idx+1); });
+  cyc.value=state.targetCycle;
+
   const reqsEl=document.getElementById('rbReqs');
   reqsEl.innerHTML='';
-  const needed=[];
-  DROIDS.forEach(d=>{
-    (d.reqs||[]).forEach(([rb,tier])=>{
-      if(rb===state.targetRB) needed.push({d,tier});
-    });
-  });
+  const needed=((REBIRTHS[state.targetCycle]||{})[state.targetRB]||[])
+    .map(([id,tier])=>({d:DROID_BY_ID[id],tier}));
   needed.forEach(({d,tier})=>{
     const owned=meetsReq(d.id,tier);
     const ready=inBaseReq(d.id,tier);
@@ -163,7 +214,11 @@ function renderRBPanel(){
       '<span class="req-tier" style="color:var(--sand-dim)">'+note+'</span>';
     reqsEl.appendChild(row);
   });
-  document.getElementById('rbCredits').innerHTML=t('credits', RB_CREDITS[state.targetRB]||'—');
+  let creditsLine=t('credits', RB_CREDITS[state.targetRB]||'—');
+  if(state.targetCycle===1 && RB_UNLOCKS[state.targetRB]){
+    creditsLine+=' · '+t('unlocks', RB_UNLOCKS[state.targetRB]);
+  }
+  document.getElementById('rbCredits').innerHTML=creditsLine;
 }
 
 function renderProgress(){
@@ -175,12 +230,15 @@ function renderProgress(){
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('progressFill').style.width=pct+'%';
   document.getElementById('progressLabel').textContent=done+' / '+total+' '+t('variants');
+  const n=distinctOwned();
+  document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
 }
 
 function droidMatches(d){
   if(query && !d.n.toLowerCase().includes(query)) return false;
   if(filter==='all') return true;
   if(filter==='keep') return !!keepInfo(d);
+  if(filter==='wish') return !!state.wish[d.id];
   if(filter==='base') return d.iconic ? !!state.inBase[d.id] : hasAnyInBase(d.id);
   if(filter==='missing'){
     const ki=keepInfo(d);
@@ -194,7 +252,22 @@ function renderList(){
   list.innerHTML='';
   let any=false;
 
-  RARITY_ORDER.forEach(rar=>{
+  if(sortMode==='income'){
+    /* liste à plat, triée par revenu Beskar décroissant (Iconiques en fin) */
+    const ds=DROIDS.filter(droidMatches).slice().sort((a,b)=>{
+      const av=a.inc?a.inc[4]:-1, bv=b.inc?b.inc[4]:-1;
+      return bv-av;
+    });
+    if(ds.length){
+      any=true;
+      const sec=document.createElement('div');
+      sec.className='rarity-section';
+      sec.innerHTML='<div class="rarity-title">'+t('byIncome')+
+        ' <span class="count">'+ds.length+'</span></div>';
+      ds.forEach(d=>sec.appendChild(renderDroid(d)));
+      list.appendChild(sec);
+    }
+  }else RARITY_ORDER.forEach(rar=>{
     const ds=DROIDS.filter(d=>d.r===rar && droidMatches(d));
     if(!ds.length) return;
     any=true;
@@ -221,13 +294,15 @@ function renderDroid(d){
   card.className='droid'+(hasUnmet?' keep':'');
 
   let top='<div class="droid-top"><span class="droid-name">'+d.n+'</span>'+
-    '<span class="droid-type">'+d.t+'</span>';
+    '<span class="droid-type">'+d.t+'</span>'+
+    '<span class="card-actions"></span>';
   if(ki) top+='<span class="keep-tag">'+t('keepTag')+'</span>';
   top+='</div>';
 
   let badges='';
-  if(d.reqs){
-    badges='<div class="req-badges">'+d.reqs.map(([rb,tier])=>{
+  const reqs=reqsFor(d);
+  if(reqs){
+    badges='<div class="req-badges">'+reqs.map(([rb,tier])=>{
       const past=rb<state.targetRB;
       let cls,prefix='';
       if(past){cls=' done';}
@@ -238,7 +313,43 @@ function renderDroid(d){
     }).join('')+'</div>';
   }
 
-  card.innerHTML=top+badges;
+  let value='';
+  if(d.inc){
+    value='<div class="value-line">💰 '+fmtInc(d.inc[0])+'/s → '+fmtInc(d.inc[4])+'/s'+
+      (d.bskCost?' <span class="dim">· BSK '+d.bskCost+'</span>':'')+
+      (d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
+  }else if(d.iconic){
+    value='<div class="value-line">💰 +15%/s'+(d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
+  }
+
+  card.innerHTML=top+badges+value;
+
+  /* toggles wishlist ☆ et flawless ✨ */
+  const actions=card.querySelector('.card-actions');
+  const wishOn=!!state.wish[d.id];
+  const wishBtn=document.createElement('button');
+  wishBtn.type='button';
+  wishBtn.className='icon-btn'+(wishOn?' on-wish':'');
+  wishBtn.textContent=wishOn?'★':'☆';
+  wishBtn.setAttribute('aria-label',t('wishAria')+' : '+d.n);
+  wishBtn.setAttribute('aria-pressed',wishOn?'true':'false');
+  wishBtn.addEventListener('click',()=>{
+    if(state.wish[d.id]) delete state.wish[d.id]; else state.wish[d.id]=true;
+    scheduleSave();renderAll();
+  });
+  actions.appendChild(wishBtn);
+  const flawOn=!!state.flawless[d.id];
+  const flawBtn=document.createElement('button');
+  flawBtn.type='button';
+  flawBtn.className='icon-btn flaw'+(flawOn?' on-flaw':'');
+  flawBtn.textContent='✨';
+  flawBtn.setAttribute('aria-label',t('flawAria')+' : '+d.n);
+  flawBtn.setAttribute('aria-pressed',flawOn?'true':'false');
+  flawBtn.addEventListener('click',()=>{
+    if(state.flawless[d.id]) delete state.flawless[d.id]; else state.flawless[d.id]=true;
+    scheduleSave();renderAll();
+  });
+  actions.appendChild(flawBtn);
 
   if(d.iconic){
     const btn=document.createElement('button');
@@ -308,9 +419,13 @@ document.getElementById('search').addEventListener('input',e=>{
   query=e.target.value.trim().toLowerCase();
   renderList();
 });
+document.getElementById('sortSelect').addEventListener('change',e=>{
+  sortMode=e.target.value;
+  renderList();
+});
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm(t('resetConfirm'))) return;
-  state={owned:{},inBase:{},targetRB:1};
+  state={owned:{},inBase:{},targetRB:1,targetCycle:1,flawless:{},wish:{}};
   try{ persistState(); }catch(e){}
   renderAll();
 });

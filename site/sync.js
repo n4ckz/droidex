@@ -15,8 +15,11 @@ function syncHasLocalData(){
   return Object.keys(state.owned).length > 0 || Object.keys(state.inBase).length > 0;
 }
 function syncStatesEqual(a, b){
-  return JSON.stringify({owned:a.owned||{},inBase:a.inBase||{},targetRB:a.targetRB||1}) ===
-         JSON.stringify({owned:b.owned||{},inBase:b.inBase||{},targetRB:b.targetRB||1});
+  const norm = s => JSON.stringify({
+    owned:s.owned||{}, inBase:s.inBase||{}, targetRB:s.targetRB||1,
+    targetCycle:s.targetCycle||1, flawless:s.flawless||{}, wish:s.wish||{}
+  });
+  return norm(a) === norm(b);
 }
 function syncSetStatus(msg, isErr){
   const el = document.getElementById('syncStatus');

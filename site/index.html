@@ -62,12 +62,16 @@
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-label" id="progressLabel">—</div>
     </div>
+    <div class="collection-bonus" id="collectionBonus"></div>
   </header>
 
   <div class="rb-panel">
     <div class="rb-head">
       <div class="rb-title" data-i18n="rbTitle">Next targeted rebirth</div>
-      <select id="rbSelect" data-i18n-aria="rbAria" aria-label="Targeted rebirth"></select>
+      <div class="rb-selects">
+        <select id="cycleSelect" data-i18n-aria="cycleAria" aria-label="Rebirth cycle"></select>
+        <select id="rbSelect" data-i18n-aria="rbAria" aria-label="Targeted rebirth"></select>
+      </div>
     </div>
     <div class="rb-reqs" id="rbReqs"></div>
     <div class="rb-credits" id="rbCredits"></div>
@@ -83,9 +87,14 @@
       <button class="chip" data-filter="keep" data-i18n="filterKeep">Keep</button>
       <button class="chip" data-filter="missing" data-i18n="filterMissing">Missing required</button>
       <button class="chip" data-filter="base" data-i18n="filterBase">In base</button>
+      <button class="chip" data-filter="wish" data-i18n="filterWish">Wishlist</button>
       <button class="chip" data-filter="Worker">Worker</button>
       <button class="chip" data-filter="Astromech">Astromech</button>
       <button class="chip" data-filter="Battle">Battle</button>
+      <select id="sortSelect" class="chip-select" data-i18n-aria="sortAria" aria-label="Sort">
+        <option value="rarity" data-i18n="sortRarity">Sort: rarity</option>
+        <option value="income" data-i18n="sortIncome">Sort: income</option>
+      </select>
     </div>
   </div>
 

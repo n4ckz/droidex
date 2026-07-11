@@ -16,11 +16,14 @@ The game features a Droidex of 200+ collectible droids across 5 variants (Basic,
 
 - **Per-variant tracking** with 3 tap-cyclable states: never owned → owned (Droidex entry) → 🏠 in base (physical presence) → clear.
 - **Higher-variant rule**: a Diamond droid always satisfies a "Gold" requirement.
-- **"Next targeted rebirth" panel** (1–23): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready) and the credits needed.
+- **"Next targeted rebirth" panel** (1–27, across the 4 super-rebirth cycles): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready), the credits needed and the slot unlocked.
 - **Requirement badges** on each droid (e.g. "RB9 · Gold"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
 - **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
-- **Filters**: All / Keep / Missing required / In base / Worker / Astromech / Battle, plus search.
-- **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, R2-D2): simple owned + in-base toggles, no variants.
+- **Value data on every droid**: income per second (Basic → Beskar), Beskar upgrade cost and passive perk — plus a "sort by income" mode to decide what to buy at the Sandcrawler.
+- **Flawless ✨ and wishlist ★ toggles** on every droid, with a Wishlist filter.
+- **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
+- **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
+- **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2): simple owned + in-base toggles, no variants.
 - **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no tracking, no mandatory signup.
 - **JSON export/import** as a fallback, or to stay 100 % offline.
 - **Two languages**: English (default) and French, switchable from the header dropdown.
@@ -149,19 +152,20 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (68 tracked droids including 5 Iconics, rebirth requirements 1–23, credit costs) is maintained in [`site/data.js`](site/data.js) from community sources:
+The data (68 tracked droids including 6 Iconics, rebirth requirements for the 4 cycles × 27 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-11:
 
+- [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
-- [Rebirths 1–23 (community wiki)](https://star-wars-droid-tycoon.fandom.com/wiki/Rebirths)
-- [The 11 Mythic droids (fdaytalk)](https://www.fdaytalk.com/fortnite-droid-tycoon-mythic-droids/)
-- [General mode wiki](https://fortnite.fandom.com/wiki/Droid_Tycoon) and [dedicated wiki](https://star-wars-droid-tycoon.fandom.com/wiki/)
+- [Community wiki](https://star-wars-droid-tycoon.fandom.com/wiki/) and [Fortnite wiki](https://fortnite.fandom.com/wiki/Droid_Tycoon)
 - [Events and Iconics](https://droidtycoonguide.com/events/)
 
 **Known uncertainties:**
 
-- The classes of 4 Mythics (Snow Mouse, RIC, MO-TRAK, DRFT-R) are plausible attributions, **not confirmed** by the community.
-- Rebirths **21–23** (Beskar tier) are not fully verified.
-- The game is updated frequently: rebirth requirements 11–18 have already been rebalanced by patches. If you spot a discrepancy, open an issue or a PR against `site/data.js`.
+- Rebirth cycles **2–4** (super-rebirth) come from tycoon-tools and have not yet been verified in game by us.
+- Some classifications changed vs. earlier community sources and now follow the tycoon-tools value list: CB-23 is Iconic, Proto-Roller is Legendary, DRFT-R is an Astromech, DJ R-3X is a Worker.
+- The game is updated frequently. If you spot a discrepancy, open an issue or a PR against `site/data.js`.
+
+**About Flawless**: a Flawless is a rare permanent drop chance on any droid (1/1000 on Basic up to 1/100 on Beskar) kept forever in your Droidex — hence the ✨ toggle per droid.
 
 ## License and disclaimers
 

@@ -82,6 +82,9 @@ h1{
   font-family:'Chakra Petch',sans-serif;font-size:12px;color:var(--sand-dim);
   white-space:nowrap;
 }
+.collection-bonus{
+  margin-top:6px;font-size:11.5px;color:var(--sand-dim);
+}
 
 /* ---------- rebirth panel ---------- */
 .rb-panel{
@@ -92,12 +95,14 @@ h1{
 }
 .rb-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .rb-title{font-family:'Chakra Petch',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--sand-dim)}
-select#rbSelect{
+.rb-selects{display:flex;gap:8px}
+.rb-selects select{
   background:var(--panel-2);color:var(--sand);
   border:1px solid var(--line);border-radius:8px;
   font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:600;
   padding:7px 10px;
 }
+select#cycleSelect{color:var(--sand-dim);font-size:13px}
 .rb-reqs{margin-top:12px;display:flex;flex-direction:column;gap:8px}
 .rb-req{
   display:flex;align-items:center;gap:10px;
@@ -139,6 +144,13 @@ select#rbSelect{
 }
 .chip.active{background:var(--jawa-soft);border-color:var(--jawa);color:var(--jawa)}
 .chip:focus-visible{outline:2px solid var(--jawa);outline-offset:2px}
+.chip-select{
+  flex:0 0 auto;
+  background:var(--panel);border:1px solid var(--line);color:var(--sand-dim);
+  font-family:'Chakra Petch',sans-serif;font-size:12.5px;font-weight:600;
+  padding:7px 10px;border-radius:20px;
+}
+.chip-select:focus-visible{outline:2px solid var(--jawa);outline-offset:2px}
 
 /* ---------- sections & rows ---------- */
 .rarity-section{margin-top:20px}
@@ -171,6 +183,22 @@ select#rbSelect{
   background:var(--jawa-soft);border:1px solid rgba(232,163,61,.4);
   padding:2px 8px;border-radius:4px;
 }
+.card-actions{margin-left:auto;display:inline-flex;gap:2px}
+.icon-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:15px;line-height:1;padding:2px 4px;
+  color:var(--sand-dim);opacity:.4;
+  -webkit-tap-highlight-color:transparent;
+}
+.icon-btn:focus-visible{outline:2px solid var(--jawa);outline-offset:2px;border-radius:4px}
+.icon-btn.on-wish{opacity:1;color:var(--jawa)}
+.icon-btn.flaw{filter:grayscale(1)}
+.icon-btn.on-flaw{opacity:1;filter:none;text-shadow:0 0 8px rgba(232,163,61,.8)}
+.card-actions + .keep-tag{margin-left:0}
+.value-line{
+  margin-top:6px;font-size:11.5px;color:var(--sand);
+}
+.value-line .dim{color:var(--sand-dim)}
 .req-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .req-badge{
   font-size:11.5px;color:var(--sand-dim);
