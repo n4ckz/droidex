@@ -5,3 +5,8 @@ node_modules/
 .DS_Store
 # prototype d'origine (artifact Claude), remplacé par site/
 droidex-checklist.html
+# contexte de travail Claude Code (local uniquement)
+CLAUDE.md
+# artefacts de test
+tests/node_modules/
+tests/package-lock.json

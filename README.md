@@ -100,10 +100,24 @@ deploy/
   nginx.conf              Config nginx (cache, gzip, sw.js jamais mis en cache)
   pocketbase.Dockerfile   Image PocketBase (version épinglée)
   pb_migrations/          Migration créant la collection « saves »
+tests/                    Suites de tests (voir ci-dessous)
 Dockerfile                Image du site statique
 docker-compose.yml        Production (Traefik) : site + API
 docker-compose.local.yml  Test local
 ```
+
+## Tests
+
+```bash
+docker compose -f docker-compose.local.yml up -d
+docker compose -f docker-compose.local.yml exec pocketbase /pb/pocketbase superuser upsert admin@test.local testpass1234 --dir=/pb/pb_data
+
+cd tests && npm install
+npm run test:app    # logique du tracker (jsdom, sans serveur) : persistance, badges, migration, filtres
+npm run test:sync   # end-to-end contre le PocketBase local : push/pull, isolation entre comptes, suppression RGPD
+```
+
+Le test de synchronisation crée ses utilisateurs de test (`alice@test.local`, `bob@test.local`) et vide la collection `saves` à chaque exécution — ne le lancez jamais contre une instance de production.
 
 ### Modèle de synchronisation
 

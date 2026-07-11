@@ -1,0 +1,13 @@
+{
+  "name": "droidex-tests",
+  "private": true,
+  "description": "Tests du tracker Droidex : test-droidex.js (logique, sans serveur) et test-sync.js (end-to-end contre le PocketBase du compose local)",
+  "scripts": {
+    "test": "node test-droidex.js && node test-sync.js",
+    "test:app": "node test-droidex.js",
+    "test:sync": "node test-sync.js"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
