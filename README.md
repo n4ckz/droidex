@@ -70,6 +70,13 @@ docker compose exec pocketbase /pb/pocketbase superuser upsert YOUR@EMAIL.com YO
 
 Both containers expose an HTTP healthcheck, visible via `docker ps`. PocketBase data lives in `./pb_data` (include it in your VPS backups).
 
+**Admin console security**: the PocketBase dashboard (`/_/`) and the superuser auth endpoint are **not exposed to the internet** — Traefik returns 403 for them (on Traefik v2, replace `ipallowlist` with `ipwhitelist` in `docker-compose.yml`). To administer PocketBase, use an SSH tunnel:
+
+```bash
+ssh -L 8091:127.0.0.1:8091 your-vps
+# then open http://localhost:8091/_/
+```
+
 ### Enabling Google sign-in (once the site is up)
 
 1. [Google Cloud Console](https://console.cloud.google.com/) → create a project → **APIs & Services › OAuth consent screen**: type "External", fill in name and email. Only basic scopes (email, profile) are used: **no Google verification is required**; publish the app ("In production").

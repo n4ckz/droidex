@@ -32,6 +32,10 @@ services:
     restart: unless-stopped
     volumes:
       - ./pb_data:/pb/pb_data
+    ports:
+      # console d'admin accessible UNIQUEMENT depuis le VPS (tunnel SSH) :
+      #   ssh -L 8091:127.0.0.1:8091 mon-vps   →   http://localhost:8091/_/
+      - "127.0.0.1:8091:8090"
     networks:
       - proxy
     labels:
@@ -42,6 +46,16 @@ services:
       - "traefik.http.routers.droidex-api.tls=true"
       - "traefik.http.routers.droidex-api.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
       - "traefik.http.services.droidex-api.loadbalancer.server.port=8090"
+      # la console d'admin (/_/) et l'auth superuser ne sont pas exposées à Internet
+      # (Traefik v2 : remplacer ipallowlist par ipwhitelist)
+      - "traefik.http.routers.droidex-api-admin.rule=Host(`api.${DROIDEX_DOMAIN}`) && (PathPrefix(`/_/`) || PathPrefix(`/api/collections/_superusers`))"
+      - "traefik.http.routers.droidex-api-admin.entrypoints=websecure"
+      - "traefik.http.routers.droidex-api-admin.tls=true"
+      - "traefik.http.routers.droidex-api-admin.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}"
+      - "traefik.http.routers.droidex-api-admin.priority=100"
+      - "traefik.http.routers.droidex-api-admin.middlewares=droidex-admin-block"
+      - "traefik.http.routers.droidex-api-admin.service=droidex-api"
+      - "traefik.http.middlewares.droidex-admin-block.ipallowlist.sourcerange=127.0.0.1/32"
 
 networks:
   proxy:
