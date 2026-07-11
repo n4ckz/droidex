@@ -89,6 +89,10 @@ Alternatively, allowlist your own public IP(s) via `DROIDEX_ADMIN_IPS` in `.env`
 
 That's it: the site's "Sign in with Google" button now works. The `saves` collection (one backup per user, readable/writable only by its owner) is created automatically by migration on first startup.
 
+### Self-hosting and SEO files
+
+`site/index.html` (canonical URL, Open Graph, JSON-LD), `site/robots.txt`, `site/sitemap.xml` and `site/llms.txt` reference the official instance `https://droidex.nackz.dev`. If you host your own public instance, replace those URLs with your domain.
+
 ### Without Traefik / without sync
 
 Serve the `site/` folder with any static file server. To disable sync entirely (and hide the account UI), set `PB_URL` to `''` in [`site/config.js`](site/config.js). By convention, the frontend looks for the API at `api.<site domain>` (editable in that same file).

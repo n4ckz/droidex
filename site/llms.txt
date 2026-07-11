@@ -1,0 +1,18 @@
+# Droidex — Droidsmith's Registry
+
+> Free collection tracker for Star Wars: Droid Tycoon, the Fortnite creative mode by FOAD/Blzn Studios (released May 1st, 2026). Track 200+ droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar), plan the 23 Rebirth levels, and know exactly which droids to keep physically in your base. Installable as a mobile PWA, works offline, English and French.
+
+Key facts:
+
+- The game gives no way to check what you already own while standing at the Sandcrawler shop; Droidex fills that gap.
+- Each droid variant has 3 states: never owned, owned (Droidex entry), physically in base. A higher variant always satisfies a lower requirement (a Diamond droid validates a "Gold" requirement).
+- Each Rebirth (1–23) requires 3 specific droids in your base plus credits; the tracker shows what is missing for your next target.
+- No account required: data stays in the browser (localStorage) with JSON export/import. Optional Google sign-in syncs the registry across devices.
+- No tracking, no ads, free and open source (MIT).
+- Self-hostable: static site (nginx) + optional PocketBase sync API, Docker/Traefik setup provided.
+
+## Links
+
+- [Application](https://droidex.nackz.dev/): the tracker itself
+- [Source code and documentation](https://github.com/n4ckz/droidex): README with self-hosting guide, game data sources and known data uncertainties
+- [Game data file](https://github.com/n4ckz/droidex/blob/main/site/data.js): the tracked droids, rebirth requirements and credit costs
