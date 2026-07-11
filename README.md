@@ -125,6 +125,10 @@ deploy/
   pocketbase.Dockerfile   PocketBase image (pinned version)
   pb_migrations/          Migration creating the "saves" collection
 tests/                    Test suites (see below)
+tools/
+  update-gamedata.py      Regenerates site/data.js from tycoon-tools
+.github/workflows/
+  gamedata-check.yml      Scheduled watch: opens a PR when the game data changes
 Dockerfile                Static site image
 docker-compose.yml        Production (Traefik): site + API
 docker-compose.local.yml  Local testing
@@ -179,6 +183,8 @@ git diff site/data.js                      # review what the game changed
 ```
 
 Then bump `APP_VERSION` in `site/version.js`, add a CHANGELOG entry and run the tests. If the game adds a brand-new droid, the script stops and tells you to add its id to `NAME2ID`/`DISPLAY` first.
+
+This check also runs automatically **twice a week** (GitHub Actions): when a game patch changes the data, the workflow regenerates `site/data.js`, runs the test suite against it and opens a reviewable pull request.
 
 ## License and disclaimers
 
