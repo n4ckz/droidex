@@ -7,6 +7,11 @@
      réassignées à chaque changement de langue.
    ========================================================================= */
 
+/* Icône « en base » : maison monochrome, épouse la couleur de la variante
+   (stroke=currentColor). Définie une fois, réutilisée par les pips (app.js)
+   et par la légende ci-dessous. */
+const BASE_ICON = '<svg class="ico-base" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9h12v-9"/></svg>';
+
 const I18N = {
   en: {
     _tiers: ['Basic','Gold','Diamond','Rainbow','Beskar'],
@@ -30,7 +35,7 @@ const I18N = {
     flawAria: 'Flawless',
     searchPlaceholder: 'Search a droid… (e.g. R6)',
     searchAria: 'Search',
-    hint: '1 tap = owned (Droidex) · 2 taps = 🏠 in base · 3 taps = clear',
+    hint: '1 tap = owned (Droidex) · 2 taps = ' + BASE_ICON + ' in base · 3 taps = clear',
     legendIcons: '★ = wishlist · ✨ = Flawless unlocked (rare permanent drop)',
     wishTip: 'Add to wishlist (droids you are hunting for)',
     flawTip: 'Flawless unlocked: rare permanent drop (1/1000 Basic → 1/100 Beskar), kept in your Droidex forever',
@@ -106,7 +111,7 @@ const I18N = {
     flawAria: 'Flawless',
     searchPlaceholder: 'Chercher un droïde… (ex : R6)',
     searchAria: 'Recherche',
-    hint: '1 appui = possédé (Droidex) · 2 appuis = 🏠 en base · 3 appuis = effacer',
+    hint: '1 appui = possédé (Droidex) · 2 appuis = ' + BASE_ICON + ' en base · 3 appuis = effacer',
     legendIcons: '★ = recherché (wishlist) · ✨ = Flawless obtenu (drop rare permanent)',
     wishTip: 'Ajouter à la wishlist (droïdes que tu chasses)',
     flawTip: 'Flawless obtenu : drop rare permanent (1/1000 Basic → 1/100 Beskar), conservé à vie dans le Droidex',

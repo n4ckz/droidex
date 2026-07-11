@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.4 — 2026-07-11
+
+- Replaced the 🏠 emoji for the "in base" state with a monochrome house icon that takes the variant's colour (fits the dark theme instead of clashing)
+- Filter chips now wrap onto multiple lines on desktop (pointer devices) instead of only being scrollable, so no filter is hidden on a computer
+
 ## 1.2.3 — 2026-07-11
 
 ### Security

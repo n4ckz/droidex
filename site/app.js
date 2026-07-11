@@ -374,7 +374,7 @@ function renderDroid(d){
       b.className='tier'+(o[i]>=1?' on':'')+(o[i]===2?' base':'');
       b.dataset.t=i;
       b.setAttribute('aria-label',d.n+' '+TIERS[i]+' : '+(o[i]===2?t('ariaInBase'):(o[i]===1?t('ariaOwned'):t('ariaAbsent'))));
-      b.innerHTML='<span class="lamp"></span>'+(o[i]===2?'🏠':label);
+      b.innerHTML='<span class="lamp"></span>'+(o[i]===2?BASE_ICON:label);
       b.addEventListener('click',()=>{
         const arr=ownedTiers(d.id).slice();
         arr[i]=(arr[i]+1)%3;

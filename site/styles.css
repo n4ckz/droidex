@@ -135,6 +135,11 @@ select#cycleSelect{color:var(--sand-dim);font-size:13px}
 .search:focus{outline:2px solid var(--jawa);outline-offset:-1px;border-color:transparent}
 .chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .chips::-webkit-scrollbar{display:none}
+/* sur pointeur fin (souris/trackpad, pas de glissement tactile) : les filtres
+   passent à la ligne au lieu de défiler horizontalement */
+@media (pointer:fine){
+  .chips{flex-wrap:wrap;overflow-x:visible}
+}
 .chip{
   flex:0 0 auto;
   background:var(--panel);border:1px solid var(--line);color:var(--sand-dim);
@@ -248,6 +253,10 @@ select#cycleSelect{color:var(--sand-dim);font-size:13px}
 
 .tier.base{box-shadow:0 0 0 2px currentColor}
 .tier.base .lamp{background:currentColor;box-shadow:0 0 10px currentColor}
+.ico-base{filter:drop-shadow(0 0 4px currentColor)}
+.tier .ico-base{display:block;margin-top:1px}
+/* dans la légende (texte), aligner l'icône sur la ligne de base */
+.controls .ico-base{vertical-align:-2px}
 
 /* base toggle */
 .base-toggle{
