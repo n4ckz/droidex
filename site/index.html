@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Droidex — Registre du droïdesmith</title>
-<meta name="description" content="Tracker de collection pour Star Wars: Droid Tycoon (Fortnite) : suivez vos droïdes par variante (Basic, Or, Diamant, Arc-en-ciel, Beskar) et préparez vos renaissances devant le Sandcrawler.">
-<meta property="og:title" content="Droidex — Registre du droïdesmith">
-<meta property="og:description" content="Tracker de collection pour Star Wars: Droid Tycoon (Fortnite) : variantes, renaissances et droïdes à garder en base.">
+<title>Droidex — Droidsmith's Registry</title>
+<meta name="description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids across variants (Basic, Gold, Diamond, Rainbow, Beskar) and plan your rebirths at the Sandcrawler shop.">
+<meta property="og:title" content="Droidex — Droidsmith's Registry">
+<meta property="og:description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants, rebirths, and which droids to keep in your base.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:image" content="icons/icon-512.png">
 <meta name="theme-color" content="#14110C">
 <link rel="manifest" href="manifest.json">
@@ -19,8 +20,14 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Star Wars · Droid Tycoon</div>
-    <h1>Droidex — Registre du droïdesmith</h1>
+    <div class="header-top">
+      <div class="eyebrow">Star Wars · Droid Tycoon</div>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+    <h1 data-i18n="h1">Droidex — Droidsmith's Registry</h1>
     <div class="progress-line">
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-label" id="progressLabel">—</div>
@@ -29,60 +36,60 @@
 
   <div class="rb-panel">
     <div class="rb-head">
-      <div class="rb-title">Prochaine renaissance visée</div>
-      <select id="rbSelect" aria-label="Renaissance visée"></select>
+      <div class="rb-title" data-i18n="rbTitle">Next targeted rebirth</div>
+      <select id="rbSelect" data-i18n-aria="rbAria" aria-label="Targeted rebirth"></select>
     </div>
     <div class="rb-reqs" id="rbReqs"></div>
     <div class="rb-credits" id="rbCredits"></div>
   </div>
 
   <div class="controls">
-    <input type="search" class="search" id="search" placeholder="Chercher un droïde… (ex : R6)" aria-label="Recherche">
-    <div style="font-size:11.5px;color:var(--sand-dim);margin-top:7px">
-      1 appui = possédé (Droidex) · 2 appuis = 🏠 en base · 3 appuis = effacer
+    <input type="search" class="search" id="search" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria" placeholder="Search a droid… (e.g. R6)" aria-label="Search">
+    <div style="font-size:11.5px;color:var(--sand-dim);margin-top:7px" data-i18n="hint">
+      1 tap = owned (Droidex) · 2 taps = 🏠 in base · 3 taps = clear
     </div>
     <div class="chips" role="tablist">
-      <button class="chip active" data-filter="all">Tous</button>
-      <button class="chip" data-filter="keep">À garder</button>
-      <button class="chip" data-filter="missing">Manquants requis</button>
-      <button class="chip" data-filter="base">En base</button>
+      <button class="chip active" data-filter="all" data-i18n="filterAll">All</button>
+      <button class="chip" data-filter="keep" data-i18n="filterKeep">Keep</button>
+      <button class="chip" data-filter="missing" data-i18n="filterMissing">Missing required</button>
+      <button class="chip" data-filter="base" data-i18n="filterBase">In base</button>
       <button class="chip" data-filter="Worker">Worker</button>
       <button class="chip" data-filter="Astromech">Astromech</button>
       <button class="chip" data-filter="Battle">Battle</button>
     </div>
   </div>
 
-  <div id="loading">CHARGEMENT DU REGISTRE…</div>
+  <div id="loading" data-i18n="loading">LOADING REGISTRY…</div>
   <div id="list" style="display:none"></div>
 
   <div class="footer">
-    <span class="save-state" id="saveState">Sauvegarde automatique activée (dans ce navigateur)</span>
+    <span class="save-state" id="saveState" data-i18n="autoSave">Auto-save enabled (in this browser)</span>
     <div class="footer-actions">
-      <button class="tool-btn" id="exportBtn">Exporter la sauvegarde</button>
-      <button class="tool-btn" id="importBtn">Importer</button>
+      <button class="tool-btn" id="exportBtn" data-i18n="exportBtn">Export backup</button>
+      <button class="tool-btn" id="importBtn" data-i18n="importBtn">Import</button>
       <input type="file" id="importFile" accept="application/json,.json" hidden>
-      <button class="reset-btn" id="resetBtn">Réinitialiser le registre</button>
+      <button class="reset-btn" id="resetBtn" data-i18n="resetBtn">Reset registry</button>
     </div>
   </div>
 
   <div class="sync-bar" id="syncBar" hidden>
-    <span class="save-state" id="syncStatus">Non connecté — sauvegarde locale uniquement</span>
+    <span class="save-state" id="syncStatus">Not signed in — local save only</span>
     <div class="footer-actions">
-      <button class="tool-btn" id="loginBtn">Se connecter avec Google</button>
-      <button class="tool-btn" id="logoutBtn" hidden>Se déconnecter</button>
-      <button class="reset-btn" id="deleteAccountBtn" hidden>Supprimer mon compte</button>
+      <button class="tool-btn" id="loginBtn" data-i18n="syncLoginBtn">Sign in with Google</button>
+      <button class="tool-btn" id="logoutBtn" data-i18n="syncLogoutBtn" hidden>Sign out</button>
+      <button class="reset-btn" id="deleteAccountBtn" data-i18n="syncDeleteBtn" hidden>Delete my account</button>
     </div>
   </div>
 
-  <div class="legal">
-    Projet de fan non affilié à Epic Games, Lucasfilm ou Disney. Star Wars est une marque de Lucasfilm Ltd.
-    Droid Tycoon est un mode Fortnite créé par FOAD/Blzn Studios.
-    · <a href="https://github.com/n4ckz/droidex" rel="noopener">Code source sur GitHub</a>
-    · Sans compte, tout reste dans votre navigateur. Avec un compte (optionnel), seuls votre email
-    et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».
+  <div class="legal" data-i18n-html="legal">
+    Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd.
+    Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios.
+    · <a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>
+    · Without an account, everything stays in your browser.
   </div>
 </div>
 
+<script src="i18n.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script src="vendor/pocketbase.umd.js"></script>

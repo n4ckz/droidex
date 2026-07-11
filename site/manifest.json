@@ -1,8 +1,8 @@
 {
-  "name": "Droidex — Registre du droïdesmith",
+  "name": "Droidex — Droidsmith's Registry",
   "short_name": "Droidex",
-  "description": "Tracker de collection pour Star Wars: Droid Tycoon (Fortnite) : variantes, renaissances et droïdes à garder en base.",
-  "lang": "fr",
+  "description": "Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants, rebirths, and which droids to keep in your base.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

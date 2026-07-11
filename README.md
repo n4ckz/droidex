@@ -1,109 +1,111 @@
-# Droidex — Registre du droïdesmith
+# Droidex — Droidsmith's Registry
 
-Tracker de collection communautaire pour **Star Wars: Droid Tycoon**, le mode Fortnite créé par FOAD/Blzn Studios (sorti le 1ᵉʳ mai 2026).
+Community collection tracker for **Star Wars: Droid Tycoon**, the Fortnite mode created by FOAD/Blzn Studios (released May 1st, 2026).
 
-Le jeu propose un Droidex de 200+ droïdes à collectionner en 5 variantes (Basic, Or, Diamant, Arc-en-ciel, Beskar) et 23 niveaux de Renaissance exigeant chacun 3 droïdes spécifiques **physiquement présents dans votre base**, plus des crédits. Devant la boutique du Sandcrawler, le jeu n'offre aucun moyen de savoir ce qu'on possède déjà — ce tracker comble ce manque.
+The game features a Droidex of 200+ collectible droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar) and 23 Rebirth levels, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
 
-> 📱 Pensé pour être utilisé sur téléphone, à côté de la console. Installable comme application (PWA).
+> 📱 Designed to be used on your phone, next to the console. Installable as an app (PWA). English by default, French available from the in-app language selector.
 
-<!-- TODO : ajouter des captures d'écran
-![Vue principale](docs/screenshot-main.png)
-![Panneau de renaissance](docs/screenshot-rebirth.png)
+<!-- TODO: add screenshots
+![Main view](docs/screenshot-main.png)
+![Rebirth panel](docs/screenshot-rebirth.png)
 -->
 
-## Fonctionnalités
+## Features
 
-- **Suivi par variante** en 3 états cyclables au tap : jamais eu → possédé (entrée Droidex) → 🏠 en base (présence physique) → effacer.
-- **Règle des variantes supérieures** : un droïde Diamant valide toujours une exigence « Or ».
-- **Panneau « Prochaine renaissance visée »** (1–23) : les 3 droïdes requis avec leur statut (✗ pas possédé, ⚠ possédé mais pas en base, ✓ prêt) et les crédits nécessaires.
-- **Badges d'exigence** sur chaque droïde (ex. « RB9 · Or ») : barrés uniquement quand la renaissance est passée, jamais une exigence future même satisfaite.
-- **Tag « À garder »** tant qu'une renaissance future dépend du droïde ; liseré orange si une action est nécessaire.
-- **Filtres** : Tous / À garder / Manquants requis / En base / Worker / Astromech / Battle, plus recherche.
-- **Droïdes Iconiques** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, R2-D2) : simple toggle possédé + en base, sans variantes.
-- **Synchronisation entre appareils (optionnelle)** : connexion avec un compte Google, le registre suit le compte. Sans compte, tout reste dans le navigateur (`localStorage`) — pas de tracking, pas d'inscription obligatoire.
-- **Export/import JSON** en secours ou pour rester 100 % hors ligne.
+- **Per-variant tracking** with 3 tap-cyclable states: never owned → owned (Droidex entry) → 🏠 in base (physical presence) → clear.
+- **Higher-variant rule**: a Diamond droid always satisfies a "Gold" requirement.
+- **"Next targeted rebirth" panel** (1–23): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready) and the credits needed.
+- **Requirement badges** on each droid (e.g. "RB9 · Gold"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
+- **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
+- **Filters**: All / Keep / Missing required / In base / Worker / Astromech / Battle, plus search.
+- **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, R2-D2): simple owned + in-base toggles, no variants.
+- **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no tracking, no mandatory signup.
+- **JSON export/import** as a fallback, or to stay 100 % offline.
+- **Two languages**: English (default) and French, switchable from the header dropdown.
 
-## Utilisation
+## Usage
 
-### En ligne
+### Online
 
-Ouvrez simplement le site, cochez vos droïdes. Sur mobile, utilisez « Ajouter à l'écran d'accueil » pour l'installer comme application (fonctionne hors ligne ensuite).
+Just open the site and tick your droids. On mobile, use "Add to Home Screen" to install it as an app (works offline afterwards).
 
-### Synchronisation entre appareils
+### Syncing between devices
 
-Deux options :
+Two options:
 
-- **Compte Google** (recommandé) : bouton « Se connecter avec Google » en bas de page. Le registre est alors sauvegardé sur le serveur et rechargé automatiquement sur tout appareil connecté au même compte. Dernière écriture gagne ; « Supprimer mon compte » efface tout côté serveur.
-- **Manuel** : **Exporter la sauvegarde** → télécharge `droidex-backup.json` → transférez le fichier (AirDrop, mail…) → **Importer** sur l'autre appareil.
+- **Google account** (recommended): "Sign in with Google" button at the bottom of the page. Your registry is saved server-side and automatically restored on any device signed in with the same account. Last write wins; "Delete my account" wipes everything server-side.
+- **Manual**: **Export backup** → downloads `droidex-backup.json` → transfer the file (AirDrop, email…) → **Import** on the other device.
 
-## Auto-hébergement (Docker)
+## Self-hosting (Docker)
 
-Deux conteneurs :
+Two containers:
 
-- **droidex** : le site statique (nginx).
-- **pocketbase** : l'API de synchronisation ([PocketBase](https://pocketbase.io) 0.39, un binaire + SQLite). Optionnel — sans lui, le site fonctionne en mode local pur.
+- **droidex**: the static site (nginx).
+- **pocketbase**: the sync API ([PocketBase](https://pocketbase.io) 0.39, single binary + SQLite). Optional — without it, the site works in pure local mode.
 
-### Test local
+### Local test
 
 ```bash
 docker compose -f docker-compose.local.yml up -d
-# Site : http://localhost:8080 — API : http://localhost:8090
+# Site: http://localhost:8080 — API: http://localhost:8090
 ```
 
-### VPS derrière Traefik v2
+### VPS behind Traefik v2
 
-Prérequis : un Traefik existant avec un entrypoint `websecure`, un résolveur de certificats `letsencrypt` et un réseau Docker externe nommé `proxy`. Deux entrées DNS vers le VPS : `droidex.mondomaine.fr` et `api.droidex.mondomaine.fr`.
+Prerequisites: an existing Traefik with a `websecure` entrypoint, a `letsencrypt` certificate resolver and an external Docker network named `proxy`. Two DNS records pointing to the VPS: `droidex.yourdomain.com` and `api.droidex.yourdomain.com`.
 
 ```bash
 git clone https://github.com/n4ckz/droidex.git && cd droidex
-cp .env.example .env        # renseigner DROIDEX_DOMAIN=droidex.mondomaine.fr
+cp .env.example .env        # set DROIDEX_DOMAIN=droidex.yourdomain.com
 docker compose up -d
 
-# créer le compte admin PocketBase (une seule fois)
-docker compose exec pocketbase /pb/pocketbase superuser upsert VOTRE@EMAIL.fr VOTRE_MOT_DE_PASSE --dir=/pb/pb_data
+# create the PocketBase admin account (once)
+docker compose exec pocketbase /pb/pocketbase superuser upsert YOUR@EMAIL.com YOUR_PASSWORD --dir=/pb/pb_data
 ```
 
-Les deux conteneurs exposent un healthcheck HTTP, visible via `docker ps`. Les données PocketBase vivent dans `./pb_data` (à inclure dans vos sauvegardes du VPS).
+Both containers expose an HTTP healthcheck, visible via `docker ps`. PocketBase data lives in `./pb_data` (include it in your VPS backups).
 
-### Activer la connexion Google (une fois le site en ligne)
+### Enabling Google sign-in (once the site is up)
 
-1. [Google Cloud Console](https://console.cloud.google.com/) → créez un projet → **APIs & Services › OAuth consent screen** : type « External », renseignez nom et email. Seuls les scopes de base (email, profil) sont utilisés : **aucune vérification Google n'est requise** ; passez l'application « In production ».
-2. **Credentials › Create credentials › OAuth client ID** → type « Web application ». Dans **Authorized redirect URIs**, ajoutez :
-   - `https://api.droidex.mondomaine.fr/api/oauth2-redirect`
-   - `http://localhost:8090/api/oauth2-redirect` (pour les tests locaux)
-3. Ouvrez la console PocketBase `https://api.droidex.mondomaine.fr/_/`, connectez-vous avec le compte admin, puis **Collections › users › ⚙ Options › OAuth2** : activez **Google** et collez le Client ID et le Client Secret.
+1. [Google Cloud Console](https://console.cloud.google.com/) → create a project → **APIs & Services › OAuth consent screen**: type "External", fill in name and email. Only basic scopes (email, profile) are used: **no Google verification is required**; publish the app ("In production").
+2. **Credentials › Create credentials › OAuth client ID** → type "Web application". Under **Authorized redirect URIs**, add:
+   - `https://api.droidex.yourdomain.com/api/oauth2-redirect`
+   - `http://localhost:8090/api/oauth2-redirect` (for local testing)
+3. Open the PocketBase console `https://api.droidex.yourdomain.com/_/`, sign in with the admin account, then **Collections › users › ⚙ Options › OAuth2**: enable **Google** and paste the Client ID and Client Secret.
 
-C'est tout : le bouton « Se connecter avec Google » du site devient fonctionnel. La collection `saves` (une sauvegarde par utilisateur, lisible/modifiable uniquement par son propriétaire) est créée automatiquement par migration au premier démarrage.
+That's it: the site's "Sign in with Google" button now works. The `saves` collection (one backup per user, readable/writable only by its owner) is created automatically by migration on first startup.
 
-### Sans Traefik / sans synchronisation
+### Without Traefik / without sync
 
-Servez le dossier `site/` avec n'importe quel serveur statique. Pour désactiver complètement la synchronisation (et masquer l'interface de compte), mettez `PB_URL` à `''` dans [`site/config.js`](site/config.js). Par convention, le front cherche l'API sur `api.<domaine du site>` (modifiable dans ce même fichier).
+Serve the `site/` folder with any static file server. To disable sync entirely (and hide the account UI), set `PB_URL` to `''` in [`site/config.js`](site/config.js). By convention, the frontend looks for the API at `api.<site domain>` (editable in that same file).
 
-## Structure du projet
+## Project structure
 
 ```
-site/               Le site statique complet
+site/               The complete static site
   index.html
-  styles.css        Thème Tatooine sombre
-  data.js           ⚠ Données de jeu (droïdes, exigences, crédits) — SEUL fichier à
-                    modifier quand le jeu ajoute du contenu
-  app.js            Logique (états, rendu, persistance, export/import)
-  config.js         URL de l'API de synchronisation ('' pour désactiver)
-  sync.js           Synchronisation de compte (PocketBase, optionnelle)
-  vendor/           SDK JS PocketBase auto-hébergé (0.27.0)
+  styles.css        Dark Tatooine theme
+  i18n.js           EN/FR translations, language selector logic
+  data.js           ⚠ Game data (droids, requirements, credits) — the ONLY file
+                    to edit when the game adds content
+  app.js            Logic (states, rendering, persistence, export/import)
+  config.js         Sync API URL ('' to disable)
+  sync.js           Account sync (PocketBase, optional)
+  vendor/           Self-hosted PocketBase JS SDK (0.27.0)
   manifest.json     PWA
-  sw.js             Service worker (cache offline du shell — incrémenter
-                    CACHE_VERSION à chaque mise à jour du site)
-  fonts/            Polices auto-hébergées (pas de requête vers Google Fonts)
-  icons/            Icônes PWA
+  sw.js             Service worker (offline shell cache — bump CACHE_VERSION
+                    on every site update)
+  fonts/            Self-hosted fonts (no Google Fonts requests)
+  icons/            PWA icons
 deploy/
-  nginx.conf              Config nginx (cache, gzip, sw.js jamais mis en cache)
-  pocketbase.Dockerfile   Image PocketBase (version épinglée)
-  pb_migrations/          Migration créant la collection « saves »
-tests/                    Suites de tests (voir ci-dessous)
-Dockerfile                Image du site statique
-docker-compose.yml        Production (Traefik) : site + API
-docker-compose.local.yml  Test local
+  nginx.conf              nginx config (caching, gzip, sw.js never cached)
+  pocketbase.Dockerfile   PocketBase image (pinned version)
+  pb_migrations/          Migration creating the "saves" collection
+tests/                    Test suites (see below)
+Dockerfile                Static site image
+docker-compose.yml        Production (Traefik): site + API
+docker-compose.local.yml  Local testing
 ```
 
 ## Tests
@@ -113,38 +115,38 @@ docker compose -f docker-compose.local.yml up -d
 docker compose -f docker-compose.local.yml exec pocketbase /pb/pocketbase superuser upsert admin@test.local testpass1234 --dir=/pb/pb_data
 
 cd tests && npm install
-npm run test:app    # logique du tracker (jsdom, sans serveur) : persistance, badges, migration, filtres
-npm run test:sync   # end-to-end contre le PocketBase local : push/pull, isolation entre comptes, suppression RGPD
+npm run test:app    # tracker logic (jsdom, no server): persistence, badges, migration, filters, i18n
+npm run test:sync   # end-to-end against the local PocketBase: push/pull, account isolation, GDPR deletion
 ```
 
-Le test de synchronisation crée ses utilisateurs de test (`alice@test.local`, `bob@test.local`) et vide la collection `saves` à chaque exécution — ne le lancez jamais contre une instance de production.
+The sync test creates its own test users (`alice@test.local`, `bob@test.local`) and wipes the `saves` collection on every run — never point it at a production instance.
 
-### Modèle de synchronisation
+### Sync model
 
-`localStorage` reste le cache local et le mode hors ligne. Connecté, chaque modification est poussée (débounce 1 s) vers la collection `saves` ; au chargement, la sauvegarde du compte est tirée. En cas de divergence entre l'appareil et le compte à la connexion, l'utilisateur choisit lequel garder. Dernière écriture gagne entre appareils.
+`localStorage` remains the local cache and the offline mode. When signed in, every change is pushed (1 s debounce) to the `saves` collection; on load, the account backup is pulled. If the device and the account diverge at sign-in, the user picks which one to keep. Last write wins across devices.
 
-### Données personnelles (RGPD)
+### Personal data (GDPR)
 
-Le compte est optionnel. S'il est créé : PocketBase stocke l'email Google, le nom du profil et le registre de collection — rien d'autre, aucun tracking. Le bouton « Supprimer mon compte » efface le compte **et** sa sauvegarde (suppression en cascade), sans intervention de l'administrateur. Pensez à adapter la mention de contact du footer si vous hébergez une instance publique.
+Accounts are optional. When one is created, PocketBase stores the Google email, the profile name and the collection registry — nothing else, no tracking. The "Delete my account" button removes the account **and** its backup (cascade deletion), with no admin intervention. If you host a public instance, remember to adapt the contact info in the footer.
 
-## Données de jeu et limites connues
+## Game data and known limitations
 
-Les données (68 droïdes suivis dont 5 Iconiques, exigences des renaissances 1–23, coûts en crédits) sont maintenues dans [`site/data.js`](site/data.js) à partir des sources communautaires :
+The data (68 tracked droids including 5 Iconics, rebirth requirements 1–23, credit costs) is maintained in [`site/data.js`](site/data.js) from community sources:
 
-- [Droidex complet (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
-- [Renaissances 1–23 (wiki communautaire)](https://star-wars-droid-tycoon.fandom.com/wiki/Rebirths)
-- [Les 11 droïdes Mythiques (fdaytalk)](https://www.fdaytalk.com/fortnite-droid-tycoon-mythic-droids/)
-- [Wiki général du mode](https://fortnite.fandom.com/wiki/Droid_Tycoon) et [wiki dédié](https://star-wars-droid-tycoon.fandom.com/wiki/)
-- [Événements et Iconiques](https://droidtycoonguide.com/events/)
+- [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
+- [Rebirths 1–23 (community wiki)](https://star-wars-droid-tycoon.fandom.com/wiki/Rebirths)
+- [The 11 Mythic droids (fdaytalk)](https://www.fdaytalk.com/fortnite-droid-tycoon-mythic-droids/)
+- [General mode wiki](https://fortnite.fandom.com/wiki/Droid_Tycoon) and [dedicated wiki](https://star-wars-droid-tycoon.fandom.com/wiki/)
+- [Events and Iconics](https://droidtycoonguide.com/events/)
 
-**Incertitudes connues :**
+**Known uncertainties:**
 
-- Les classes de 4 Mythiques (Snow Mouse, RIC, MO-TRAK, DRFT-R) sont des attributions plausibles **non confirmées** par la communauté.
-- Les renaissances **21–23** (palier Beskar) ne sont pas totalement vérifiées.
-- Le jeu est mis à jour fréquemment : les exigences des renaissances 11–18 ont déjà été rééquilibrées par patch. Si vous constatez un écart, ouvrez une issue ou une PR sur `site/data.js`.
+- The classes of 4 Mythics (Snow Mouse, RIC, MO-TRAK, DRFT-R) are plausible attributions, **not confirmed** by the community.
+- Rebirths **21–23** (Beskar tier) are not fully verified.
+- The game is updated frequently: rebirth requirements 11–18 have already been rebalanced by patches. If you spot a discrepancy, open an issue or a PR against `site/data.js`.
 
-## Licence et mentions
+## License and disclaimers
 
-Code sous [licence MIT](LICENSE).
+Code under the [MIT license](LICENSE).
 
-Projet de fan non affilié à Epic Games, Lucasfilm ou Disney. Star Wars est une marque de Lucasfilm Ltd. Droid Tycoon est un mode Fortnite créé par FOAD/Blzn Studios. Aucun asset du jeu n'est utilisé.
+Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd. Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. No game assets are used.

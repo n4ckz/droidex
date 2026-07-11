@@ -31,10 +31,10 @@ function syncUpdateUI(){
   document.getElementById('logoutBtn').hidden = !logged;
   document.getElementById('deleteAccountBtn').hidden = !logged;
   if(logged){
-    const email = (pb.authStore.record && pb.authStore.record.email) || 'compte connecté';
-    syncSetStatus('Synchronisé · ' + email);
+    const email = (pb.authStore.record && pb.authStore.record.email) || '';
+    syncSetStatus(t('syncSynced') + ' · ' + email);
   }else{
-    syncSetStatus('Non connecté — sauvegarde locale uniquement');
+    syncSetStatus(t('syncNotLogged'));
   }
 }
 
@@ -66,7 +66,7 @@ async function syncPush(){
     }
     syncUpdateUI();
   }catch(e){
-    syncSetStatus('Synchronisation impossible — données gardées en local', true);
+    syncSetStatus(t('syncPushFailed'), true);
   }
 }
 
@@ -99,10 +99,7 @@ async function syncReconcile(interactive){
     renderAll();
     return;
   }
-  const useServer = !interactive || confirm(
-    'Une sauvegarde différente existe sur ce compte.\n\n' +
-    'OK : charger la sauvegarde du compte (remplace le registre de cet appareil)\n' +
-    'Annuler : garder le registre de cet appareil et l’envoyer sur le compte');
+  const useServer = !interactive || confirm(t('syncConflict'));
   if(useServer){
     applyParsedState(server);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -113,13 +110,13 @@ async function syncReconcile(interactive){
 }
 
 async function syncLogin(){
-  syncSetStatus('Connexion en cours…');
+  syncSetStatus(t('syncInProgress'));
   try{
     await pb.collection('users').authWithOAuth2({ provider: 'google' });
     await syncReconcile(true);
     syncUpdateUI();
   }catch(e){
-    syncSetStatus('Connexion annulée ou impossible', true);
+    syncSetStatus(t('syncLoginFailed'), true);
     setTimeout(syncUpdateUI, 4000);
   }
 }
@@ -129,15 +126,15 @@ function syncLogout(){
   syncUpdateUI();
 }
 async function syncDeleteAccount(){
-  if(!confirm('Supprimer ton compte et sa sauvegarde sur le serveur ?\nLe registre restera sur cet appareil.')) return;
+  if(!confirm(t('syncDeleteConfirm'))) return;
   try{
     await pb.collection('users').delete(pb.authStore.record.id); // la sauvegarde est supprimée en cascade
     pb.authStore.clear();
     syncRecordId = null;
     syncUpdateUI();
-    syncSetStatus('Compte supprimé — sauvegarde locale conservée');
+    syncSetStatus(t('syncDeleted'));
   }catch(e){
-    syncSetStatus('Suppression impossible — réessaie', true);
+    syncSetStatus(t('syncDeleteFailed'), true);
   }
 }
 
@@ -155,7 +152,7 @@ async function syncDeleteAccount(){
       .then(syncUpdateUI)
       .catch(e=>{
         if(e && (e.status === 401 || e.status === 403)){ pb.authStore.clear(); syncUpdateUI(); }
-        else syncSetStatus('Hors ligne — sauvegarde locale utilisée', true);
+        else syncSetStatus(t('syncOffline'), true);
       });
   }
 })();

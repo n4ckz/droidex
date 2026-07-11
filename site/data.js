@@ -12,8 +12,8 @@
    - Événements / Iconiques : https://droidtycoonguide.com/events/
    ========================================================================= */
 
-const TIERS = ['Basic','Or','Diamant','Arc-en-ciel','Beskar'];
-const TIER_SHORT = ['BAS','OR','DIA','ARC','BSK'];
+/* Les libellés de variantes et de raretés (dépendants de la langue) sont dans i18n.js.
+   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar. */
 
 /* reqs: [rebirthLevel, tierIndex] — une variante supérieure valide l'exigence */
 const DROIDS = [
@@ -98,4 +98,3 @@ const RB_CREDITS = {1:'10K',2:'150K',3:'975K',4:'2,95M',5:'5,35M',6:'9,85M',7:'1
  18:'325B',19:'810B',20:'2T',21:'3T',22:'4,5T',23:'6T'};
 
 const RARITY_ORDER = ['Common','Rare','Epic','Legendary','Mythic','Iconic'];
-const RARITY_FR = {Common:'Commun',Rare:'Rare',Epic:'Épique',Legendary:'Légendaire',Mythic:'Mythique',Iconic:'Iconique'};

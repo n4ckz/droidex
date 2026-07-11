@@ -5,7 +5,7 @@ const path = require('path');
 
 const SITE = path.join(__dirname, '..', 'site');
 const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
-const bundle = ['data.js', 'app.js', 'vendor/pocketbase.umd.js', 'config.js', 'sync.js']
+const bundle = ['i18n.js', 'data.js', 'app.js', 'vendor/pocketbase.umd.js', 'config.js', 'sync.js']
   .map(f => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n;\n');
 const PB = 'http://localhost:8090';
 const ADMIN_EMAIL = process.env.PB_ADMIN_EMAIL || 'admin@test.local';

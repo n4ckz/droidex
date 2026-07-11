@@ -5,8 +5,8 @@ const path = require('path');
 
 const SITE = path.join(__dirname, '..', 'site');
 const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
-const dataJs = fs.readFileSync(path.join(SITE, 'data.js'), 'utf8');
-const appJs = fs.readFileSync(path.join(SITE, 'app.js'), 'utf8');
+const bundle = ['i18n.js', 'data.js', 'app.js']
+  .map(f => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n;\n');
 
 let failures = 0;
 function assert(cond, msg) {
@@ -15,16 +15,17 @@ function assert(cond, msg) {
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function boot(localStorageSeed) {
+function boot(localStorageSeed, lang) {
   const errors = [];
   const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only' });
   const { window } = dom;
   window.confirm = () => true;
   if (localStorageSeed) window.localStorage.setItem('droidex-tracker-v1', localStorageSeed);
+  if (lang) window.localStorage.setItem('droidex-lang', lang);
   try {
     // les <script> classiques partagent la portée lexicale globale ; on simule en concaténant
-    window.eval(dataJs + '\n;\n' + appJs +
-      '\n;window.__test = { getState: () => state, applyParsedState, persistState, renderAll };');
+    window.eval(bundle +
+      '\n;window.__test = { getState: () => state, applyParsedState, persistState, renderAll, setLang };');
   } catch (e) {
     errors.push(e.stack || e.message);
   }
@@ -48,7 +49,7 @@ const setTarget = (w, rb) => {
     assert(cards.length === 68, '68 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '0 / 320 variantes', 'progression "0 / 320 variantes" (obtenu : "' + label + '")');
+    assert(label === '0 / 320 variants', 'progression "0 / 320 variants" (obtenu : "' + label + '")');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -63,8 +64,8 @@ const setTarget = (w, rb) => {
     const parsed = JSON.parse(savedJson);
     assert(parsed && parsed.owned.strikeorb && parsed.owned.strikeorb[2] === 2,
       'localStorage : strikeorb Diamant = 2 (en base)');
-    assert(w.document.getElementById('saveState').textContent === 'Registre sauvegardé',
-      'message "Registre sauvegardé" affiché');
+    assert(w.document.getElementById('saveState').textContent === 'Registry saved',
+      'message "Registry saved" affiché');
   }
   {
     // "rechargement" : nouveau DOM, même localStorage
@@ -96,7 +97,7 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(savedJson);   // Strike-Orb Diamant en base, cible 9
     setTarget(w, 10);
     let badge = findCard(w, 'Strike-Orb').querySelector('.req-badge');
-    assert(badge.textContent === '✓ RB10 · Or', 'cible 10 : badge "✓ RB10 · Or" (obtenu : "' + badge.textContent + '")');
+    assert(badge.textContent === '✓ RB10 · Gold', 'cible 10 : badge "✓ RB10 · Gold" (obtenu : "' + badge.textContent + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'),
       'cible 10 : badge vert (ready), non barré');
     // panneau : Strike-Orb doit apparaître ✓ en base
@@ -116,8 +117,8 @@ const setTarget = (w, rb) => {
     const seed = JSON.stringify({ owned: { r6: [0, 0, 1, 0, 0] }, inBase: {}, targetRB: 9 }); // R6 Diamant possédé (pas en base), req [[9,1]]
     const { window: w } = boot(seed);
     const badge = findCard(w, 'R6').querySelector('.req-badge');
-    assert(badge.textContent === '⚠ RB9 · Or' && badge.classList.contains('warn'),
-      'R6 Diamant possédé : "⚠ RB9 · Or" (Diamant valide Or, pas en base)');
+    assert(badge.textContent === '⚠ RB9 · Gold' && badge.classList.contains('warn'),
+      'R6 Diamant possédé : "⚠ RB9 · Gold" (Diamond valide Gold, pas en base)');
     const req = [...w.document.querySelectorAll('.rb-req')].find(r => r.textContent.includes('R6'));
     assert(req.querySelector('.status').textContent === '⚠', 'panneau : R6 en ⚠ (possédé, pas en base)');
     const reqTrak = [...w.document.querySelectorAll('.rb-req')].find(r => r.textContent.includes('TRAK-R'));
@@ -146,7 +147,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '1 / 320 variantes', 'progression 1 / 320 (obtenu : "' + label + '")');
+    assert(label === '1 / 320 variants', 'progression 1 / 320 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -172,6 +173,26 @@ const setTarget = (w, rb) => {
     w.document.getElementById('resetBtn').click();
     const parsed = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
     assert(Object.keys(parsed.owned).length === 0 && parsed.targetRB === 1, 'reset : état vide persisté immédiatement');
+  }
+
+  /* ---- 10. i18n : anglais par défaut, bascule en français ---- */
+  console.log('\n[10] i18n');
+  {
+    const { window: w } = boot(savedJson);
+    assert(w.document.documentElement.lang === 'en', 'langue par défaut : en');
+    assert(w.document.querySelector('h1').textContent === "Droidex — Droidsmith's Registry", 'titre anglais par défaut');
+    w.__test.setLang('fr');
+    assert(w.document.documentElement.lang === 'fr', 'bascule : lang=fr');
+    assert(w.document.querySelector('h1').textContent === 'Droidex — Registre du droïdesmith', 'titre français après bascule');
+    w.__test.getState().targetRB = 10; w.__test.renderAll();
+    const badge = findCard(w, 'Strike-Orb').querySelector('.req-badge');
+    assert(badge.textContent === '✓ RB10 · Or', 'badge en français : "✓ RB10 · Or" (obtenu : "' + badge.textContent + '")');
+    assert(w.localStorage.getItem('droidex-lang') === 'fr', 'choix de langue persisté');
+    // nouveau chargement : le français est conservé
+    const w2 = boot(savedJson).window;
+    w2.localStorage.setItem('droidex-lang', 'fr');
+    const { window: w3 } = boot(savedJson, 'fr');
+    assert(w3.document.documentElement.lang === 'fr', 'langue restaurée au rechargement');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

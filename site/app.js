@@ -72,10 +72,10 @@ function scheduleSave(){
     const el = document.getElementById('saveState');
     try{
       persistState();
-      el.textContent = 'Registre sauvegardé';
+      el.textContent = t('saved');
       el.classList.remove('err');
     }catch(e){
-      el.textContent = 'Échec de sauvegarde — réessaie';
+      el.textContent = t('saveFailed');
       el.classList.add('err');
     }
   }, 400);
@@ -93,7 +93,7 @@ function exportState(){
   a.remove();
   URL.revokeObjectURL(url);
   const el = document.getElementById('saveState');
-  el.textContent = 'Sauvegarde exportée (droidex-backup.json)';
+  el.textContent = t('exported');
   el.classList.remove('err');
 }
 function importStateFile(file){
@@ -106,19 +106,19 @@ function importStateFile(file){
         throw new Error('format');
       }
       const hasData = Object.keys(state.owned).length || Object.keys(state.inBase).length;
-      if(hasData && !confirm('Remplacer le registre actuel par le contenu du fichier importé ?')) return;
+      if(hasData && !confirm(t('importConfirm'))) return;
       applyParsedState(parsed);
       persistState();
       renderAll();
-      el.textContent = 'Registre importé';
+      el.textContent = t('imported');
       el.classList.remove('err');
     }catch(e){
-      el.textContent = 'Fichier invalide — export Droidex attendu';
+      el.textContent = t('importInvalid');
       el.classList.add('err');
     }
   };
   reader.onerror = ()=>{
-    el.textContent = 'Lecture du fichier impossible';
+    el.textContent = t('importUnreadable');
     el.classList.add('err');
   };
   reader.readAsText(file);
@@ -130,7 +130,7 @@ function renderRBPanel(){
   if(!sel.options.length){
     for(let i=1;i<=23;i++){
       const o=document.createElement('option');
-      o.value=i;o.textContent='Renaissance '+i;
+      o.value=i;
       sel.appendChild(o);
     }
     sel.addEventListener('change',()=>{
@@ -138,6 +138,7 @@ function renderRBPanel(){
       scheduleSave();renderAll();
     });
   }
+  [...sel.options].forEach((o,idx)=>{ o.textContent=t('rebirth')+' '+(idx+1); });
   sel.value=state.targetRB;
 
   const reqsEl=document.getElementById('rbReqs');
@@ -154,16 +155,15 @@ function renderRBPanel(){
     const row=document.createElement('div');
     row.className='rb-req '+(ready?'met':'unmet');
     let icon,note;
-    if(ready){icon='✓';note=TIERS[tier]+' min · en base';}
-    else if(owned){icon='⚠';note=TIERS[tier]+' min · pas en base';}
-    else{icon='✗';note=TIERS[tier]+' minimum';}
+    if(ready){icon='✓';note=TIERS[tier]+' '+t('minInBase');}
+    else if(owned){icon='⚠';note=TIERS[tier]+' '+t('minNotInBase');}
+    else{icon='✗';note=TIERS[tier]+' '+t('minimum');}
     row.innerHTML='<span class="status">'+icon+'</span>'+
       '<span>'+d.n+'</span>'+
       '<span class="req-tier" style="color:var(--sand-dim)">'+note+'</span>';
     reqsEl.appendChild(row);
   });
-  document.getElementById('rbCredits').innerHTML=
-    'Crédits requis : <b>'+(RB_CREDITS[state.targetRB]||'—')+'</b> · une variante supérieure valide toujours l’exigence';
+  document.getElementById('rbCredits').innerHTML=t('credits', RB_CREDITS[state.targetRB]||'—');
 }
 
 function renderProgress(){
@@ -174,7 +174,7 @@ function renderProgress(){
   });
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('progressFill').style.width=pct+'%';
-  document.getElementById('progressLabel').textContent=done+' / '+total+' variantes';
+  document.getElementById('progressLabel').textContent=done+' / '+total+' '+t('variants');
 }
 
 function droidMatches(d){
@@ -200,14 +200,17 @@ function renderList(){
     any=true;
     const sec=document.createElement('div');
     sec.className='rarity-section';
-    sec.innerHTML='<div class="rarity-title">'+RARITY_FR[rar]+
+    sec.innerHTML='<div class="rarity-title">'+RARITY_LABELS[rar]+
       ' <span class="count">'+ds.length+'</span></div>';
     ds.forEach(d=>sec.appendChild(renderDroid(d)));
     list.appendChild(sec);
   });
 
   if(!any){
-    list.innerHTML='<div class="empty">Aucun droïde ne correspond. Modifie la recherche ou le filtre.</div>';
+    const empty=document.createElement('div');
+    empty.className='empty';
+    empty.textContent=t('empty');
+    list.appendChild(empty);
   }
 }
 
@@ -219,7 +222,7 @@ function renderDroid(d){
 
   let top='<div class="droid-top"><span class="droid-name">'+d.n+'</span>'+
     '<span class="droid-type">'+d.t+'</span>';
-  if(ki) top+='<span class="keep-tag">À garder</span>';
+  if(ki) top+='<span class="keep-tag">'+t('keepTag')+'</span>';
   top+='</div>';
 
   let badges='';
@@ -242,7 +245,7 @@ function renderDroid(d){
     btn.type='button';
     const on=state.owned[d.id]===true;
     btn.className='iconic-own'+(on?' on':'');
-    btn.innerHTML='<span class="lamp"></span><span>'+(on?'Possédé':'Non possédé')+'</span>';
+    btn.innerHTML='<span class="lamp"></span><span>'+(on?t('owned'):t('notOwned'))+'</span>';
     btn.addEventListener('click',()=>{
       state.owned[d.id]=state.owned[d.id]===true?false:true;
       scheduleSave();renderAll();
@@ -257,7 +260,7 @@ function renderDroid(d){
       b.type='button';
       b.className='tier'+(o[i]>=1?' on':'')+(o[i]===2?' base':'');
       b.dataset.t=i;
-      b.setAttribute('aria-label',d.n+' '+TIERS[i]+' : '+(o[i]===2?'en base':(o[i]===1?'possédé':'absent')));
+      b.setAttribute('aria-label',d.n+' '+TIERS[i]+' : '+(o[i]===2?t('ariaInBase'):(o[i]===1?t('ariaOwned'):t('ariaAbsent'))));
       b.innerHTML='<span class="lamp"></span>'+(o[i]===2?'🏠':label);
       b.addEventListener('click',()=>{
         const arr=ownedTiers(d.id).slice();
@@ -276,7 +279,7 @@ function renderDroid(d){
     const inB=!!state.inBase[d.id];
     baseBtn.className='base-toggle'+(inB?' on':'');
     baseBtn.setAttribute('aria-pressed',inB?'true':'false');
-    baseBtn.innerHTML='<span class="lamp"></span><span>'+(inB?'En base':'Pas en base')+'</span>';
+    baseBtn.innerHTML='<span class="lamp"></span><span>'+(inB?t('inBase'):t('notInBase'))+'</span>';
     baseBtn.addEventListener('click',()=>{
       state.inBase[d.id]=!state.inBase[d.id];
       scheduleSave();renderAll();
@@ -306,7 +309,7 @@ document.getElementById('search').addEventListener('input',e=>{
   renderList();
 });
 document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(!confirm('Effacer tout le registre ? Cette action est définitive.')) return;
+  if(!confirm(t('resetConfirm'))) return;
   state={owned:{},inBase:{},targetRB:1};
   try{ persistState(); }catch(e){}
   renderAll();
