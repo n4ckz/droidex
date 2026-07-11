@@ -115,8 +115,9 @@ site/               The complete static site
   sync.js           Account sync (PocketBase, optional)
   vendor/           Self-hosted PocketBase JS SDK (0.27.0)
   manifest.json     PWA
-  sw.js             Service worker (offline shell cache — bump CACHE_VERSION
-                    on every site update)
+  version.js        App version — bump on EVERY site update (drives both the
+                    footer display and the offline cache invalidation)
+  sw.js             Service worker (offline shell cache, versioned by version.js)
   fonts/            Self-hosted fonts (no Google Fonts requests)
   icons/            PWA icons
 deploy/

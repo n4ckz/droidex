@@ -5,7 +5,7 @@ const path = require('path');
 
 const SITE = path.join(__dirname, '..', 'site');
 const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
-const bundle = ['i18n.js', 'data.js', 'app.js']
+const bundle = ['version.js', 'i18n.js', 'data.js', 'app.js']
   .map(f => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n;\n');
 
 let failures = 0;
@@ -268,6 +268,8 @@ const setTarget = (w, rb) => {
     sort.value = 'income'; sort.dispatchEvent(new w.Event('change', { bubbles: true }));
     const first = w.document.querySelector('.droid .droid-name').textContent;
     assert(['Loadlifter', 'MO-TRAK', 'KX'].includes(first), 'tri par revenu : un 7.2K/s en tête (obtenu : ' + first + ')');
+    const ver = w.document.getElementById('appVersion').textContent;
+    assert(/^Droidex v\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

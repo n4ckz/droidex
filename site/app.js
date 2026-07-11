@@ -444,6 +444,7 @@ document.getElementById('importFile').addEventListener('change',e=>{
   loadState();
   document.getElementById('loading').style.display='none';
   document.getElementById('list').style.display='block';
+  document.getElementById('appVersion').textContent='Droidex v'+APP_VERSION;
   renderAll();
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{ /* hors ligne au premier chargement : sans conséquence */ });

@@ -1,10 +1,14 @@
 /* Service worker minimal : pré-cache du shell applicatif, stratégie cache-first.
-   Incrémenter CACHE_VERSION à chaque mise à jour des fichiers du site. */
-const CACHE_VERSION = 'droidex-v6';
+   La version du cache dérive d'APP_VERSION (version.js) : incrémenter LÀ-BAS.
+   Les navigateurs re-valident aussi les scripts importés — un changement de
+   version.js déclenche bien la mise à jour du service worker. */
+importScripts('version.js');
+const CACHE_VERSION = 'droidex-' + APP_VERSION;
 const SHELL = [
   './',
   'index.html',
   'styles.css',
+  'version.js',
   'i18n.js',
   'data.js',
   'app.js',

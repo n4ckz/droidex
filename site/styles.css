@@ -313,3 +313,7 @@ select#cycleSelect{color:var(--sand-dim);font-size:13px}
 }
 .legal a{color:var(--sand-dim);text-decoration:underline}
 .legal a:hover{color:var(--jawa)}
+.version{
+  margin-top:10px;font-family:'Chakra Petch',sans-serif;
+  font-size:10.5px;letter-spacing:.08em;color:var(--sand-dim);opacity:.7;
+}
