@@ -6,10 +6,11 @@ The game features a Droidex of 200+ collectible droids across 5 variants (Basic,
 
 > 📱 Designed to be used on your phone, next to the console. Installable as an app (PWA). English by default, French available from the in-app language selector.
 
-<!-- TODO: add screenshots
-![Main view](docs/screenshot-main.png)
-![Rebirth panel](docs/screenshot-rebirth.png)
--->
+<p align="center">
+  <img src="docs/screenshot-rebirth.png" width="45%" alt="Rebirth panel: target rebirth 10 with the three required droids in mixed states and the credits needed">
+  &nbsp;
+  <img src="docs/screenshot-main.png" width="45%" alt="Main view: droid cards with per-variant states, requirement badges and Keep tags">
+</p>
 
 ## Features
 
