@@ -1,0 +1,57 @@
+# Vérifie deux fois par semaine si tycoon-tools a changé (patch du jeu).
+# En cas d'écart : régénère site/data.js et ouvre une Pull Request à relire.
+# Lancement manuel possible : onglet Actions → Check game data → Run workflow.
+name: Check game data
+
+on:
+  schedule:
+    - cron: '0 8 * * 1,4'   # lundi et jeudi, 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect game data drift
+        id: drift
+        run: |
+          if python3 tools/update-gamedata.py --check; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Regenerate data.js
+        if: steps.drift.outputs.drift == 'true'
+        run: python3 tools/update-gamedata.py
+
+      - name: Run tracker tests against the new data
+        if: steps.drift.outputs.drift == 'true'
+        working-directory: tests
+        run: |
+          npm install --no-fund --no-audit
+          node test-droidex.js
+
+      - name: Open a pull request
+        if: steps.drift.outputs.drift == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/gamedata-update
+          title: '🤖 Game data update detected on tycoon-tools'
+          commit-message: 'Update game data from tycoon-tools'
+          body: |
+            The scheduled check found that [tycoon-tools](https://tycoon-tools.com/droid-tycoon/) no longer matches `site/data.js` — the game was probably patched.
+
+            `site/data.js` has been regenerated and the tracker test suite passed against the new data.
+
+            **Before merging:**
+            - [ ] Review the diff (rebalanced requirements? new incomes? new droid?)
+            - [ ] Bump `APP_VERSION` in `site/version.js`
+            - [ ] Add a `CHANGELOG.md` entry
+            - [ ] After merge: `cd /opt/sites/droidex && git pull && docker compose up -d --build droidex`
