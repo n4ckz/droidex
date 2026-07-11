@@ -1,9 +1,8 @@
 /* =========================================================================
    DONNÉES DE JEU — Star Wars: Droid Tycoon (Fortnite, FOAD/Blzn Studios)
    =========================================================================
-   Ce fichier isole toutes les données susceptibles d'évoluer avec les
-   mises à jour du jeu. Pour ajouter un droïde ou corriger une exigence de
-   renaissance, ne modifier QUE ce fichier.
+   Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
+   main : relancer le script puis relire le diff.
 
    Sources communautaires (recoupées le 11/07/2026) :
    - Exigences de renaissance (4 cycles × 27) et value list :

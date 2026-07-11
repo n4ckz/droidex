@@ -168,6 +168,18 @@ The data (68 tracked droids including 6 Iconics, rebirth requirements for the 4 
 
 **About Flawless**: a Flawless is a rare permanent drop chance on any droid (1/1000 on Basic up to 1/100 on Beskar) kept forever in your Droidex — hence the ✨ toggle per droid.
 
+### Updating game data after a game patch
+
+`site/data.js` is generated from tycoon-tools by [`tools/update-gamedata.py`](tools/update-gamedata.py) — don't edit it by hand:
+
+```bash
+python3 tools/update-gamedata.py --check   # is our data still current?
+python3 tools/update-gamedata.py           # regenerate site/data.js
+git diff site/data.js                      # review what the game changed
+```
+
+Then bump `APP_VERSION` in `site/version.js`, add a CHANGELOG entry and run the tests. If the game adds a brand-new droid, the script stops and tells you to add its id to `NAME2ID`/`DISPLAY` first.
+
 ## License and disclaimers
 
 Code under the [MIT license](LICENSE).
