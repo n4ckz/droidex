@@ -51,13 +51,17 @@ docker compose -f docker-compose.local.yml up -d
 # Site: http://localhost:8080 — API: http://localhost:8090
 ```
 
-### VPS behind Traefik v2
+### VPS behind Traefik (v2 or v3)
 
-Prerequisites: an existing Traefik with a `websecure` entrypoint, a `letsencrypt` certificate resolver and an external Docker network named `proxy`. Two DNS records pointing to the VPS: `droidex.yourdomain.com` and `api.droidex.yourdomain.com`.
+Prerequisites: an existing Traefik with a `websecure` entrypoint, an ACME certificate resolver and an external Docker network. Two DNS records pointing to the VPS: `droidex.yourdomain.com` and `api.droidex.yourdomain.com`.
 
 ```bash
 git clone https://github.com/n4ckz/droidex.git && cd droidex
-cp .env.example .env        # set DROIDEX_DOMAIN=droidex.yourdomain.com
+cp .env.example .env
+# then edit .env:
+#   DROIDEX_DOMAIN=droidex.yourdomain.com
+#   TRAEFIK_NETWORK=proxy            # your Traefik docker network name
+#   TRAEFIK_CERTRESOLVER=letsencrypt # your ACME resolver name
 docker compose up -d
 
 # create the PocketBase admin account (once)
