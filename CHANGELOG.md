@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 — 2026-07-11
+
+- Header now references Fortnite: "Fortnite · Star Wars: Droid Tycoon"
+
 ## 1.2.0 — 2026-07-11
 
 - **Game data overhaul** (cross-checked against tycoon-tools; cycle-1 requirements matched 23/23 of our play-validated data):
