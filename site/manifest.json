@@ -1,0 +1,31 @@
+{
+  "name": "Droidex — Registre du droïdesmith",
+  "short_name": "Droidex",
+  "description": "Tracker de collection pour Star Wars: Droid Tycoon (Fortnite) : variantes, renaissances et droïdes à garder en base.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14110C",
+  "theme_color": "#14110C",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# Test local sans Traefik : docker compose -f docker-compose.local.yml up -d
+# Site : http://localhost:8080 — API de synchronisation : http://localhost:8090
+
+services:
+  droidex:
+    build: .
+    image: droidex-tracker:latest
+    container_name: droidex-local
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+
+  pocketbase:
+    build:
+      context: deploy
+      dockerfile: pocketbase.Dockerfile
+    image: droidex-pocketbase:latest
+    container_name: droidex-pocketbase-local
+    restart: unless-stopped
+    volumes:
+      # volume nommé : un bind mount macOS (virtiofs) provoque des erreurs
+      # transitoires de verrouillage SQLite ; sans objet sur un hôte Linux
+      - pb_data_local:/pb/pb_data
+    ports:
+      - "8090:8090"
+
+volumes:
+  pb_data_local:

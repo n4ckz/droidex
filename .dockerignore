@@ -1,0 +1,6 @@
+.git
+README.md
+LICENSE
+docker-compose*.yml
+.env*
+droidex-checklist.html

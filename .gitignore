@@ -1,0 +1,7 @@
+.env
+pb_data/
+pb_data_local/
+node_modules/
+.DS_Store
+# prototype d'origine (artifact Claude), remplacé par site/
+droidex-checklist.html

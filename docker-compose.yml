@@ -1,0 +1,46 @@
+# Déploiement VPS derrière Traefik v2 (réseau externe « proxy » existant).
+# Configurer le domaine dans un fichier .env : DROIDEX_DOMAIN=droidex.mondomaine.fr
+# Le site est servi sur ${DROIDEX_DOMAIN}, l'API de synchronisation sur api.${DROIDEX_DOMAIN}
+# (le DNS des deux doit pointer vers le VPS).
+# Pour un test local sans Traefik : docker compose -f docker-compose.local.yml up -d
+
+services:
+  droidex:
+    build: .
+    image: droidex-tracker:latest
+    container_name: droidex
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.droidex.rule=Host(`${DROIDEX_DOMAIN}`)"
+      - "traefik.http.routers.droidex.entrypoints=websecure"
+      - "traefik.http.routers.droidex.tls=true"
+      - "traefik.http.routers.droidex.tls.certresolver=letsencrypt"
+      - "traefik.http.services.droidex.loadbalancer.server.port=80"
+
+  pocketbase:
+    build:
+      context: deploy
+      dockerfile: pocketbase.Dockerfile
+    image: droidex-pocketbase:latest
+    container_name: droidex-pocketbase
+    restart: unless-stopped
+    volumes:
+      - ./pb_data:/pb/pb_data
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.droidex-api.rule=Host(`api.${DROIDEX_DOMAIN}`)"
+      - "traefik.http.routers.droidex-api.entrypoints=websecure"
+      - "traefik.http.routers.droidex-api.tls=true"
+      - "traefik.http.routers.droidex-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.droidex-api.loadbalancer.server.port=8090"
+
+networks:
+  proxy:
+    external: true

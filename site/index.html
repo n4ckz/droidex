@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droidex — Registre du droïdesmith</title>
+<meta name="description" content="Tracker de collection pour Star Wars: Droid Tycoon (Fortnite) : suivez vos droïdes par variante (Basic, Or, Diamant, Arc-en-ciel, Beskar) et préparez vos renaissances devant le Sandcrawler.">
+<meta property="og:title" content="Droidex — Registre du droïdesmith">
+<meta property="og:description" content="Tracker de collection pour Star Wars: Droid Tycoon (Fortnite) : variantes, renaissances et droïdes à garder en base.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:image" content="icons/icon-512.png">
+<meta name="theme-color" content="#14110C">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Star Wars · Droid Tycoon</div>
+    <h1>Droidex — Registre du droïdesmith</h1>
+    <div class="progress-line">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">—</div>
+    </div>
+  </header>
+
+  <div class="rb-panel">
+    <div class="rb-head">
+      <div class="rb-title">Prochaine renaissance visée</div>
+      <select id="rbSelect" aria-label="Renaissance visée"></select>
+    </div>
+    <div class="rb-reqs" id="rbReqs"></div>
+    <div class="rb-credits" id="rbCredits"></div>
+  </div>
+
+  <div class="controls">
+    <input type="search" class="search" id="search" placeholder="Chercher un droïde… (ex : R6)" aria-label="Recherche">
+    <div style="font-size:11.5px;color:var(--sand-dim);margin-top:7px">
+      1 appui = possédé (Droidex) · 2 appuis = 🏠 en base · 3 appuis = effacer
+    </div>
+    <div class="chips" role="tablist">
+      <button class="chip active" data-filter="all">Tous</button>
+      <button class="chip" data-filter="keep">À garder</button>
+      <button class="chip" data-filter="missing">Manquants requis</button>
+      <button class="chip" data-filter="base">En base</button>
+      <button class="chip" data-filter="Worker">Worker</button>
+      <button class="chip" data-filter="Astromech">Astromech</button>
+      <button class="chip" data-filter="Battle">Battle</button>
+    </div>
+  </div>
+
+  <div id="loading">CHARGEMENT DU REGISTRE…</div>
+  <div id="list" style="display:none"></div>
+
+  <div class="footer">
+    <span class="save-state" id="saveState">Sauvegarde automatique activée (dans ce navigateur)</span>
+    <div class="footer-actions">
+      <button class="tool-btn" id="exportBtn">Exporter la sauvegarde</button>
+      <button class="tool-btn" id="importBtn">Importer</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+      <button class="reset-btn" id="resetBtn">Réinitialiser le registre</button>
+    </div>
+  </div>
+
+  <div class="sync-bar" id="syncBar" hidden>
+    <span class="save-state" id="syncStatus">Non connecté — sauvegarde locale uniquement</span>
+    <div class="footer-actions">
+      <button class="tool-btn" id="loginBtn">Se connecter avec Google</button>
+      <button class="tool-btn" id="logoutBtn" hidden>Se déconnecter</button>
+      <button class="reset-btn" id="deleteAccountBtn" hidden>Supprimer mon compte</button>
+    </div>
+  </div>
+
+  <div class="legal">
+    Projet de fan non affilié à Epic Games, Lucasfilm ou Disney. Star Wars est une marque de Lucasfilm Ltd.
+    Droid Tycoon est un mode Fortnite créé par FOAD/Blzn Studios.
+    · <a href="https://github.com/n4ckz/droidex" rel="noopener">Code source sur GitHub</a>
+    · Sans compte, tout reste dans votre navigateur. Avec un compte (optionnel), seuls votre email
+    et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="vendor/pocketbase.umd.js"></script>
+<script src="config.js"></script>
+<script src="sync.js"></script>
+</body>
+</html>
