@@ -98,7 +98,7 @@ const DROIDS = [
 ];
 
 /* Crédits requis par renaissance (identiques pour les 4 cycles) */
-const RB_CREDITS = {1:'10K',2:'150K',3:'975K',4:'2.95M',5:'5.35M',6:'9.85M',7:'14.5M',8:'36M',9:'89M',10:'220M',11:'550M',12:'1.36B',13:'3.40B',14:'8.45B',15:'21B',16:'52B',17:'130B',18:'325B',19:'810B',20:'2T',21:'3T',22:'4.5T',23:'6T',24:'9T',25:'13.5T',26:'21T',27:'32T'};
+const RB_CREDITS = {1:'99K',2:'150K',3:'975K',4:'2.95M',5:'5.35M',6:'9.85M',7:'14.5M',8:'36M',9:'89M',10:'220M',11:'550M',12:'1.36B',13:'3.40B',14:'8.45B',15:'21B',16:'52B',17:'130B',18:'325B',19:'810B',20:'2T',21:'3T',22:'4.5T',23:'6T',24:'9T',25:'13.5T',26:'21T',27:'32T'};
 
 /* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
    Une variante supérieure valide toujours l'exigence. Après la renaissance 27
