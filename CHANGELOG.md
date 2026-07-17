@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 — 2026-07-18
+
+- **Nocturne redesign** — full visual overhaul from the Claude Design handoff (dark futuristic HUD): Chakra Petch + IBM Plex Sans (self-hosted), purple accent palette, bracket-framed target panel, scanline textures, desktop sidebar layout (≥980px)
+- Segmented progress bar with `012/317`-style counter; per-filter counts; animated "✓ Rebirth ready" badge; class icons and credit icons on cards; colored tier lamps (`BAS/GLD/DIA/RBW/BSK`)
+- Requirement badge format is now `RB10·GLD` (semantics unchanged); flawless toggle glyph is now ✦
+- Fixed stale copy: rebirth count corrected to 27 levels × 4 cycles in page metadata and llms.txt
+
 ## 1.2.5 — 2026-07-17
 
 - **C-3PO added as the 7th Iconic** (seen in the in-game Nova crystal shop; not yet on community sources, class/perk to confirm) — 69 droids / 317 variants tracked
