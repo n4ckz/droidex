@@ -94,6 +94,9 @@ const I18N = {
     legal: 'Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd. ' +
       'Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. ' +
       '· <a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a> ' +
+      '· <a href="value-list/">Value list</a> ' +
+      '· <a href="rebirth-requirements/">Rebirth requirements</a> ' +
+      '· <a href="faq/">FAQ</a> ' +
       '· Without an account, everything stays in your browser. With an optional account, only your email ' +
       'and your registry are stored on our server, deletable at any time via “Delete my account”.'
   },
@@ -179,6 +182,9 @@ const I18N = {
     legal: 'Projet de fan non affilié à Epic Games, Lucasfilm ou Disney. Star Wars est une marque de Lucasfilm Ltd. ' +
       'Droid Tycoon est un mode Fortnite créé par FOAD/Blzn Studios. ' +
       '· <a href="https://github.com/n4ckz/droidex" rel="noopener">Code source sur GitHub</a> ' +
+      '· <a href="value-list/">Liste des valeurs</a> ' +
+      '· <a href="rebirth-requirements/">Exigences de renaissance</a> ' +
+      '· <a href="faq/">FAQ</a> ' +
       '· Sans compte, tout reste dans votre navigateur. Avec un compte (optionnel), seuls votre email ' +
       'et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».'
   }
