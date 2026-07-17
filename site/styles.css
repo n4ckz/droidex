@@ -102,6 +102,8 @@ h1{
   font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:600;
   padding:7px 10px;
 }
+.super-rb-btn{border-color:var(--jawa);color:var(--jawa)}
+.super-rb-btn:hover{color:var(--sand);border-color:var(--sand)}
 select#cycleSelect{color:var(--sand-dim);font-size:13px}
 .rb-reqs{margin-top:12px;display:flex;flex-direction:column;gap:8px}
 .rb-req{

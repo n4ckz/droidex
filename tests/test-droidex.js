@@ -272,6 +272,39 @@ const setTarget = (w, rb) => {
     assert(/^Droidex v\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
   }
 
+  /* ---- 15. Super-renaissance ---- */
+  console.log('\n[15] Super-renaissance');
+  {
+    const seed = JSON.stringify({
+      owned: { strikeorb: [1, 2, 2, 0, 0], mouse: [2, 0, 0, 0, 0], bb8: true },
+      inBase: { bb8: true },
+      flawless: { mouse: true },
+      wish: { r2: true },
+      targetRB: 12,
+      targetCycle: 1
+    });
+    const { window: w } = boot(seed);
+    w.document.getElementById('superRebirthBtn').click();
+    const st = w.__test.getState();
+    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0]', 'variantes en base → possédé (Strike-Orb)');
+    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0]', 'variantes en base → possédé (Mouse)');
+    assert(st.owned.bb8 === true, 'iconique : possédé (Droidex) conservé');
+    assert(!st.inBase.bb8, 'iconique : plus en base');
+    assert(st.flawless.mouse === true, 'flawless conservé');
+    assert(st.wish.r2 === true, 'wishlist conservée');
+    assert(st.targetRB === 1 && w.document.getElementById('rbSelect').value === '1', 'renaissance visée revenue à 1');
+    assert(st.targetCycle === 2 && w.document.getElementById('cycleSelect').value === '2', 'cycle visé passé à 2');
+    const saved = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
+    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0]', 'transition persistée dans localStorage');
+    const cyc = w.document.getElementById('cycleSelect');
+    cyc.value = '4';
+    cyc.dispatchEvent(new w.Event('change', { bubbles: true }));
+    w.document.getElementById('superRebirthBtn').click();
+    assert(w.__test.getState().targetCycle === 1, 'cycle 4 boucle vers 1');
+    const btn = w.document.getElementById('superRebirthBtn');
+    assert(btn.textContent === 'Super Rebirth', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
+  }
+
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
   process.exit(failures ? 1 : 0);
 })();

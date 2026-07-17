@@ -431,6 +431,23 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
   try{ persistState(); }catch(e){}
   renderAll();
 });
+function applySuperRebirth(){
+  DROIDS.forEach(d=>{
+    if(d.iconic){
+      delete state.inBase[d.id];
+    }else if(Array.isArray(state.owned[d.id])){
+      state.owned[d.id]=state.owned[d.id].map(v=>v===2?1:v);
+    }
+  });
+  state.targetRB=1;
+  state.targetCycle=(state.targetCycle%4)+1;
+}
+document.getElementById('superRebirthBtn').addEventListener('click',()=>{
+  if(!confirm(t('superRebirthConfirm'))) return;
+  applySuperRebirth();
+  try{ persistState(); }catch(e){}
+  renderAll();
+});
 document.getElementById('exportBtn').addEventListener('click',exportState);
 document.getElementById('importBtn').addEventListener('click',()=>{
   document.getElementById('importFile').click();
