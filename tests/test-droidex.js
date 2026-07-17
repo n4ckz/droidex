@@ -47,10 +47,10 @@ const setTarget = (w, rb) => {
     const { window: w, errors } = boot();
     assert(errors.length === 0, 'aucune erreur JS au chargement' + (errors.length ? ' — ' + errors[0] : ''));
     const cards = w.document.querySelectorAll('.droid');
-    assert(cards.length === 68, '68 droïdes rendus (obtenu : ' + cards.length + ')');
+    assert(cards.length === 69, '69 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '0 / 316 variants', 'progression "0 / 316 variants" (obtenu : "' + label + '")');
+    assert(label === '0 / 317 variants', 'progression "0 / 317 variants" (obtenu : "' + label + '")');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -148,7 +148,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '1 / 316 variants', 'progression 1 / 320 (obtenu : "' + label + '")');
+    assert(label === '1 / 317 variants', 'progression 1 / 317 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */

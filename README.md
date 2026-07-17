@@ -163,7 +163,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (68 tracked droids including 6 Iconics, rebirth requirements for the 4 cycles × 27 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-11:
+The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 27 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-17:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
