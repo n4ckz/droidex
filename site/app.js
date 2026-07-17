@@ -358,7 +358,7 @@ function renderDroid(d){
 
   card.innerHTML=top+badges+value;
 
-  /* toggles wishlist ☆ et flawless ✨ */
+  /* toggles wishlist ☆ et flawless ✦ */
   const actions=card.querySelector('.card-actions');
   const wishOn=!!state.wish[d.id];
   const wishBtn=document.createElement('button');
