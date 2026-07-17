@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droid Tycoon FAQ — Variants, Rebirths, Flawless &amp; Collection Bonus | Droidex</title>
+<meta name="description" content="Frequently asked questions about tracking Star Wars: Droid Tycoon with Droidex: variants, rebirth requirements, Super Rebirth, Flawless odds and the collection bonus.">
+<link rel="canonical" href="https://droidex.nackz.dev/faq/">
+<meta property="og:title" content="Droid Tycoon FAQ — Variants, Rebirths, Flawless &amp; Collection Bonus | Droidex">
+<meta property="og:description" content="Frequently asked questions about tracking Star Wars: Droid Tycoon with Droidex: variants, rebirth requirements, Super Rebirth, Flawless odds and the collection bonus.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://droidex.nackz.dev/faq/">
+<meta property="og:site_name" content="Droidex">
+<meta name="theme-color" content="#101120">
+<link rel="manifest" href="../manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../seo-pages.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Droidex?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Droidex is a free, open-source collection tracker for Star Wars: Droid Tycoon, the Fortnite creative mode released by FOAD/Blzn Studios on May 1st, 2026. The game gives no way to check what you already own while standing at the in-game Sandcrawler shop, so Droidex fills that gap: it tracks all 69 droids across their variants, tells you which specific droids and variants you still need for your targeted rebirth, and which ones you can safely retire from your base. It works as an installable, offline-capable Progressive Web App."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I track variants (3 states)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each droid variant in Droidex cycles through three states with a single tap: never owned, owned in your Droidex (the in-game collection log), and physically placed in your base. Most droids come in five variants — Basic, Gold, Diamond, Rainbow and Beskar — so you tap through each variant independently as you obtain and place copies. A handful of Iconic droids have no variants; instead they get two separate toggles, one for ownership and one for being placed in your base."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a higher variant satisfy a lower requirement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Rebirth requirements are expressed as a minimum variant — for example \"Strike-Orb (Gold minimum)\". Owning or placing a higher variant of that droid always satisfies a lower requirement, so a Diamond Strike-Orb in your base counts for a Gold requirement just as well as an actual Gold copy would. You never need to hunt down a lesser copy of a droid you already own in a better variant: Droidex checks your best owned variant against each requirement automatically."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are rebirth requirements?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each rebirth level, from 1 to 27, requires three specific droids placed in your base at a minimum variant, plus a credit cost that climbs from 10K at rebirth 1 up to 32T at rebirth 27. The 27 levels repeat across 4 cycles in a loop, and each cycle can ask for a different trio of droids at the same level even though the credit cost stays identical across cycles. Certain rebirth levels also unlock a new slot for your base, such as an extra Worker or Astromech slot."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a Super Rebirth and what do you keep or lose?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "From rebirth level 12 onward, once your requirements are met you can trigger a Super Rebirth instead of a normal one, which advances you straight into the next cycle. You keep your Droidex, droidsmith level, cosmetics, unlocked Flawless droids, Nova crystals, and any Iconic droid unlocks. You lose your base layout, the droids currently placed in it, your currencies, your rebirth rank, your pickaxe level, and any blueprints — Iconic unlocks can be bought back at the Nova crystal shop afterward."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Flawless?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Flawless is a permanent, rare drop chance rolled independently for every droid you obtain, kept forever in your Droidex once unlocked. The odds depend on variant rarity: roughly 1 in 1000 for a Basic droid down to 1 in 100 for a Beskar droid, so rarer, higher-value variants are noticeably more likely to roll Flawless. Droidex lets you mark each droid's Flawless status with a toggle so you can track which ones you've already unlocked without relying on memory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the collection bonus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The collection bonus rewards broad collecting: for every distinct droid you own, regardless of which variant, your income increases by 1%. It stacks across your entire Droidex, so owning 40 different droids — even all at Basic variant — grants a flat +40% income bonus on top of your normal rebirth and variant progression. Droidex displays your current distinct-droid count and the resulting bonus percentage in the header, updating live as you tap through your registry."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Droidex free? Does it need an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Droidex is completely free, has no ads and no tracking. It works fully without an account: your registry is saved locally in your browser and never leaves your device. Creating an optional account via Google sign-in lets you sync that same registry across multiple devices; in that case only your email address and your registry data are stored on the server, and both can be deleted at any time from the app with the \"Delete my account\" button."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I self-host it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Droidex's source code is open under the MIT license on GitHub, and the whole project is designed to be self-hostable: the tracker itself is a static site with no build step, and the optional sync backend runs on PocketBase, deployable via the provided Docker and Traefik configuration. Anyone can fork the repository, point it at their own domain, and run their own independent copy with their own sync server if they prefer not to rely on the official droidex.nackz.dev instance."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body class="seo-page">
+<header class="seo-header">
+  <div class="seo-hdr">
+    <a class="brand" href="../">DROIDEX</a>
+    <span class="brand-sub">▸ Droid Tycoon // Registry</span>
+    <nav class="seo-nav" aria-label="Content pages">
+      <a href="../value-list/" class="seo-navlink">Value list</a>
+      <a href="../rebirth-requirements/" class="seo-navlink">Rebirth requirements</a>
+      <a href="../faq/" class="seo-navlink active" aria-current="page">FAQ</a>
+    </nav>
+    <a class="tool-btn seo-cta" href="../">Open the tracker →</a>
+  </div>
+</header>
+<main class="seo-main">
+<h1>Droid Tycoon FAQ</h1>
+<p class="seo-intro">Answers about how Droidex tracks your Star Wars: Droid Tycoon collection, how rebirth requirements and Super Rebirths work, and what Flawless and the collection bonus mean in the game.</p>
+
+  <div class="seo-faq-item">
+    <h2>◈ What is Droidex?</h2>
+    <p>Droidex is a free, open-source collection tracker for Star Wars: Droid Tycoon, the Fortnite creative mode released by FOAD/Blzn Studios on May 1st, 2026. The game gives no way to check what you already own while standing at the in-game Sandcrawler shop, so Droidex fills that gap: it tracks all 69 droids across their variants, tells you which specific droids and variants you still need for your targeted rebirth, and which ones you can safely retire from your base. It works as an installable, offline-capable Progressive Web App.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ How do I track variants (3 states)?</h2>
+    <p>Each droid variant in Droidex cycles through three states with a single tap: never owned, owned in your Droidex (the in-game collection log), and physically placed in your base. Most droids come in five variants — Basic, Gold, Diamond, Rainbow and Beskar — so you tap through each variant independently as you obtain and place copies. A handful of Iconic droids have no variants; instead they get two separate toggles, one for ownership and one for being placed in your base.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ Does a higher variant satisfy a lower requirement?</h2>
+    <p>Yes. Rebirth requirements are expressed as a minimum variant — for example &quot;Strike-Orb (Gold minimum)&quot;. Owning or placing a higher variant of that droid always satisfies a lower requirement, so a Diamond Strike-Orb in your base counts for a Gold requirement just as well as an actual Gold copy would. You never need to hunt down a lesser copy of a droid you already own in a better variant: Droidex checks your best owned variant against each requirement automatically.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ What are rebirth requirements?</h2>
+    <p>Each rebirth level, from 1 to 27, requires three specific droids placed in your base at a minimum variant, plus a credit cost that climbs from 10K at rebirth 1 up to 32T at rebirth 27. The 27 levels repeat across 4 cycles in a loop, and each cycle can ask for a different trio of droids at the same level even though the credit cost stays identical across cycles. Certain rebirth levels also unlock a new slot for your base, such as an extra Worker or Astromech slot.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ What is a Super Rebirth and what do you keep or lose?</h2>
+    <p>From rebirth level 12 onward, once your requirements are met you can trigger a Super Rebirth instead of a normal one, which advances you straight into the next cycle. You keep your Droidex, droidsmith level, cosmetics, unlocked Flawless droids, Nova crystals, and any Iconic droid unlocks. You lose your base layout, the droids currently placed in it, your currencies, your rebirth rank, your pickaxe level, and any blueprints — Iconic unlocks can be bought back at the Nova crystal shop afterward.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ What is Flawless?</h2>
+    <p>Flawless is a permanent, rare drop chance rolled independently for every droid you obtain, kept forever in your Droidex once unlocked. The odds depend on variant rarity: roughly 1 in 1000 for a Basic droid down to 1 in 100 for a Beskar droid, so rarer, higher-value variants are noticeably more likely to roll Flawless. Droidex lets you mark each droid's Flawless status with a toggle so you can track which ones you've already unlocked without relying on memory.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ What is the collection bonus?</h2>
+    <p>The collection bonus rewards broad collecting: for every distinct droid you own, regardless of which variant, your income increases by 1%. It stacks across your entire Droidex, so owning 40 different droids — even all at Basic variant — grants a flat +40% income bonus on top of your normal rebirth and variant progression. Droidex displays your current distinct-droid count and the resulting bonus percentage in the header, updating live as you tap through your registry.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ Is Droidex free? Does it need an account?</h2>
+    <p>Droidex is completely free, has no ads and no tracking. It works fully without an account: your registry is saved locally in your browser and never leaves your device. Creating an optional account via Google sign-in lets you sync that same registry across multiple devices; in that case only your email address and your registry data are stored on the server, and both can be deleted at any time from the app with the &quot;Delete my account&quot; button.</p>
+  </div>
+
+  <div class="seo-faq-item">
+    <h2>◈ Can I self-host it?</h2>
+    <p>Yes. Droidex's source code is open under the MIT license on GitHub, and the whole project is designed to be self-hostable: the tracker itself is a static site with no build step, and the optional sync backend runs on PocketBase, deployable via the provided Docker and Traefik configuration. Anyone can fork the repository, point it at their own domain, and run their own independent copy with their own sync server if they prefer not to rely on the official droidex.nackz.dev instance.</p>
+  </div>
+</main>
+<footer class="seo-footer">
+  <p class="seo-legal">Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd. Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. <a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>.</p>
+  <p class="seo-version">DROIDEX V1.3.2</p>
+</footer>
+</body>
+</html>
