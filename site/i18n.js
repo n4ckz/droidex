@@ -8,8 +8,7 @@
    ========================================================================= */
 
 /* Icône « en base » : maison monochrome, épouse la couleur de la variante
-   (stroke=currentColor). Définie une fois, réutilisée par les pips (app.js)
-   et par la légende ci-dessous. */
+   (stroke=currentColor). Définie une fois, réutilisée par les pips (app.js). */
 const BASE_ICON = '<svg class="ico-base" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5l8-7.5 8 7.5"/><path d="M6 10v9h12v-9"/></svg>';
 
 const I18N = {
@@ -45,7 +44,7 @@ const I18N = {
     flawTip: 'Flawless unlocked: rare permanent drop (1/1000 Basic → 1/100 Beskar), kept in your Droidex forever',
     filterAll: 'All',
     filterKeep: 'Keep',
-    filterMissing: 'Missing required',
+    filterMissing: 'Missing',
     filterBase: 'In base',
     filterWorker: 'Worker',
     filterAstromech: 'Astromech',
@@ -130,8 +129,8 @@ const I18N = {
     wishTip: 'Ajouter à la wishlist (droïdes que tu chasses)',
     flawTip: 'Flawless obtenu : drop rare permanent (1/1000 Basic → 1/100 Beskar), conservé à vie dans le Droidex',
     filterAll: 'Tous',
-    filterKeep: 'À garder',
-    filterMissing: 'Manquants requis',
+    filterKeep: 'Garder',
+    filterMissing: 'Manquants',
     filterBase: 'En base',
     filterWorker: 'Worker',
     filterAstromech: 'Astromech',
