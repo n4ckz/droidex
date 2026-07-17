@@ -227,9 +227,10 @@ function renderProgress(){
     if(d.iconic){total+=1;if(state.owned[d.id]===true)done+=1;}
     else{total+=5;done+=ownedTiers(d.id).filter(v=>v>=1).length;}
   });
-  const pct=total?Math.round(done/total*100):0;
-  document.getElementById('progressFill').style.width=pct+'%';
-  document.getElementById('progressLabel').textContent=done+' / '+total+' '+t('variants');
+  const segs=document.getElementById('progressSegs');
+  const lit=total?Math.round(done/total*10):0;
+  [...segs.children].forEach((s,i)=>s.classList.toggle('on',i<lit));
+  document.getElementById('progressLabel').textContent=String(done).padStart(3,'0')+'/'+total;
   const n=distinctOwned();
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
 }

@@ -50,7 +50,10 @@ const setTarget = (w, rb) => {
     assert(cards.length === 69, '69 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '0 / 317 variants', 'progression "0 / 317 variants" (obtenu : "' + label + '")');
+    assert(label === '000/317', 'progression "000/317" (obtenu : "' + label + '")');
+    const segs = w.document.getElementById('progressSegs');
+    assert(segs && segs.children.length === 10, '10 segments de progression rendus');
+    assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -148,7 +151,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '1 / 317 variants', 'progression 1 / 317 (obtenu : "' + label + '")');
+    assert(label === '001/317', 'progression 001/317 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
