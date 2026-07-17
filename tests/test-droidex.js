@@ -47,10 +47,10 @@ const setTarget = (w, rb) => {
     const { window: w, errors } = boot();
     assert(errors.length === 0, 'aucune erreur JS au chargement' + (errors.length ? ' — ' + errors[0] : ''));
     const cards = w.document.querySelectorAll('.droid');
-    assert(cards.length === 68, '68 droïdes rendus (obtenu : ' + cards.length + ')');
+    assert(cards.length === 69, '69 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '0 / 316 variants', 'progression "0 / 316 variants" (obtenu : "' + label + '")');
+    assert(label === '0 / 317 variants', 'progression "0 / 317 variants" (obtenu : "' + label + '")');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -148,7 +148,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '1 / 316 variants', 'progression 1 / 320 (obtenu : "' + label + '")');
+    assert(label === '1 / 317 variants', 'progression 1 / 317 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -270,6 +270,39 @@ const setTarget = (w, rb) => {
     assert(['Loadlifter', 'MO-TRAK', 'KX'].includes(first), 'tri par revenu : un 7.2K/s en tête (obtenu : ' + first + ')');
     const ver = w.document.getElementById('appVersion').textContent;
     assert(/^Droidex v\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
+  }
+
+  /* ---- 15. Super-renaissance ---- */
+  console.log('\n[15] Super-renaissance');
+  {
+    const seed = JSON.stringify({
+      owned: { strikeorb: [1, 2, 2, 0, 0], mouse: [2, 0, 0, 0, 0], bb8: true },
+      inBase: { bb8: true },
+      flawless: { mouse: true },
+      wish: { r2: true },
+      targetRB: 12,
+      targetCycle: 1
+    });
+    const { window: w } = boot(seed);
+    w.document.getElementById('superRebirthBtn').click();
+    const st = w.__test.getState();
+    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0]', 'variantes en base → possédé (Strike-Orb)');
+    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0]', 'variantes en base → possédé (Mouse)');
+    assert(st.owned.bb8 === true, 'iconique : possédé (Droidex) conservé');
+    assert(!st.inBase.bb8, 'iconique : plus en base');
+    assert(st.flawless.mouse === true, 'flawless conservé');
+    assert(st.wish.r2 === true, 'wishlist conservée');
+    assert(st.targetRB === 1 && w.document.getElementById('rbSelect').value === '1', 'renaissance visée revenue à 1');
+    assert(st.targetCycle === 2 && w.document.getElementById('cycleSelect').value === '2', 'cycle visé passé à 2');
+    const saved = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
+    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0]', 'transition persistée dans localStorage');
+    const cyc = w.document.getElementById('cycleSelect');
+    cyc.value = '4';
+    cyc.dispatchEvent(new w.Event('change', { bubbles: true }));
+    w.document.getElementById('superRebirthBtn').click();
+    assert(w.__test.getState().targetCycle === 1, 'cycle 4 boucle vers 1');
+    const btn = w.document.getElementById('superRebirthBtn');
+    assert(btn.textContent === 'Super Rebirth', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

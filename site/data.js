@@ -4,7 +4,7 @@
    Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
    main : relancer le script puis relire le diff.
 
-   Sources communautaires (recoupées le 11/07/2026) :
+   Sources communautaires (recoupées le 17/07/2026) :
    - Exigences de renaissance (4 cycles × 27) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
@@ -89,6 +89,7 @@ const DROIDS = [
  {id:'kx',n:'KX',t:'Battle',r:'Mythic',inc:[7200,14400,28800,57600,115200],bskCost:'240B'},
  {id:'ig',n:'IG',t:'Battle',r:'Mythic',inc:[5800,11000,23200,46400,92800],bskCost:'182.4B'},
  /* Iconic */
+ {id:'c3po',n:'C-3PO',t:'Worker',r:'Iconic',iconic:true},
  {id:'djr3x',n:'DJ R-3X',t:'Worker',r:'Iconic',iconic:true,perk:'2× world-quest rewards'},
  {id:'bb8',n:'BB-8',t:'Astromech',r:'Iconic',iconic:true,perk:'100% upgrade chips'},
  {id:'cb23',n:'CB-23',t:'Astromech',r:'Iconic',iconic:true,perk:'secret astromech mission'},

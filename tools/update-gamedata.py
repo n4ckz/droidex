@@ -41,7 +41,7 @@ NAME2ID = {
  'IMPERIAL PROBE':'improbe','B1 BATTLE':'b1battle','GONK':'gonk','R8':'r8','ID10':'id10',
  'CB':'cb','R3':'r3','R5':'r5','DRK-1 PROBE':'drk1','MOUSE':'mouse','PIT':'pit',
  'BB8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
- 'CB-23':'cb23','R2-D2':'r2d2',
+ 'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po',
 }
 # noms d'affichage droidex (conservés tels quels dans l'interface)
 DISPLAY = {
@@ -57,7 +57,7 @@ DISPLAY = {
  'b2rp':'B2-RP','cyclograv':'Cyclo-Grav','optistrk':'Opti-STRK','snowmouse':'Snow Mouse','ric':'RIC',
  'ric1200':'RIC-1200','lep':'LEP','loadlifter':'Loadlifter','motrak':'MO-TRAK','tritek':'TRI-TEK',
  'cyclens':'CYCLENS','drftr':'DRFT-R','kx':'KX','ig':'IG','bb8':'BB-8','misterbones':'Mister Bones',
- 'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2',
+ 'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO',
 }
 TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4}
 RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Iconic']
@@ -225,6 +225,12 @@ def main():
     check = '--check' in sys.argv
     print('Téléchargement de tycoon-tools…')
     vals = parse_values()
+    # C-3PO existe en jeu (boutique de cristaux Nova, constaté le 17/07/2026)
+    # mais pas encore dans la value list tycoon-tools : injection statique tant
+    # que la source est en retard. setdefault → la source primera dès qu'elle
+    # le référencera (classe supposée Worker, perk inconnu à ce jour).
+    vals.setdefault('c3po', {'rarity': 'Iconic', 'type': 'Worker',
+                             'perk': None, 'inc': [None] * 5, 'beskarCost': None})
     rebirths, unlocks, credits = parse_rebirths()
     print(f'  {len(vals)} droïdes · {len(rebirths)} cycles × {len(rebirths[1])} renaissances')
 
