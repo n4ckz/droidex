@@ -2,7 +2,7 @@
 
 Community collection tracker for **Star Wars: Droid Tycoon**, the Fortnite mode created by FOAD/Blzn Studios (released May 1st, 2026).
 
-The game features a Droidex of 200+ collectible droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar) and 23 Rebirth levels, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
+The game features a Droidex of 200+ collectible droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar) and 27 Rebirth levels across the 4 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
 
 > 📱 Designed to be used on your phone, next to the console. Installable as an app (PWA). English by default, French available from the in-app language selector.
 

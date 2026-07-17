@@ -29,8 +29,6 @@ function syncSetStatus(msg, isErr){
   if(el) el.classList.toggle('err', !!isErr);
 }
 function syncUpdateUI(){
-  const bar = document.getElementById('syncBar');
-  bar.hidden = false;
   const logged = pb.authStore.isValid;
   document.getElementById('loginBtn').hidden = logged;
   document.getElementById('logoutBtn').hidden = !logged;

@@ -256,7 +256,11 @@ function renderFilters(){
       b.className='chip'+(filter===f?' active':'');
       b.dataset.filter=f;
       b.innerHTML='<span class="chip-label">'+t(key)+'</span><span class="chip-count">'+countFor(f)+'</span>';
-      b.addEventListener('click',()=>{ filter=f; renderFilters(); renderList(); });
+      b.addEventListener('click',()=>{
+        filter=f; renderFilters(); renderList();
+        const nb=document.querySelector('#'+cid+' .chip[data-filter="'+f+'"]');
+        if(nb) nb.focus();
+      });
       box.appendChild(b);
     });
   });

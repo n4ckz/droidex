@@ -93,6 +93,7 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .search-box{flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--accent-800);padding:0 12px;background:rgba(var(--acc-rgb),.04)}
 .search-glyph{color:var(--accent);font-size:13px}
 .search-box input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:13px;padding:9px 0;font-family:inherit;min-width:0}
+.search-box:focus-within{border-color:var(--accent);box-shadow:0 0 8px rgba(var(--acc-rgb),.25)}
 .search-row select{font-family:var(--font-hud);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--n-300);border:1px solid var(--accent-800);background:rgba(var(--acc-rgb),.04);padding:0 9px}
 .hint-i{font-family:var(--font-hud);font-size:10px;font-weight:600;color:var(--n-400);border:1px solid var(--n-700);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;align-self:center;cursor:help;flex:none}
 .hint-i:hover{color:var(--accent-300);border-color:var(--accent)}

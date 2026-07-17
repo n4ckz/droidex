@@ -58,6 +58,8 @@ const setTarget = (w, rb) => {
     const badge = w.document.getElementById('readyBadge');
     assert(badge && badge.textContent === '0 / 3 ready', 'badge prêt "0 / 3 ready" (obtenu : "' + (badge && badge.textContent) + '")');
     assert(!badge.classList.contains('all'), 'badge prêt non-pulsant à vide');
+    assert(!w.document.getElementById('exportBtn').closest('[hidden]'), 'export accessible même sans sync (barre non cachée)');
+    assert(w.document.getElementById('loginBtn').hidden === true, 'bouton login caché par défaut (géré par sync.js)');
   }
 
   /* ---- 2. Persistance localStorage ---- */
