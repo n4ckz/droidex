@@ -1,49 +1,31 @@
-/* ---------- polices auto-hébergées (offline / pas de requête tierce) ---------- */
-@font-face{
-  font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;
-  src:url('fonts/chakra-petch-500.woff2') format('woff2');
-}
-@font-face{
-  font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;
-  src:url('fonts/chakra-petch-600.woff2') format('woff2');
-}
-@font-face{
-  font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;
-  src:url('fonts/chakra-petch-700.woff2') format('woff2');
-}
-@font-face{
-  font-family:'IBM Plex Sans';font-style:normal;font-weight:400 600;font-display:swap;
-  src:url('fonts/ibm-plex-sans-var.woff2') format('woff2');
-}
-
+/* ---------- Nocturne : tokens ---------- */
 :root{
-  --hull:#14110C;
-  --panel:#1E1A13;
-  --panel-2:#262118;
-  --line:#3A3226;
-  --sand:#E9DFC6;
-  --sand-dim:#A79A7E;
-  --jawa:#E8A33D;
-  --jawa-soft:rgba(232,163,61,.14);
-  --holo:#6FC3DF;
-  --ok:#7FBF6A;
-  --tier-basic:#8D8676;
-  --tier-gold:#E3B341;
-  --tier-diamond:#7FD4E8;
-  --tier-beskar:#C8CDD4;
-  --radius:10px;
+  --bg:#101120; --text:#e9e9ed;
+  --accent:#9184d9; --accent-300:#d2cefd; --accent-700:#5d5294; --accent-800:#423a6a;
+  --n-300:#cfd3e5; --n-400:#b2b6ca; --n-500:#9397ab; --n-600:#75798c; --n-700:#595d6c;
+  --ok:#8fbf8f; --danger:#d98a8a; --flaw:#E3B341;
+  --tier-0:#8d90a0; --tier-1:#E3B341; --tier-2:#7FD4E8; --tier-3:#D98CE0; --tier-4:#C8CDD4;
+  --acc-rgb:145,132,217;
+  --font-hud:'Chakra Petch',sans-serif;
+  --font-body:'IBM Plex Sans',system-ui,sans-serif;
+  /* alias de compatibilité pour les anciennes règles encore présentes : */
+  --sand:var(--text); --sand-dim:var(--n-400); --line:rgba(var(--acc-rgb),.25); --jawa:var(--accent);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/chakra-petch-500.woff2') format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/chakra-petch-600.woff2') format('woff2')}
+@font-face{font-family:'Chakra Petch';font-style:normal;font-weight:700;font-display:swap;src:url('fonts/chakra-petch-700.woff2') format('woff2')}
+@font-face{font-family:'IBM Plex Sans';font-style:normal;font-weight:100 700;font-display:swap;src:url('fonts/ibm-plex-sans-var.woff2') format('woff2-variations')}
+html,body{margin:0;background:var(--bg)}
 body{
-  background:var(--hull);
-  background-image:radial-gradient(ellipse at 50% -10%, #241E13 0%, var(--hull) 55%);
-  color:var(--sand);
-  font-family:'IBM Plex Sans',system-ui,sans-serif;
-  font-size:15px;
-  min-height:100vh;
-  padding-bottom:60px;
+  font-family:var(--font-body);color:var(--text);
+  background:radial-gradient(ellipse at 50% -10%, rgba(var(--acc-rgb),.09), var(--bg) 55%) var(--bg);
+  background-attachment:fixed;
 }
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 5px rgba(143,191,143,.25)}50%{box-shadow:0 0 16px rgba(143,191,143,.75)}}
+a{color:var(--accent-300)}a:hover{color:var(--accent)}
+input::placeholder{color:#6b6e80}
+button{-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;margin:0;padding:0}
 .wrap{max-width:760px;margin:0 auto;padding:0 12px}
 
 /* ---------- header ---------- */

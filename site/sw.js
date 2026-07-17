@@ -22,7 +22,13 @@ const SHELL = [
   'fonts/ibm-plex-sans-var.woff2',
   'icons/icon-192.png',
   'icons/icon-512.png',
-  'icons/apple-touch-icon.png'
+  'icons/apple-touch-icon.png',
+  'icons/game/worker.webp',
+  'icons/game/astromech.webp',
+  'icons/game/battle.webp',
+  'icons/game/credits.webp',
+  'icons/game/rebirth.png',
+  'icons/game/super-rebirth.png'
 ];
 
 self.addEventListener('install', e => {
