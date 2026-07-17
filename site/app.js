@@ -178,7 +178,7 @@ function renderRBPanel(){
       scheduleSave();renderAll();
     });
   }
-  [...sel.options].forEach((o,idx)=>{ o.textContent=t('rebirth')+' '+(idx+1); });
+  [...sel.options].forEach((o,idx)=>{ o.textContent=t('rbShort')+' '+(idx+1); });
   sel.value=state.targetRB;
 
   const cyc = document.getElementById('cycleSelect');
@@ -193,32 +193,36 @@ function renderRBPanel(){
       scheduleSave();renderAll();
     });
   }
-  [...cyc.options].forEach((o,idx)=>{ o.textContent=t('cycle')+' '+(idx+1); });
+  [...cyc.options].forEach((o,idx)=>{ o.textContent=t('cycleShort')+' '+(idx+1); });
   cyc.value=state.targetCycle;
 
   const reqsEl=document.getElementById('rbReqs');
   reqsEl.innerHTML='';
   const needed=((REBIRTHS[state.targetCycle]||{})[state.targetRB]||[])
     .map(([id,tier])=>({d:DROID_BY_ID[id],tier}));
+  let ready=0;
   needed.forEach(({d,tier})=>{
     const owned=meetsReq(d.id,tier);
-    const ready=inBaseReq(d.id,tier);
+    const isReady=inBaseReq(d.id,tier);
+    if(isReady) ready++;
     const row=document.createElement('div');
-    row.className='rb-req '+(ready?'met':'unmet');
+    row.className='rb-req '+(isReady?'met':(owned?'part':'unmet'));
     let icon,note;
-    if(ready){icon='✓';note=TIERS[tier]+' '+t('minInBase');}
+    if(isReady){icon='✓';note=TIERS[tier]+' '+t('minInBase');}
     else if(owned){icon='⚠';note=TIERS[tier]+' '+t('minNotInBase');}
     else{icon='✗';note=TIERS[tier]+' '+t('minimum');}
-    row.innerHTML='<span class="status">'+icon+'</span>'+
-      '<span>'+d.n+'</span>'+
-      '<span class="req-tier" style="color:var(--sand-dim)">'+note+'</span>';
+    row.innerHTML='<span class="status">'+icon+'</span><span class="rq-name">'+d.n+'</span>'+
+      '<span class="rq-note">'+note+'</span>';
     reqsEl.appendChild(row);
   });
-  let creditsLine=t('credits', RB_CREDITS[state.targetRB]||'—');
-  if(state.targetCycle===1 && RB_UNLOCKS[state.targetRB]){
-    creditsLine+=' · '+t('unlocks', RB_UNLOCKS[state.targetRB]);
-  }
-  document.getElementById('rbCredits').innerHTML=creditsLine;
+  const badge=document.getElementById('readyBadge');
+  const allReady=needed.length>0 && ready===needed.length;
+  badge.textContent=allReady?t('rebirthReady'):t('readyCount', ready, needed.length);
+  badge.classList.toggle('all',allReady);
+  document.getElementById('rbCreditsBig').textContent=RB_CREDITS[state.targetRB]||'—';
+  let note=t('credits');
+  if(state.targetCycle===1 && RB_UNLOCKS[state.targetRB]) note+=' · '+t('unlocks', RB_UNLOCKS[state.targetRB]);
+  document.getElementById('rbCredits').textContent=note;
 }
 
 function renderProgress(){
@@ -227,11 +231,39 @@ function renderProgress(){
     if(d.iconic){total+=1;if(state.owned[d.id]===true)done+=1;}
     else{total+=5;done+=ownedTiers(d.id).filter(v=>v>=1).length;}
   });
-  const pct=total?Math.round(done/total*100):0;
-  document.getElementById('progressFill').style.width=pct+'%';
-  document.getElementById('progressLabel').textContent=done+' / '+total+' '+t('variants');
+  const segs=document.getElementById('progressSegs');
+  const lit=total?Math.round(done/total*10):0;
+  [...segs.children].forEach((s,i)=>s.classList.toggle('on',i<lit));
+  document.getElementById('progressLabel').textContent=String(done).padStart(3,'0')+'/'+total;
   const n=distinctOwned();
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
+}
+
+const FILTER_DEFS=[['all','filterAll'],['keep','filterKeep'],['missing','filterMissing'],['base','filterBase'],['wish','filterWish'],['Worker','filterWorker'],['Astromech','filterAstromech'],['Battle','filterBattle']];
+function countFor(f){
+  const prev=filter; filter=f;
+  const n=DROIDS.filter(droidMatches).length;
+  filter=prev; return n;
+}
+function renderFilters(){
+  ['filtersSide','filtersChips'].forEach(cid=>{
+    const box=document.getElementById(cid);
+    if(!box) return;
+    box.innerHTML='';
+    FILTER_DEFS.forEach(([f,key])=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='chip'+(filter===f?' active':'');
+      b.dataset.filter=f;
+      b.innerHTML='<span class="chip-label">'+t(key)+'</span><span class="chip-count">'+countFor(f)+'</span>';
+      b.addEventListener('click',()=>{
+        filter=f; renderFilters(); renderList();
+        const nb=document.querySelector('#'+cid+' .chip[data-filter="'+f+'"]');
+        if(nb) nb.focus();
+      });
+      box.appendChild(b);
+    });
+  });
 }
 
 function droidMatches(d){
@@ -264,7 +296,10 @@ function renderList(){
       sec.className='rarity-section';
       sec.innerHTML='<div class="rarity-title">'+t('byIncome')+
         ' <span class="count">'+ds.length+'</span></div>';
-      ds.forEach(d=>sec.appendChild(renderDroid(d)));
+      const cards=document.createElement('div');
+      cards.className='cards';
+      ds.forEach(d=>cards.appendChild(renderDroid(d)));
+      sec.appendChild(cards);
       list.appendChild(sec);
     }
   }else RARITY_ORDER.forEach(rar=>{
@@ -275,7 +310,10 @@ function renderList(){
     sec.className='rarity-section';
     sec.innerHTML='<div class="rarity-title">'+RARITY_LABELS[rar]+
       ' <span class="count">'+ds.length+'</span></div>';
-    ds.forEach(d=>sec.appendChild(renderDroid(d)));
+    const cards=document.createElement('div');
+    cards.className='cards';
+    ds.forEach(d=>cards.appendChild(renderDroid(d)));
+    sec.appendChild(cards);
     list.appendChild(sec);
   });
 
@@ -294,7 +332,7 @@ function renderDroid(d){
   card.className='droid'+(hasUnmet?' keep':'');
 
   let top='<div class="droid-top"><span class="droid-name">'+d.n+'</span>'+
-    '<span class="droid-type">'+d.t+'</span>'+
+    '<span class="type-ico t-'+d.t.toLowerCase()+'" role="img" aria-label="'+d.t+'" title="'+d.t+'"></span>'+
     '<span class="card-actions"></span>';
   if(ki) top+='<span class="keep-tag">'+t('keepTag')+'</span>';
   top+='</div>';
@@ -309,22 +347,22 @@ function renderDroid(d){
       else if(inBaseReq(d.id,tier)){cls=' ready';prefix='✓ ';}
       else if(meetsReq(d.id,tier)){cls=' warn';prefix='⚠ ';}
       else{cls=' urgent';}
-      return '<span class="req-badge'+cls+'">'+prefix+'RB'+rb+' · '+TIERS[tier]+'</span>';
+      return '<span class="req-badge'+cls+'">'+prefix+'RB'+rb+'·'+TIER_SHORT[tier]+'</span>';
     }).join('')+'</div>';
   }
 
   let value='';
   if(d.inc){
-    value='<div class="value-line">💰 '+fmtInc(d.inc[0])+'/s → '+fmtInc(d.inc[4])+'/s'+
+    value='<div class="value-line"><span class="ico-cred" aria-hidden="true"></span>'+fmtInc(d.inc[0])+'/s → '+fmtInc(d.inc[4])+'/s'+
       (d.bskCost?' <span class="dim">· BSK '+d.bskCost+'</span>':'')+
       (d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
   }else if(d.iconic){
-    value='<div class="value-line">💰 +15%/s'+(d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
+    value='<div class="value-line"><span class="ico-cred" aria-hidden="true"></span>+15%/s'+(d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
   }
 
   card.innerHTML=top+badges+value;
 
-  /* toggles wishlist ☆ et flawless ✨ */
+  /* toggles wishlist ☆ et flawless ✦ */
   const actions=card.querySelector('.card-actions');
   const wishOn=!!state.wish[d.id];
   const wishBtn=document.createElement('button');
@@ -343,7 +381,7 @@ function renderDroid(d){
   const flawBtn=document.createElement('button');
   flawBtn.type='button';
   flawBtn.className='icon-btn flaw'+(flawOn?' on-flaw':'');
-  flawBtn.textContent='✨';
+  flawBtn.textContent='✦';
   flawBtn.setAttribute('aria-label',t('flawAria')+' : '+d.n);
   flawBtn.setAttribute('aria-pressed',flawOn?'true':'false');
   flawBtn.title=t('flawTip');
@@ -363,30 +401,7 @@ function renderDroid(d){
       state.owned[d.id]=state.owned[d.id]===true?false:true;
       scheduleSave();renderAll();
     });
-    card.appendChild(btn);
-  }else{
-    const tiers=document.createElement('div');
-    tiers.className='tiers';
-    const o=ownedTiers(d.id);
-    TIER_SHORT.forEach((label,i)=>{
-      const b=document.createElement('button');
-      b.type='button';
-      b.className='tier'+(o[i]>=1?' on':'')+(o[i]===2?' base':'');
-      b.dataset.t=i;
-      b.setAttribute('aria-label',d.n+' '+TIERS[i]+' : '+(o[i]===2?t('ariaInBase'):(o[i]===1?t('ariaOwned'):t('ariaAbsent'))));
-      b.innerHTML='<span class="lamp"></span>'+(o[i]===2?BASE_ICON:label);
-      b.addEventListener('click',()=>{
-        const arr=ownedTiers(d.id).slice();
-        arr[i]=(arr[i]+1)%3;
-        state.owned[d.id]=arr;
-        scheduleSave();renderAll();
-      });
-      tiers.appendChild(b);
-    });
-    card.appendChild(tiers);
-  }
 
-  if(d.iconic){
     const baseBtn=document.createElement('button');
     baseBtn.type='button';
     const inB=!!state.inBase[d.id];
@@ -397,7 +412,32 @@ function renderDroid(d){
       state.inBase[d.id]=!state.inBase[d.id];
       scheduleSave();renderAll();
     });
-    card.appendChild(baseBtn);
+
+    const row=document.createElement('div');
+    row.className='iconic-row';
+    row.appendChild(btn);
+    row.appendChild(baseBtn);
+    card.appendChild(row);
+  }else{
+    const tiers=document.createElement('div');
+    tiers.className='tiers';
+    const o=ownedTiers(d.id);
+    TIER_SHORT.forEach((label,i)=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='tier'+(o[i]>=1?' on':'')+(o[i]===2?' base':'');
+      b.dataset.t=i;
+      b.setAttribute('aria-label',d.n+' '+TIERS[i]+' : '+(o[i]===2?t('ariaInBase'):(o[i]===1?t('ariaOwned'):t('ariaAbsent'))));
+      b.innerHTML='<span class="lamp"></span>'+(o[i]===2?BASE_ICON+' '+label:label);
+      b.addEventListener('click',()=>{
+        const arr=ownedTiers(d.id).slice();
+        arr[i]=(arr[i]+1)%3;
+        state.owned[d.id]=arr;
+        scheduleSave();renderAll();
+      });
+      tiers.appendChild(b);
+    });
+    card.appendChild(tiers);
   }
   return card;
 }
@@ -405,20 +445,14 @@ function renderDroid(d){
 function renderAll(){
   renderRBPanel();
   renderProgress();
+  renderFilters();
   renderList();
 }
 
 /* ================= EVENTS ================= */
-document.querySelectorAll('.chip').forEach(chip=>{
-  chip.addEventListener('click',()=>{
-    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    filter=chip.dataset.filter;
-    renderList();
-  });
-});
 document.getElementById('search').addEventListener('input',e=>{
   query=e.target.value.trim().toLowerCase();
+  renderFilters();
   renderList();
 });
 document.getElementById('sortSelect').addEventListener('change',e=>{
@@ -463,7 +497,7 @@ document.getElementById('importFile').addEventListener('change',e=>{
   loadState();
   document.getElementById('loading').style.display='none';
   document.getElementById('list').style.display='block';
-  document.getElementById('appVersion').textContent='Droidex v'+APP_VERSION;
+  document.getElementById('appVersion').textContent='DROIDEX V'+APP_VERSION;
   renderAll();
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{ /* hors ligne au premier chargement : sans conséquence */ });

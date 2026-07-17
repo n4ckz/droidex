@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="Droidex — Droidsmith's Registry">
 <meta name="twitter:description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants, rebirths, and which droids to keep in your base.">
 <meta name="twitter:image" content="https://droidex.nackz.dev/icons/icon-512.png">
-<meta name="theme-color" content="#14110C">
+<meta name="theme-color" content="#101120">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -26,7 +26,7 @@
   "name": "Droidex — Droidsmith's Registry",
   "alternateName": "Droidex",
   "url": "https://droidex.nackz.dev/",
-  "description": "Free collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar), plan the 23 rebirth levels and know which droids to keep physically in your base.",
+  "description": "Free collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar), plan the 27 rebirth levels across the 4 cycles and know which droids to keep physically in your base.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "browserRequirements": "Requires JavaScript",
@@ -48,95 +48,95 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="header-top">
-      <div class="eyebrow">Fortnite · Star Wars: Droid Tycoon</div>
-      <select id="langSelect" class="lang-select" aria-label="Language">
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-      </select>
-    </div>
-    <h1 data-i18n="h1">Droidex — Droidsmith's Registry</h1>
+<h1 class="vh" data-i18n="h1">Droidex — Droidsmith's Registry</h1>
+<header>
+  <div class="hdr">
+    <span class="brand" data-i18n="h1short">DROIDEX</span>
+    <span class="brand-sub" data-i18n="eyebrow">▸ Droid Tycoon // Registry</span>
     <div class="progress-line">
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-label" id="progressLabel">—</div>
+      <div class="progress-segs" id="progressSegs"><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+      <span class="progress-label" id="progressLabel">—</span>
     </div>
-    <div class="collection-bonus" id="collectionBonus"></div>
-  </header>
+    <span class="collection-bonus" id="collectionBonus"></span>
+    <select id="langSelect" class="lang-select" aria-label="Language">
+      <option value="en">EN</option>
+      <option value="fr">FR</option>
+    </select>
+  </div>
+</header>
 
-  <div class="rb-panel">
-    <div class="rb-head">
-      <div class="rb-title" data-i18n="rbTitle">Next targeted rebirth</div>
+<div class="sync-bar" id="syncBar">
+  <span class="save-state" id="syncStatus"><span class="sync-lamp" id="syncLamp"></span><span id="syncStatusText" data-i18n="syncNotLogged">Not signed in — local save only</span></span>
+  <div class="footer-actions">
+      <button class="tool-btn" id="exportBtn" data-i18n="exportBtn">⇩ Export</button>
+      <button class="tool-btn" id="importBtn" data-i18n="importBtn">⇧ Import</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <button class="tool-btn" id="loginBtn" data-i18n="syncLoginBtn" hidden>Sign in with Google</button>
+    <button class="tool-btn" id="logoutBtn" data-i18n="syncLogoutBtn" hidden>Sign out</button>
+    <button class="reset-btn" id="deleteAccountBtn" data-i18n="syncDeleteBtn" hidden>Delete my account</button>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="side" id="sidePanel">
+    <div class="rb-panel">
+      <div class="rb-head">
+        <span class="rb-title"><img src="icons/game/rebirth.png" alt="" class="ico-rb"><span data-i18n="rbTitle">Target · Rebirth</span></span>
+        <span class="ready-badge" id="readyBadge"></span>
+      </div>
       <div class="rb-selects">
         <select id="cycleSelect" data-i18n-aria="cycleAria" aria-label="Rebirth cycle"></select>
         <select id="rbSelect" data-i18n-aria="rbAria" aria-label="Targeted rebirth"></select>
-        <button id="superRebirthBtn" class="tool-btn super-rb-btn" data-i18n="superRebirthBtn" data-i18n-aria="superRebirthAria" aria-label="Apply a super rebirth">Super Rebirth</button>
+        <button id="superRebirthBtn" class="super-rb-btn" data-i18n-aria="superRebirthAria" aria-label="Apply a super rebirth"><img src="icons/game/super-rebirth.png" alt="" class="ico-srb"><span data-i18n="superRebirthBtn">SUPER RB</span></button>
+      </div>
+      <div class="rb-reqs" id="rbReqs"></div>
+      <div class="rb-credits-row">
+        <span class="rb-credits-big"><img src="icons/game/credits.webp" alt="" class="ico-cred"><span id="rbCreditsBig">—</span></span>
+        <span class="rb-credits-note" id="rbCredits"></span>
       </div>
     </div>
-    <div class="rb-reqs" id="rbReqs"></div>
-    <div class="rb-credits" id="rbCredits"></div>
-  </div>
-
-  <div class="controls">
-    <input type="search" class="search" id="search" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria" placeholder="Search a droid… (e.g. R6)" aria-label="Search">
-    <div style="font-size:11.5px;color:var(--sand-dim);margin-top:7px" data-i18n-html="hint">
-      1 tap = owned (Droidex) · 2 taps = in base · 3 taps = clear
+    <div class="filters-side">
+      <div class="filters-head" data-i18n="filtersHead">◈ Filters</div>
+      <div id="filtersSide"></div>
     </div>
-    <div style="font-size:11.5px;color:var(--sand-dim);margin-top:3px" data-i18n="legendIcons">
-      ★ = wishlist · ✨ = Flawless unlocked (rare permanent drop)
+  </aside>
+  <main class="main">
+    <div class="searchbar">
+      <div class="search-row">
+        <div class="search-box"><span class="search-glyph">⌕</span>
+          <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria" placeholder="Scan registry… (e.g. R6)" aria-label="Search">
+        </div>
+        <select id="sortSelect" data-i18n-aria="sortAria" aria-label="Sort">
+          <option value="rarity" data-i18n="sortRarity">Rarity</option>
+          <option value="income" data-i18n="sortIncome">Income</option>
+        </select>
+        <span class="hint-i" id="hintI" tabindex="0" data-i18n-title="hintFull" data-i18n-aria="hintFull" title="">i</span>
+      </div>
+      <div class="chips" id="filtersChips" role="tablist"></div>
     </div>
-    <div class="chips" role="tablist">
-      <button class="chip active" data-filter="all" data-i18n="filterAll">All</button>
-      <button class="chip" data-filter="keep" data-i18n="filterKeep">Keep</button>
-      <button class="chip" data-filter="missing" data-i18n="filterMissing">Missing required</button>
-      <button class="chip" data-filter="base" data-i18n="filterBase">In base</button>
-      <button class="chip" data-filter="wish" data-i18n="filterWish">Wishlist</button>
-      <button class="chip" data-filter="Worker">Worker</button>
-      <button class="chip" data-filter="Astromech">Astromech</button>
-      <button class="chip" data-filter="Battle">Battle</button>
-      <select id="sortSelect" class="chip-select" data-i18n-aria="sortAria" aria-label="Sort">
-        <option value="rarity" data-i18n="sortRarity">Sort: rarity</option>
-        <option value="income" data-i18n="sortIncome">Sort: income</option>
-      </select>
-    </div>
-  </div>
 
-  <div id="loading" data-i18n="loading">LOADING REGISTRY…</div>
-  <noscript>
-    <p>Droidex is a free collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids
-    across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar), plan the 23 rebirth levels and know
-    which droids to keep physically in your base. It requires JavaScript to run — everything happens
-    in your browser, no account needed. Source code: <a href="https://github.com/n4ckz/droidex">github.com/n4ckz/droidex</a>.</p>
-  </noscript>
-  <div id="list" style="display:none"></div>
+    <div id="loading" data-i18n="loading">LOADING REGISTRY…</div>
+    <noscript>
+      <p>Droidex is a free collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids
+      across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar), plan the 27 rebirth levels across the 4 cycles and know
+      which droids to keep physically in your base. It requires JavaScript to run — everything happens
+      in your browser, no account needed. Source code: <a href="https://github.com/n4ckz/droidex">github.com/n4ckz/droidex</a>.</p>
+    </noscript>
+    <div id="list" style="display:none"></div>
 
-  <div class="footer">
-    <span class="save-state" id="saveState" data-i18n="autoSave">Auto-save enabled (in this browser)</span>
-    <div class="footer-actions">
-      <button class="tool-btn" id="exportBtn" data-i18n="exportBtn">Export backup</button>
-      <button class="tool-btn" id="importBtn" data-i18n="importBtn">Import</button>
-      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <div class="footer">
+      <span class="save-state" id="saveState" data-i18n="autoSave">Autosave ● local</span>
+      <span class="fsep"></span>
       <button class="reset-btn" id="resetBtn" data-i18n="resetBtn">Reset registry</button>
     </div>
-  </div>
-
-  <div class="sync-bar" id="syncBar" hidden>
-    <span class="save-state" id="syncStatus">Not signed in — local save only</span>
-    <div class="footer-actions">
-      <button class="tool-btn" id="loginBtn" data-i18n="syncLoginBtn">Sign in with Google</button>
-      <button class="tool-btn" id="logoutBtn" data-i18n="syncLogoutBtn" hidden>Sign out</button>
-      <button class="reset-btn" id="deleteAccountBtn" data-i18n="syncDeleteBtn" hidden>Delete my account</button>
+    <div class="legal" data-i18n-html="legal">
+      Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd.
+      Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios.
+      · <a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>
+      · Without an account, everything stays in your browser.
     </div>
-  </div>
-
-  <div class="legal" data-i18n-html="legal">
-    Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd.
-    Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios.
-    · <a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>
-    · Without an account, everything stays in your browser.
-  </div>
-  <div class="version" id="appVersion"></div>
+    <div class="version" id="appVersion"></div>
+  </main>
 </div>
 
 <script src="version.js"></script>

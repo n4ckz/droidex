@@ -50,7 +50,16 @@ const setTarget = (w, rb) => {
     assert(cards.length === 69, '69 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '0 / 317 variants', 'progression "0 / 317 variants" (obtenu : "' + label + '")');
+    assert(label === '000/317', 'progression "000/317" (obtenu : "' + label + '")');
+    const segs = w.document.getElementById('progressSegs');
+    assert(segs && segs.children.length === 10, '10 segments de progression rendus');
+    assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
+    // badge "prêt" : état vierge, cible RB1 → 0 / 3
+    const badge = w.document.getElementById('readyBadge');
+    assert(badge && badge.textContent === '0 / 3 ready', 'badge prêt "0 / 3 ready" (obtenu : "' + (badge && badge.textContent) + '")');
+    assert(!badge.classList.contains('all'), 'badge prêt non-pulsant à vide');
+    assert(!w.document.getElementById('exportBtn').closest('[hidden]'), 'export accessible même sans sync (barre non cachée)');
+    assert(w.document.getElementById('loginBtn').hidden === true, 'bouton login caché par défaut (géré par sync.js)');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -65,8 +74,8 @@ const setTarget = (w, rb) => {
     const parsed = JSON.parse(savedJson);
     assert(parsed && parsed.owned.strikeorb && parsed.owned.strikeorb[2] === 2,
       'localStorage : strikeorb Diamant = 2 (en base)');
-    assert(w.document.getElementById('saveState').textContent === 'Registry saved',
-      'message "Registry saved" affiché');
+    assert(w.document.getElementById('saveState').textContent === 'Saved ● local',
+      'message "Saved ● local" affiché');
   }
   {
     // "rechargement" : nouveau DOM, même localStorage
@@ -98,7 +107,7 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(savedJson);   // Strike-Orb Diamant en base, cible 9
     setTarget(w, 10);
     let badge = findCard(w, 'Strike-Orb').querySelector('.req-badge');
-    assert(badge.textContent === '✓ RB10 · Gold', 'cible 10 : badge "✓ RB10 · Gold" (obtenu : "' + badge.textContent + '")');
+    assert(badge.textContent === '✓ RB10·GLD', 'cible 10 : badge "✓ RB10·GLD" (obtenu : "' + badge.textContent + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'),
       'cible 10 : badge vert (ready), non barré');
     // panneau : Strike-Orb doit apparaître ✓ en base
@@ -118,8 +127,8 @@ const setTarget = (w, rb) => {
     const seed = JSON.stringify({ owned: { r6: [0, 0, 1, 0, 0] }, inBase: {}, targetRB: 9 }); // R6 Diamant possédé (pas en base), req [[9,1]]
     const { window: w } = boot(seed);
     const badge = findCard(w, 'R6').querySelector('.req-badge');
-    assert(badge.textContent === '⚠ RB9 · Gold' && badge.classList.contains('warn'),
-      'R6 Diamant possédé : "⚠ RB9 · Gold" (Diamond valide Gold, pas en base)');
+    assert(badge.textContent === '⚠ RB9·GLD' && badge.classList.contains('warn'),
+      'R6 Diamant possédé : "⚠ RB9·GLD" (Diamond valide Gold, pas en base)');
     const req = [...w.document.querySelectorAll('.rb-req')].find(r => r.textContent.includes('R6'));
     assert(req.querySelector('.status').textContent === '⚠', 'panneau : R6 en ⚠ (possédé, pas en base)');
     const reqTrak = [...w.document.querySelectorAll('.rb-req')].find(r => r.textContent.includes('TRAK-R'));
@@ -148,7 +157,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '1 / 317 variants', 'progression 1 / 317 (obtenu : "' + label + '")');
+    assert(label === '001/317', 'progression 001/317 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -187,7 +196,7 @@ const setTarget = (w, rb) => {
     assert(w.document.querySelector('h1').textContent === 'Droidex — Registre du droïdesmith', 'titre français après bascule');
     w.__test.getState().targetRB = 10; w.__test.renderAll();
     const badge = findCard(w, 'Strike-Orb').querySelector('.req-badge');
-    assert(badge.textContent === '✓ RB10 · Or', 'badge en français : "✓ RB10 · Or" (obtenu : "' + badge.textContent + '")');
+    assert(badge.textContent === '✓ RB10·GLD', 'badge en français : "✓ RB10·GLD" (obtenu : "' + badge.textContent + '")');
     assert(w.localStorage.getItem('droidex-lang') === 'fr', 'choix de langue persisté');
     // nouveau chargement : le français est conservé
     const w2 = boot(savedJson).window;
@@ -215,7 +224,7 @@ const setTarget = (w, rb) => {
     sel.value = '24'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
     const reqNames = [...w.document.querySelectorAll('.rb-req')].map(r => r.textContent);
     assert(reqNames.some(x => x.includes('MO-TRAK')), 'panneau RB24 : MO-TRAK requis');
-    assert(w.document.getElementById('rbCredits').textContent.includes('9T'), 'crédits RB24 : 9T');
+    assert(w.document.getElementById('rbCreditsBig').textContent.includes('9T'), 'crédits RB24 : 9T');
     // bascule cycle 2 : RB1 = ID10, Mouse, Gonk
     sel.value = '1'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
     const cyc = w.document.getElementById('cycleSelect');
@@ -269,7 +278,7 @@ const setTarget = (w, rb) => {
     const first = w.document.querySelector('.droid .droid-name').textContent;
     assert(['Loadlifter', 'MO-TRAK', 'KX'].includes(first), 'tri par revenu : un 7.2K/s en tête (obtenu : ' + first + ')');
     const ver = w.document.getElementById('appVersion').textContent;
-    assert(/^Droidex v\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
+    assert(/^DROIDEX V\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
   }
 
   /* ---- 15. Super-renaissance ---- */
@@ -302,7 +311,49 @@ const setTarget = (w, rb) => {
     w.document.getElementById('superRebirthBtn').click();
     assert(w.__test.getState().targetCycle === 1, 'cycle 4 boucle vers 1');
     const btn = w.document.getElementById('superRebirthBtn');
-    assert(btn.textContent === 'Super Rebirth', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
+    assert(btn.textContent === 'SUPER RB', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
+  }
+
+  /* ---- 16. Badge « prêt » du panneau RB : 3/3 en base ---- */
+  console.log('\n[16] Badge « prêt » du panneau RB');
+  {
+    const seed = JSON.stringify({ owned: { cb: [2, 0, 0, 0, 0], pit: [2, 0, 0, 0, 0], drk1: [2, 0, 0, 0, 0] }, targetRB: 1, targetCycle: 1 });
+    const { window: w } = boot(seed);
+    const badge2 = w.document.getElementById('readyBadge');
+    assert(badge2.textContent === '✓ Rebirth ready', 'badge "✓ Rebirth ready" quand 3/3');
+    assert(badge2.classList.contains('all'), 'badge pulsant quand 3/3');
+  }
+
+  /* ---- 17. Filtres à compteurs ---- */
+  console.log('\n[17] Filtres à compteurs');
+  {
+    const { window: w } = boot();
+    const side = w.document.getElementById('filtersSide');
+    const chips = w.document.getElementById('filtersChips');
+    assert(side && side.querySelectorAll('.chip').length === 8, '8 filtres dans la sidebar');
+    assert(chips && chips.querySelectorAll('.chip').length === 8, '8 chips mobiles');
+    const all = side.querySelector('[data-filter="all"] .chip-count');
+    assert(all && all.textContent === '69', 'compteur TOUS = 69 (obtenu : ' + (all && all.textContent) + ')');
+    const worker = side.querySelector('[data-filter="Worker"] .chip-count');
+    const astro = side.querySelector('[data-filter="Astromech"] .chip-count');
+    const battle = side.querySelector('[data-filter="Battle"] .chip-count');
+    assert(parseInt(worker.textContent,10)+parseInt(astro.textContent,10)+parseInt(battle.textContent,10) === 69,
+      'compteurs par classe sommant à 69');
+    // clic sur un filtre côté sidebar → filtre actif des deux côtés
+    side.querySelector('[data-filter="Worker"]').click();
+    assert(side.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif sidebar');
+    assert(chips.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif chips');
+  }
+
+  /* ---- 18. Icônes de carte (type + crédits) ---- */
+  console.log('\n[18] Icônes de carte');
+  {
+    const { window: w } = boot();
+    // icône de classe sur la carte
+    const gonk = findCard(w, 'Gonk');
+    assert(gonk && gonk.querySelector('.type-ico.t-worker'), 'icône de classe Worker sur Gonk');
+    // ligne valeur avec icône crédits
+    assert(gonk.querySelector('.value-line .ico-cred'), 'icône crédits dans la ligne de valeur');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

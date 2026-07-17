@@ -23,16 +23,18 @@ function syncStatesEqual(a, b){
 }
 function syncSetStatus(msg, isErr){
   const el = document.getElementById('syncStatus');
-  el.textContent = msg;
-  el.classList.toggle('err', !!isErr);
+  const textEl = document.getElementById('syncStatusText');
+  if(textEl) textEl.textContent = msg;
+  else if(el) el.textContent = msg;
+  if(el) el.classList.toggle('err', !!isErr);
 }
 function syncUpdateUI(){
-  const bar = document.getElementById('syncBar');
-  bar.hidden = false;
   const logged = pb.authStore.isValid;
   document.getElementById('loginBtn').hidden = logged;
   document.getElementById('logoutBtn').hidden = !logged;
   document.getElementById('deleteAccountBtn').hidden = !logged;
+  const lamp = document.getElementById('syncLamp');
+  if(lamp) lamp.classList.toggle('on', logged);
   if(logged){
     const email = (pb.authStore.record && pb.authStore.record.email) || '';
     syncSetStatus(t('syncSynced') + ' · ' + email);
