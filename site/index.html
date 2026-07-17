@@ -66,8 +66,11 @@
 </header>
 
 <div class="sync-bar" id="syncBar" hidden>
-  <span class="save-state" id="syncStatus">Not signed in — local save only</span>
+  <span class="save-state" id="syncStatus"><span class="sync-lamp" id="syncLamp"></span><span id="syncStatusText">Not signed in — local save only</span></span>
   <div class="footer-actions">
+      <button class="tool-btn" id="exportBtn" data-i18n="exportBtn">⇩ Export</button>
+      <button class="tool-btn" id="importBtn" data-i18n="importBtn">⇧ Import</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
     <button class="tool-btn" id="loginBtn" data-i18n="syncLoginBtn">Sign in with Google</button>
     <button class="tool-btn" id="logoutBtn" data-i18n="syncLogoutBtn" hidden>Sign out</button>
     <button class="reset-btn" id="deleteAccountBtn" data-i18n="syncDeleteBtn" hidden>Delete my account</button>
@@ -123,10 +126,6 @@
 
     <div class="footer">
       <span class="save-state" id="saveState" data-i18n="autoSave">Autosave ● local</span>
-      <span class="fsep"></span>
-      <button class="tool-btn" id="exportBtn" data-i18n="exportBtn">⇩ Export</button>
-      <button class="tool-btn" id="importBtn" data-i18n="importBtn">⇧ Import</button>
-      <input type="file" id="importFile" accept="application/json,.json" hidden>
       <span class="fsep"></span>
       <button class="reset-btn" id="resetBtn" data-i18n="resetBtn">Reset registry</button>
     </div>
