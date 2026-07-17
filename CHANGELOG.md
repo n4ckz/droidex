@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.5 — 2026-07-17
+
+- **C-3PO added as the 7th Iconic** (seen in the in-game Nova crystal shop; not yet on community sources, class/perk to confirm) — 69 droids / 317 variants tracked
+- **Super Rebirth button** next to the cycle selector: applies the in-game reset semantics in one tap — in-base variants drop back to "owned (Droidex)", Iconic droids leave the base (unlock kept, buy-back at the Nova shop), targeted rebirth returns to 1 and the targeted cycle advances (4 loops back to 1); Flawless and wishlist untouched
+
 ## 1.2.4 — 2026-07-11
 
 - Replaced the 🏠 emoji for the "in base" state with a monochrome house icon that takes the variant's colour (fits the dark theme instead of clashing)
