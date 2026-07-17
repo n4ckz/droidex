@@ -165,6 +165,8 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .fsep{width:1px;height:10px;background:rgba(var(--acc-rgb),.3)}
 .tool-btn{background:none;border:1px solid var(--n-700);color:var(--n-300);padding:6px 11px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--font-hud)}
 .tool-btn:hover{border-color:var(--accent);color:var(--accent-300)}
+.tool-btn.btn-danger{color:var(--n-400)}
+.tool-btn.btn-danger:hover{color:var(--danger);border-color:var(--danger)}
 .reset-btn{background:none;border:none;color:var(--n-500);font:inherit;letter-spacing:inherit;cursor:pointer;padding:0}
 .reset-btn:hover{color:var(--danger)}
 .save-state{font-size:inherit}

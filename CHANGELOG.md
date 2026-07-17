@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1 — 2026-07-18
+
+- "Delete my account" button now uses the HUD button style with a red danger hover (it rendered in the body font inside the sync bar)
+
 ## 1.3.0 — 2026-07-18
 
 - **Nocturne redesign** — full visual overhaul from the Claude Design handoff (dark futuristic HUD): Chakra Petch + IBM Plex Sans (self-hosted), purple accent palette, bracket-framed target panel, scanline textures, desktop sidebar layout (≥980px)
