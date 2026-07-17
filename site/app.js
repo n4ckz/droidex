@@ -292,7 +292,10 @@ function renderList(){
       sec.className='rarity-section';
       sec.innerHTML='<div class="rarity-title">'+t('byIncome')+
         ' <span class="count">'+ds.length+'</span></div>';
-      ds.forEach(d=>sec.appendChild(renderDroid(d)));
+      const cards=document.createElement('div');
+      cards.className='cards';
+      ds.forEach(d=>cards.appendChild(renderDroid(d)));
+      sec.appendChild(cards);
       list.appendChild(sec);
     }
   }else RARITY_ORDER.forEach(rar=>{
@@ -303,7 +306,10 @@ function renderList(){
     sec.className='rarity-section';
     sec.innerHTML='<div class="rarity-title">'+RARITY_LABELS[rar]+
       ' <span class="count">'+ds.length+'</span></div>';
-    ds.forEach(d=>sec.appendChild(renderDroid(d)));
+    const cards=document.createElement('div');
+    cards.className='cards';
+    ds.forEach(d=>cards.appendChild(renderDroid(d)));
+    sec.appendChild(cards);
     list.appendChild(sec);
   });
 
@@ -322,7 +328,7 @@ function renderDroid(d){
   card.className='droid'+(hasUnmet?' keep':'');
 
   let top='<div class="droid-top"><span class="droid-name">'+d.n+'</span>'+
-    '<span class="droid-type">'+d.t+'</span>'+
+    '<span class="type-ico t-'+d.t.toLowerCase()+'" role="img" aria-label="'+d.t+'" title="'+d.t+'"></span>'+
     '<span class="card-actions"></span>';
   if(ki) top+='<span class="keep-tag">'+t('keepTag')+'</span>';
   top+='</div>';
@@ -337,17 +343,17 @@ function renderDroid(d){
       else if(inBaseReq(d.id,tier)){cls=' ready';prefix='✓ ';}
       else if(meetsReq(d.id,tier)){cls=' warn';prefix='⚠ ';}
       else{cls=' urgent';}
-      return '<span class="req-badge'+cls+'">'+prefix+'RB'+rb+' · '+TIERS[tier]+'</span>';
+      return '<span class="req-badge'+cls+'">'+prefix+'RB'+rb+'·'+TIER_SHORT[tier]+'</span>';
     }).join('')+'</div>';
   }
 
   let value='';
   if(d.inc){
-    value='<div class="value-line">💰 '+fmtInc(d.inc[0])+'/s → '+fmtInc(d.inc[4])+'/s'+
+    value='<div class="value-line"><span class="ico-cred" aria-hidden="true"></span>'+fmtInc(d.inc[0])+'/s → '+fmtInc(d.inc[4])+'/s'+
       (d.bskCost?' <span class="dim">· BSK '+d.bskCost+'</span>':'')+
       (d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
   }else if(d.iconic){
-    value='<div class="value-line">💰 +15%/s'+(d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
+    value='<div class="value-line"><span class="ico-cred" aria-hidden="true"></span>+15%/s'+(d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
   }
 
   card.innerHTML=top+badges+value;
@@ -371,7 +377,7 @@ function renderDroid(d){
   const flawBtn=document.createElement('button');
   flawBtn.type='button';
   flawBtn.className='icon-btn flaw'+(flawOn?' on-flaw':'');
-  flawBtn.textContent='✨';
+  flawBtn.textContent='✦';
   flawBtn.setAttribute('aria-label',t('flawAria')+' : '+d.n);
   flawBtn.setAttribute('aria-pressed',flawOn?'true':'false');
   flawBtn.title=t('flawTip');
@@ -391,7 +397,23 @@ function renderDroid(d){
       state.owned[d.id]=state.owned[d.id]===true?false:true;
       scheduleSave();renderAll();
     });
-    card.appendChild(btn);
+
+    const baseBtn=document.createElement('button');
+    baseBtn.type='button';
+    const inB=!!state.inBase[d.id];
+    baseBtn.className='base-toggle'+(inB?' on':'');
+    baseBtn.setAttribute('aria-pressed',inB?'true':'false');
+    baseBtn.innerHTML='<span class="lamp"></span><span>'+(inB?t('inBase'):t('notInBase'))+'</span>';
+    baseBtn.addEventListener('click',()=>{
+      state.inBase[d.id]=!state.inBase[d.id];
+      scheduleSave();renderAll();
+    });
+
+    const row=document.createElement('div');
+    row.className='iconic-row';
+    row.appendChild(btn);
+    row.appendChild(baseBtn);
+    card.appendChild(row);
   }else{
     const tiers=document.createElement('div');
     tiers.className='tiers';
@@ -412,20 +434,6 @@ function renderDroid(d){
       tiers.appendChild(b);
     });
     card.appendChild(tiers);
-  }
-
-  if(d.iconic){
-    const baseBtn=document.createElement('button');
-    baseBtn.type='button';
-    const inB=!!state.inBase[d.id];
-    baseBtn.className='base-toggle'+(inB?' on':'');
-    baseBtn.setAttribute('aria-pressed',inB?'true':'false');
-    baseBtn.innerHTML='<span class="lamp"></span><span>'+(inB?t('inBase'):t('notInBase'))+'</span>';
-    baseBtn.addEventListener('click',()=>{
-      state.inBase[d.id]=!state.inBase[d.id];
-      scheduleSave();renderAll();
-    });
-    card.appendChild(baseBtn);
   }
   return card;
 }

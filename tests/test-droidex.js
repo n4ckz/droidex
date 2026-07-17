@@ -105,7 +105,7 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(savedJson);   // Strike-Orb Diamant en base, cible 9
     setTarget(w, 10);
     let badge = findCard(w, 'Strike-Orb').querySelector('.req-badge');
-    assert(badge.textContent === '✓ RB10 · Gold', 'cible 10 : badge "✓ RB10 · Gold" (obtenu : "' + badge.textContent + '")');
+    assert(badge.textContent === '✓ RB10·GLD', 'cible 10 : badge "✓ RB10·GLD" (obtenu : "' + badge.textContent + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'),
       'cible 10 : badge vert (ready), non barré');
     // panneau : Strike-Orb doit apparaître ✓ en base
@@ -125,8 +125,8 @@ const setTarget = (w, rb) => {
     const seed = JSON.stringify({ owned: { r6: [0, 0, 1, 0, 0] }, inBase: {}, targetRB: 9 }); // R6 Diamant possédé (pas en base), req [[9,1]]
     const { window: w } = boot(seed);
     const badge = findCard(w, 'R6').querySelector('.req-badge');
-    assert(badge.textContent === '⚠ RB9 · Gold' && badge.classList.contains('warn'),
-      'R6 Diamant possédé : "⚠ RB9 · Gold" (Diamond valide Gold, pas en base)');
+    assert(badge.textContent === '⚠ RB9·GLD' && badge.classList.contains('warn'),
+      'R6 Diamant possédé : "⚠ RB9·GLD" (Diamond valide Gold, pas en base)');
     const req = [...w.document.querySelectorAll('.rb-req')].find(r => r.textContent.includes('R6'));
     assert(req.querySelector('.status').textContent === '⚠', 'panneau : R6 en ⚠ (possédé, pas en base)');
     const reqTrak = [...w.document.querySelectorAll('.rb-req')].find(r => r.textContent.includes('TRAK-R'));
@@ -194,7 +194,7 @@ const setTarget = (w, rb) => {
     assert(w.document.querySelector('h1').textContent === 'Droidex — Registre du droïdesmith', 'titre français après bascule');
     w.__test.getState().targetRB = 10; w.__test.renderAll();
     const badge = findCard(w, 'Strike-Orb').querySelector('.req-badge');
-    assert(badge.textContent === '✓ RB10 · Or', 'badge en français : "✓ RB10 · Or" (obtenu : "' + badge.textContent + '")');
+    assert(badge.textContent === '✓ RB10·GLD', 'badge en français : "✓ RB10·GLD" (obtenu : "' + badge.textContent + '")');
     assert(w.localStorage.getItem('droidex-lang') === 'fr', 'choix de langue persisté');
     // nouveau chargement : le français est conservé
     const w2 = boot(savedJson).window;
@@ -341,6 +341,17 @@ const setTarget = (w, rb) => {
     side.querySelector('[data-filter="Worker"]').click();
     assert(side.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif sidebar');
     assert(chips.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif chips');
+  }
+
+  /* ---- 18. Icônes de carte (type + crédits) ---- */
+  console.log('\n[18] Icônes de carte');
+  {
+    const { window: w } = boot();
+    // icône de classe sur la carte
+    const gonk = findCard(w, 'Gonk');
+    assert(gonk && gonk.querySelector('.type-ico.t-worker'), 'icône de classe Worker sur Gonk');
+    // ligne valeur avec icône crédits
+    assert(gonk.querySelector('.value-line .ico-cred'), 'icône crédits dans la ligne de valeur');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
