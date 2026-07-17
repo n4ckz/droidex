@@ -80,41 +80,28 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .rb-credits-note{font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--n-400);line-height:1.5}
 
 /* ---------- filters ---------- */
-.controls{
-  position:sticky;top:0;z-index:10;
-  background:linear-gradient(var(--hull) 85%, transparent);
-  padding:12px 0 14px;
+.searchbar{position:sticky;top:0;z-index:10;display:flex;flex-direction:column;gap:10px;padding:14px 10px 11px;margin:-14px -10px 0;background:radial-gradient(ellipse at 50% -10%, rgba(var(--acc-rgb),.09), var(--bg) 55%) var(--bg);background-attachment:fixed}
+@media(min-width:980px){.searchbar{padding:18px 12px 13px;margin:-18px -12px 0}}
+.search-row{display:flex;gap:6px}
+.search-box{flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--accent-800);padding:0 12px;background:rgba(var(--acc-rgb),.04)}
+.search-glyph{color:var(--accent);font-size:13px}
+.search-box input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:13px;padding:9px 0;font-family:inherit;min-width:0}
+.search-row select{font-family:var(--font-hud);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--n-300);border:1px solid var(--accent-800);background:rgba(var(--acc-rgb),.04);padding:0 9px}
+.hint-i{font-family:var(--font-hud);font-size:10px;font-weight:600;color:var(--n-400);border:1px solid var(--n-700);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;align-self:center;cursor:help;flex:none}
+.hint-i:hover{color:var(--accent-300);border-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;font-family:var(--font-hud)}
+#filtersChips .chip{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border:1px solid var(--n-700);color:var(--n-300);background:transparent;cursor:pointer;display:inline-flex;gap:6px}
+#filtersChips .chip.active{border-color:var(--accent);color:var(--accent-300);background:rgba(var(--acc-rgb),.12)}
+#filtersChips .chip-count{opacity:.55}
+.filters-side{display:none}
+@media(min-width:980px){
+  .filters-side{display:flex;flex-direction:column;gap:2px;font-family:var(--font-hud)}
+  .filters-head{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--n-400);padding:0 4px 7px}
+  #filtersSide .chip{display:flex;width:100%;text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;background:transparent;color:var(--n-300);border:none;border-left:2px solid transparent;cursor:pointer}
+  #filtersSide .chip.active{background:rgba(var(--acc-rgb),.12);color:var(--accent-300);border-left-color:var(--accent)}
+  #filtersSide .chip-count{margin-left:auto;color:var(--n-500)}
+  #filtersChips{display:none}
 }
-.search{
-  width:100%;background:var(--panel);border:1px solid var(--line);
-  border-radius:8px;color:var(--sand);padding:9px 12px;font-size:15px;
-  font-family:inherit;
-}
-.search::placeholder{color:var(--sand-dim)}
-.search:focus{outline:2px solid var(--jawa);outline-offset:-1px;border-color:transparent}
-.chips{display:flex;gap:8px;margin-top:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.chips::-webkit-scrollbar{display:none}
-/* sur pointeur fin (souris/trackpad, pas de glissement tactile) : les filtres
-   passent à la ligne au lieu de défiler horizontalement */
-@media (pointer:fine){
-  .chips{flex-wrap:wrap;overflow-x:visible}
-}
-.chip{
-  flex:0 0 auto;
-  background:var(--panel);border:1px solid var(--line);color:var(--sand-dim);
-  font-family:'Chakra Petch',sans-serif;font-size:12.5px;font-weight:600;
-  letter-spacing:.04em;
-  padding:7px 13px;border-radius:20px;cursor:pointer;
-}
-.chip.active{background:var(--jawa-soft);border-color:var(--jawa);color:var(--jawa)}
-.chip:focus-visible{outline:2px solid var(--jawa);outline-offset:2px}
-.chip-select{
-  flex:0 0 auto;
-  background:var(--panel);border:1px solid var(--line);color:var(--sand-dim);
-  font-family:'Chakra Petch',sans-serif;font-size:12.5px;font-weight:600;
-  padding:7px 10px;border-radius:20px;
-}
-.chip-select:focus-visible{outline:2px solid var(--jawa);outline-offset:2px}
 
 /* ---------- sections & rows ---------- */
 .rarity-section{margin-top:20px}
@@ -214,8 +201,6 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .tier.base .lamp{background:currentColor;box-shadow:0 0 10px currentColor}
 .ico-base{filter:drop-shadow(0 0 4px currentColor)}
 .tier .ico-base{display:block;margin-top:1px}
-/* dans la légende (texte), aligner l'icône sur la ligne de base */
-.controls .ico-base{vertical-align:-2px}
 
 /* base toggle */
 .base-toggle{

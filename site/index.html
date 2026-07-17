@@ -92,30 +92,24 @@
         <span class="rb-credits-note" id="rbCredits"></span>
       </div>
     </div>
+    <div class="filters-side">
+      <div class="filters-head" data-i18n="filtersHead">◈ Filters</div>
+      <div id="filtersSide"></div>
+    </div>
   </aside>
   <main class="main">
-    <div class="controls">
-      <input type="search" class="search" id="search" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria" placeholder="Search a droid… (e.g. R6)" aria-label="Search">
-      <div style="font-size:11.5px;color:var(--sand-dim);margin-top:7px" data-i18n-html="hint">
-        1 tap = owned (Droidex) · 2 taps = in base · 3 taps = clear
-      </div>
-      <div style="font-size:11.5px;color:var(--sand-dim);margin-top:3px" data-i18n="legendIcons">
-        ★ = wishlist · ✨ = Flawless unlocked (rare permanent drop)
-      </div>
-      <div class="chips" role="tablist">
-        <button class="chip active" data-filter="all" data-i18n="filterAll">All</button>
-        <button class="chip" data-filter="keep" data-i18n="filterKeep">Keep</button>
-        <button class="chip" data-filter="missing" data-i18n="filterMissing">Missing required</button>
-        <button class="chip" data-filter="base" data-i18n="filterBase">In base</button>
-        <button class="chip" data-filter="wish" data-i18n="filterWish">Wishlist</button>
-        <button class="chip" data-filter="Worker">Worker</button>
-        <button class="chip" data-filter="Astromech">Astromech</button>
-        <button class="chip" data-filter="Battle">Battle</button>
-        <select id="sortSelect" class="chip-select" data-i18n-aria="sortAria" aria-label="Sort">
-          <option value="rarity" data-i18n="sortRarity">Sort: rarity</option>
-          <option value="income" data-i18n="sortIncome">Sort: income</option>
+    <div class="searchbar">
+      <div class="search-row">
+        <div class="search-box"><span class="search-glyph">⌕</span>
+          <input type="search" id="search" data-i18n-placeholder="searchPlaceholder" data-i18n-aria="searchAria" placeholder="Scan registry… (e.g. R6)" aria-label="Search">
+        </div>
+        <select id="sortSelect" data-i18n-aria="sortAria" aria-label="Sort">
+          <option value="rarity" data-i18n="sortRarity">Rarity</option>
+          <option value="income" data-i18n="sortIncome">Income</option>
         </select>
+        <span class="hint-i" id="hintI" data-i18n-title="hintFull" title="">i</span>
       </div>
+      <div class="chips" id="filtersChips" role="tablist"></div>
     </div>
 
     <div id="loading" data-i18n="loading">LOADING REGISTRY…</div>

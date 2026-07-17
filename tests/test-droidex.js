@@ -322,6 +322,27 @@ const setTarget = (w, rb) => {
     assert(badge2.classList.contains('all'), 'badge pulsant quand 3/3');
   }
 
+  /* ---- 17. Filtres à compteurs ---- */
+  console.log('\n[17] Filtres à compteurs');
+  {
+    const { window: w } = boot();
+    const side = w.document.getElementById('filtersSide');
+    const chips = w.document.getElementById('filtersChips');
+    assert(side && side.querySelectorAll('.chip').length === 8, '8 filtres dans la sidebar');
+    assert(chips && chips.querySelectorAll('.chip').length === 8, '8 chips mobiles');
+    const all = side.querySelector('[data-filter="all"] .chip-count');
+    assert(all && all.textContent === '69', 'compteur TOUS = 69 (obtenu : ' + (all && all.textContent) + ')');
+    const worker = side.querySelector('[data-filter="Worker"] .chip-count');
+    const astro = side.querySelector('[data-filter="Astromech"] .chip-count');
+    const battle = side.querySelector('[data-filter="Battle"] .chip-count');
+    assert(parseInt(worker.textContent,10)+parseInt(astro.textContent,10)+parseInt(battle.textContent,10) === 69,
+      'compteurs par classe sommant à 69');
+    // clic sur un filtre côté sidebar → filtre actif des deux côtés
+    side.querySelector('[data-filter="Worker"]').click();
+    assert(side.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif sidebar');
+    assert(chips.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif chips');
+  }
+
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
   process.exit(failures ? 1 : 0);
 })();

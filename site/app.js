@@ -239,6 +239,29 @@ function renderProgress(){
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
 }
 
+const FILTER_DEFS=[['all','filterAll'],['keep','filterKeep'],['missing','filterMissing'],['base','filterBase'],['wish','filterWish'],['Worker','filterWorker'],['Astromech','filterAstromech'],['Battle','filterBattle']];
+function countFor(f){
+  const prev=filter; filter=f;
+  const n=DROIDS.filter(droidMatches).length;
+  filter=prev; return n;
+}
+function renderFilters(){
+  ['filtersSide','filtersChips'].forEach(cid=>{
+    const box=document.getElementById(cid);
+    if(!box) return;
+    box.innerHTML='';
+    FILTER_DEFS.forEach(([f,key])=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='chip'+(filter===f?' active':'');
+      b.dataset.filter=f;
+      b.innerHTML='<span class="chip-label">'+t(key)+'</span><span class="chip-count">'+countFor(f)+'</span>';
+      b.addEventListener('click',()=>{ filter=f; renderFilters(); renderList(); });
+      box.appendChild(b);
+    });
+  });
+}
+
 function droidMatches(d){
   if(query && !d.n.toLowerCase().includes(query)) return false;
   if(filter==='all') return true;
@@ -410,20 +433,14 @@ function renderDroid(d){
 function renderAll(){
   renderRBPanel();
   renderProgress();
+  renderFilters();
   renderList();
 }
 
 /* ================= EVENTS ================= */
-document.querySelectorAll('.chip').forEach(chip=>{
-  chip.addEventListener('click',()=>{
-    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-    filter=chip.dataset.filter;
-    renderList();
-  });
-});
 document.getElementById('search').addEventListener('input',e=>{
   query=e.target.value.trim().toLowerCase();
+  renderFilters();
   renderList();
 });
 document.getElementById('sortSelect').addEventListener('change',e=>{

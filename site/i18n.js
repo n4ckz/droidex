@@ -1,7 +1,7 @@
 /* =========================================================================
    Internationalisation. Anglais par défaut, français via le sélecteur.
    - Textes statiques : attributs data-i18n / data-i18n-html /
-     data-i18n-placeholder / data-i18n-aria dans index.html.
+     data-i18n-placeholder / data-i18n-aria / data-i18n-title dans index.html.
    - Textes dynamiques : t('clé') dans app.js et sync.js.
    - Labels de variantes/raretés : globales TIERS / TIER_SHORT / RARITY_LABELS
      réassignées à chaque changement de langue.
@@ -30,23 +30,26 @@ const I18N = {
     rbShort: 'RB',
     unlocks: 'Unlock: {0}',
     collectionBonus: '{0} distinct · bonus +{1}%',
-    filterWish: 'Wishlist',
-    sortRarity: 'Sort: rarity',
-    sortIncome: 'Sort: income',
+    filterWish: 'Wish ★',
+    sortRarity: 'Rarity',
+    sortIncome: 'Income',
     sortAria: 'Sort',
     byIncome: 'By Beskar income',
     wishAria: 'Wishlist',
     flawAria: 'Flawless',
-    searchPlaceholder: 'Search a droid… (e.g. R6)',
+    searchPlaceholder: 'Scan registry… (e.g. R6)',
     searchAria: 'Search',
-    hint: '1 tap = owned (Droidex) · 2 taps = ' + BASE_ICON + ' in base · 3 taps = clear',
-    legendIcons: '★ = wishlist · ✨ = Flawless unlocked (rare permanent drop)',
+    filtersHead: '◈ Filters',
+    hintFull: '1 tap = owned (Droidex) · 2 taps = in base · 3 taps = clear · ★ = wishlist · ✦ = Flawless unlocked (rare permanent drop)',
     wishTip: 'Add to wishlist (droids you are hunting for)',
     flawTip: 'Flawless unlocked: rare permanent drop (1/1000 Basic → 1/100 Beskar), kept in your Droidex forever',
     filterAll: 'All',
     filterKeep: 'Keep',
     filterMissing: 'Missing required',
     filterBase: 'In base',
+    filterWorker: 'Worker',
+    filterAstromech: 'Astromech',
+    filterBattle: 'Battle',
     loading: 'LOADING REGISTRY…',
     autoSave: 'Auto-save enabled (in this browser)',
     exportBtn: 'Export backup',
@@ -113,23 +116,26 @@ const I18N = {
     rbShort: 'RB',
     unlocks: 'Débloque : {0}',
     collectionBonus: '{0} distincts · bonus +{1}%',
-    filterWish: 'Recherchés',
-    sortRarity: 'Tri : rareté',
-    sortIncome: 'Tri : revenus',
+    filterWish: 'Wish ★',
+    sortRarity: 'Rareté',
+    sortIncome: 'Revenu',
     sortAria: 'Tri',
     byIncome: 'Par revenu Beskar',
     wishAria: 'Liste de recherche',
     flawAria: 'Flawless',
-    searchPlaceholder: 'Chercher un droïde… (ex : R6)',
+    searchPlaceholder: 'Scanner le registre… (ex. R6)',
     searchAria: 'Recherche',
-    hint: '1 appui = possédé (Droidex) · 2 appuis = ' + BASE_ICON + ' en base · 3 appuis = effacer',
-    legendIcons: '★ = recherché (wishlist) · ✨ = Flawless obtenu (drop rare permanent)',
+    filtersHead: '◈ Filtres',
+    hintFull: '1 tap = possédé (Droidex) · 2 taps = en base · 3 taps = vide · ★ = wishlist · ✦ = Flawless débloqué (drop permanent rare)',
     wishTip: 'Ajouter à la wishlist (droïdes que tu chasses)',
     flawTip: 'Flawless obtenu : drop rare permanent (1/1000 Basic → 1/100 Beskar), conservé à vie dans le Droidex',
     filterAll: 'Tous',
     filterKeep: 'À garder',
     filterMissing: 'Manquants requis',
     filterBase: 'En base',
+    filterWorker: 'Worker',
+    filterAstromech: 'Astromech',
+    filterBattle: 'Battle',
     loading: 'CHARGEMENT DU REGISTRE…',
     autoSave: 'Sauvegarde automatique activée (dans ce navigateur)',
     exportBtn: 'Exporter la sauvegarde',
@@ -196,6 +202,7 @@ function applyStaticTexts(){
   document.querySelectorAll('[data-i18n-html]').forEach(el=>{ el.innerHTML = t(el.dataset.i18nHtml); });
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ el.placeholder = t(el.dataset.i18nPlaceholder); });
   document.querySelectorAll('[data-i18n-aria]').forEach(el=>{ el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{ el.setAttribute('title', t(el.dataset.i18nTitle)); });
   document.title = t('title');
   document.documentElement.lang = LANG;
 }
