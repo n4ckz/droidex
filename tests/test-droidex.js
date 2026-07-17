@@ -72,8 +72,8 @@ const setTarget = (w, rb) => {
     const parsed = JSON.parse(savedJson);
     assert(parsed && parsed.owned.strikeorb && parsed.owned.strikeorb[2] === 2,
       'localStorage : strikeorb Diamant = 2 (en base)');
-    assert(w.document.getElementById('saveState').textContent === 'Registry saved',
-      'message "Registry saved" affiché');
+    assert(w.document.getElementById('saveState').textContent === 'Saved ● local',
+      'message "Saved ● local" affiché');
   }
   {
     // "rechargement" : nouveau DOM, même localStorage
@@ -276,7 +276,7 @@ const setTarget = (w, rb) => {
     const first = w.document.querySelector('.droid .droid-name').textContent;
     assert(['Loadlifter', 'MO-TRAK', 'KX'].includes(first), 'tri par revenu : un 7.2K/s en tête (obtenu : ' + first + ')');
     const ver = w.document.getElementById('appVersion').textContent;
-    assert(/^Droidex v\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
+    assert(/^DROIDEX V\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
   }
 
   /* ---- 15. Super-renaissance ---- */

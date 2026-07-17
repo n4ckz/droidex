@@ -8,8 +8,6 @@
   --acc-rgb:145,132,217;
   --font-hud:'Chakra Petch',sans-serif;
   --font-body:'IBM Plex Sans',system-ui,sans-serif;
-  /* alias de compatibilité pour les anciennes règles encore présentes : */
-  --sand:var(--text); --sand-dim:var(--n-400); --line:rgba(var(--acc-rgb),.25); --jawa:var(--accent);
 }
 @font-face{font-family:'Chakra Petch';font-style:normal;font-weight:500;font-display:swap;src:url('fonts/chakra-petch-500.woff2') format('woff2')}
 @font-face{font-family:'Chakra Petch';font-style:normal;font-weight:600;font-display:swap;src:url('fonts/chakra-petch-600.woff2') format('woff2')}
@@ -152,33 +150,17 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .empty{text-align:center;padding:40px 10px;color:var(--n-400);font-family:var(--font-hud);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 
 /* ---------- footer ---------- */
-.footer{
-  margin-top:26px;display:flex;gap:10px;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;color:var(--sand-dim);font-size:12px;
-}
 .footer-actions{display:flex;gap:8px;flex-wrap:wrap}
-.tool-btn{
-  background:none;border:1px solid var(--line);color:var(--sand-dim);
-  border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit;
-}
-.tool-btn:hover{color:var(--sand);border-color:var(--sand-dim)}
-.reset-btn{
-  background:none;border:1px solid var(--line);color:var(--sand-dim);
-  border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit;
-}
-.reset-btn:hover{color:#E06C5A;border-color:#E06C5A}
-.save-state{font-size:11.5px}
-.save-state.err{color:#E06C5A}
-#loading{text-align:center;padding:50px 0;color:var(--sand-dim);font-family:'Chakra Petch',sans-serif;letter-spacing:.1em}
-
-/* ---------- mention légale ---------- */
-.legal{
-  margin-top:22px;padding-top:14px;border-top:1px solid var(--line);
-  color:var(--sand-dim);font-size:11px;line-height:1.5;
-}
-.legal a{color:var(--sand-dim);text-decoration:underline}
-.legal a:hover{color:var(--jawa)}
-.version{
-  margin-top:10px;font-family:'Chakra Petch',sans-serif;
-  font-size:10.5px;letter-spacing:.08em;color:var(--sand-dim);opacity:.7;
-}
+.footer{display:flex;align-items:center;gap:8px;font-family:var(--font-hud);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--n-500);justify-content:center;margin-top:12px;flex-wrap:wrap}
+.fsep{width:1px;height:10px;background:rgba(var(--acc-rgb),.3)}
+.tool-btn{background:none;border:1px solid var(--n-700);color:var(--n-300);padding:6px 11px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-family:var(--font-hud)}
+.tool-btn:hover{border-color:var(--accent);color:var(--accent-300)}
+.reset-btn{background:none;border:none;color:var(--n-500);font:inherit;letter-spacing:inherit;cursor:pointer;padding:0}
+.reset-btn:hover{color:var(--danger)}
+.save-state{font-size:inherit}
+.save-state.err{color:var(--danger)}
+.legal{margin-top:18px;padding-top:13px;border-top:1px solid rgba(var(--acc-rgb),.18);font-size:10.5px;line-height:1.6;color:var(--n-400)}
+.legal a{color:var(--n-400);text-decoration:underline}
+.legal a:hover{color:var(--accent-300)}
+.version{margin:9px 0 24px;font-family:var(--font-hud);font-size:9px;letter-spacing:.1em;color:var(--n-500)}
+#loading{font-family:var(--font-hud);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--n-400);text-align:center;padding:30px 0}
