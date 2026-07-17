@@ -54,6 +54,10 @@ const setTarget = (w, rb) => {
     const segs = w.document.getElementById('progressSegs');
     assert(segs && segs.children.length === 10, '10 segments de progression rendus');
     assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
+    // badge "prêt" : état vierge, cible RB1 → 0 / 3
+    const badge = w.document.getElementById('readyBadge');
+    assert(badge && badge.textContent === '0 / 3 ready', 'badge prêt "0 / 3 ready" (obtenu : "' + (badge && badge.textContent) + '")');
+    assert(!badge.classList.contains('all'), 'badge prêt non-pulsant à vide');
   }
 
   /* ---- 2. Persistance localStorage ---- */
@@ -218,7 +222,7 @@ const setTarget = (w, rb) => {
     sel.value = '24'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
     const reqNames = [...w.document.querySelectorAll('.rb-req')].map(r => r.textContent);
     assert(reqNames.some(x => x.includes('MO-TRAK')), 'panneau RB24 : MO-TRAK requis');
-    assert(w.document.getElementById('rbCredits').textContent.includes('9T'), 'crédits RB24 : 9T');
+    assert(w.document.getElementById('rbCreditsBig').textContent.includes('9T'), 'crédits RB24 : 9T');
     // bascule cycle 2 : RB1 = ID10, Mouse, Gonk
     sel.value = '1'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
     const cyc = w.document.getElementById('cycleSelect');
@@ -305,7 +309,17 @@ const setTarget = (w, rb) => {
     w.document.getElementById('superRebirthBtn').click();
     assert(w.__test.getState().targetCycle === 1, 'cycle 4 boucle vers 1');
     const btn = w.document.getElementById('superRebirthBtn');
-    assert(btn.textContent === 'Super Rebirth', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
+    assert(btn.textContent === 'SUPER RB', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
+  }
+
+  /* ---- 16. Badge « prêt » du panneau RB : 3/3 en base ---- */
+  console.log('\n[16] Badge « prêt » du panneau RB');
+  {
+    const seed = JSON.stringify({ owned: { cb: [2, 0, 0, 0, 0], pit: [2, 0, 0, 0, 0], drk1: [2, 0, 0, 0, 0] }, targetRB: 1, targetCycle: 1 });
+    const { window: w } = boot(seed);
+    const badge2 = w.document.getElementById('readyBadge');
+    assert(badge2.textContent === '✓ Rebirth ready', 'badge "✓ Rebirth ready" quand 3/3');
+    assert(badge2.classList.contains('all'), 'badge pulsant quand 3/3');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

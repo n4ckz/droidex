@@ -78,15 +78,19 @@
   <aside class="side" id="sidePanel">
     <div class="rb-panel">
       <div class="rb-head">
-        <div class="rb-title" data-i18n="rbTitle">Next targeted rebirth</div>
-        <div class="rb-selects">
-          <select id="cycleSelect" data-i18n-aria="cycleAria" aria-label="Rebirth cycle"></select>
-          <select id="rbSelect" data-i18n-aria="rbAria" aria-label="Targeted rebirth"></select>
-          <button id="superRebirthBtn" class="tool-btn super-rb-btn" data-i18n="superRebirthBtn" data-i18n-aria="superRebirthAria" aria-label="Apply a super rebirth">Super Rebirth</button>
-        </div>
+        <span class="rb-title"><img src="icons/game/rebirth.png" alt="" class="ico-rb"><span data-i18n="rbTitle">Target · Rebirth</span></span>
+        <span class="ready-badge" id="readyBadge"></span>
+      </div>
+      <div class="rb-selects">
+        <select id="cycleSelect" data-i18n-aria="cycleAria" aria-label="Rebirth cycle"></select>
+        <select id="rbSelect" data-i18n-aria="rbAria" aria-label="Targeted rebirth"></select>
+        <button id="superRebirthBtn" class="super-rb-btn" data-i18n-aria="superRebirthAria" aria-label="Apply a super rebirth"><img src="icons/game/super-rebirth.png" alt="" class="ico-srb"><span data-i18n="superRebirthBtn">SUPER RB</span></button>
       </div>
       <div class="rb-reqs" id="rbReqs"></div>
-      <div class="rb-credits" id="rbCredits"></div>
+      <div class="rb-credits-row">
+        <span class="rb-credits-big"><img src="icons/game/credits.webp" alt="" class="ico-cred">​<span id="rbCreditsBig">—</span></span>
+        <span class="rb-credits-note" id="rbCredits"></span>
+      </div>
     </div>
   </aside>
   <main class="main">

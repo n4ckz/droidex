@@ -178,7 +178,7 @@ function renderRBPanel(){
       scheduleSave();renderAll();
     });
   }
-  [...sel.options].forEach((o,idx)=>{ o.textContent=t('rebirth')+' '+(idx+1); });
+  [...sel.options].forEach((o,idx)=>{ o.textContent=t('rbShort')+' '+(idx+1); });
   sel.value=state.targetRB;
 
   const cyc = document.getElementById('cycleSelect');
@@ -193,32 +193,36 @@ function renderRBPanel(){
       scheduleSave();renderAll();
     });
   }
-  [...cyc.options].forEach((o,idx)=>{ o.textContent=t('cycle')+' '+(idx+1); });
+  [...cyc.options].forEach((o,idx)=>{ o.textContent=t('cycleShort')+' '+(idx+1); });
   cyc.value=state.targetCycle;
 
   const reqsEl=document.getElementById('rbReqs');
   reqsEl.innerHTML='';
   const needed=((REBIRTHS[state.targetCycle]||{})[state.targetRB]||[])
     .map(([id,tier])=>({d:DROID_BY_ID[id],tier}));
+  let ready=0;
   needed.forEach(({d,tier})=>{
     const owned=meetsReq(d.id,tier);
-    const ready=inBaseReq(d.id,tier);
+    const isReady=inBaseReq(d.id,tier);
+    if(isReady) ready++;
     const row=document.createElement('div');
-    row.className='rb-req '+(ready?'met':'unmet');
+    row.className='rb-req '+(isReady?'met':(owned?'part':'unmet'));
     let icon,note;
-    if(ready){icon='✓';note=TIERS[tier]+' '+t('minInBase');}
+    if(isReady){icon='✓';note=TIERS[tier]+' '+t('minInBase');}
     else if(owned){icon='⚠';note=TIERS[tier]+' '+t('minNotInBase');}
     else{icon='✗';note=TIERS[tier]+' '+t('minimum');}
-    row.innerHTML='<span class="status">'+icon+'</span>'+
-      '<span>'+d.n+'</span>'+
-      '<span class="req-tier" style="color:var(--sand-dim)">'+note+'</span>';
+    row.innerHTML='<span class="status">'+icon+'</span><span class="rq-name">'+d.n+'</span>'+
+      '<span class="rq-note">'+note+'</span>';
     reqsEl.appendChild(row);
   });
-  let creditsLine=t('credits', RB_CREDITS[state.targetRB]||'—');
-  if(state.targetCycle===1 && RB_UNLOCKS[state.targetRB]){
-    creditsLine+=' · '+t('unlocks', RB_UNLOCKS[state.targetRB]);
-  }
-  document.getElementById('rbCredits').innerHTML=creditsLine;
+  const badge=document.getElementById('readyBadge');
+  const allReady=needed.length>0 && ready===needed.length;
+  badge.textContent=allReady?t('rebirthReady'):t('readyCount', ready, needed.length);
+  badge.classList.toggle('all',allReady);
+  document.getElementById('rbCreditsBig').textContent=RB_CREDITS[state.targetRB]||'—';
+  let note=t('credits');
+  if(state.targetCycle===1 && RB_UNLOCKS[state.targetRB]) note+=' · '+t('unlocks', RB_UNLOCKS[state.targetRB]);
+  document.getElementById('rbCredits').textContent=note;
 }
 
 function renderProgress(){
