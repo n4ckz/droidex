@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2 — 2026-07-18
+
+- C-3PO perk filled in from in-game observation: **+25% workers** (still absent from community sources)
+
 ## 1.3.1 — 2026-07-18
 
 - "Delete my account" button now uses the HUD button style with a red danger hover (it rendered in the body font inside the sync bar)

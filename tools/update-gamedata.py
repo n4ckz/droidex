@@ -228,9 +228,9 @@ def main():
     # C-3PO existe en jeu (boutique de cristaux Nova, constaté le 17/07/2026)
     # mais pas encore dans la value list tycoon-tools : injection statique tant
     # que la source est en retard. setdefault → la source primera dès qu'elle
-    # le référencera (classe supposée Worker, perk inconnu à ce jour).
+    # le référencera (perk relevé en jeu par Julien le 18/07/2026).
     vals.setdefault('c3po', {'rarity': 'Iconic', 'type': 'Worker',
-                             'perk': None, 'inc': [None] * 5, 'beskarCost': None})
+                             'perk': '+25% workers', 'inc': [None] * 5, 'beskarCost': None})
     rebirths, unlocks, credits = parse_rebirths()
     print(f'  {len(vals)} droïdes · {len(rebirths)} cycles × {len(rebirths[1])} renaissances')
 
