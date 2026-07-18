@@ -1,0 +1,99 @@
+/* =========================================================================
+   Styles pour les pages de contenu SEO statiques (value-list, rebirth-
+   requirements, faq) UNIQUEMENT. Réutilise les variables/polices définies
+   dans styles.css (:root) sans jamais toucher à ce fichier. Toutes les
+   règles sont scopées sous .seo-page pour ne rien affecter ailleurs.
+   ========================================================================= */
+
+.seo-page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---------- en-tête ---------- */
+.seo-page .seo-header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
+.seo-page .seo-hdr{
+  display:flex;align-items:center;flex-wrap:wrap;gap:14px;
+  padding:13px 18px;max-width:960px;margin:0 auto;
+}
+.seo-page .seo-hdr .brand{
+  font-family:var(--font-hud);font-size:19px;font-weight:700;letter-spacing:.08em;
+  text-decoration:none;color:var(--text);text-shadow:0 0 14px rgba(var(--acc-rgb),.45);
+}
+.seo-page .seo-hdr .brand:hover{color:var(--accent-300)}
+.seo-page .brand-sub{
+  font-family:var(--font-hud);font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:var(--accent);
+}
+.seo-page .seo-nav{
+  display:flex;flex-wrap:wrap;gap:4px;margin-left:auto;
+}
+.seo-page .seo-navlink{
+  font-family:var(--font-hud);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--n-400);text-decoration:none;padding:6px 9px;border:1px solid transparent;
+}
+.seo-page .seo-navlink:hover{color:var(--accent-300);border-color:var(--accent-800)}
+.seo-page .seo-navlink.active{color:var(--accent-300);border-color:var(--accent-700)}
+.seo-page .seo-cta{text-decoration:none;display:inline-block}
+
+/* ---------- corps ---------- */
+.seo-page .seo-main{
+  flex:1;
+  max-width:960px;width:100%;margin:0 auto;padding:28px 18px 12px;
+  font-family:var(--font-body);font-size:15px;line-height:1.7;color:var(--text);
+}
+.seo-page .seo-main h1{
+  font-family:var(--font-hud);font-size:22px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--accent-300);margin:0 0 16px;
+  text-shadow:0 0 14px rgba(var(--acc-rgb),.35);
+}
+.seo-page .seo-main h2{
+  font-family:var(--font-hud);font-size:15px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent-300);margin:32px 0 12px;
+}
+.seo-page .seo-main > h2:first-of-type{margin-top:20px}
+.seo-page .seo-intro{color:var(--n-300);margin-bottom:8px}
+.seo-page .seo-main p{margin:0 0 12px}
+.seo-page .seo-main a{color:var(--accent-300)}
+.seo-page .seo-main a:hover{color:var(--accent)}
+
+/* ---------- tableaux ---------- */
+.seo-page .seo-table-wrap{overflow-x:auto;margin-bottom:8px}
+.seo-page table{
+  width:100%;border-collapse:collapse;font-size:13px;min-width:640px;
+}
+.seo-page thead th{
+  font-family:var(--font-hud);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent-300);text-align:left;padding:8px 10px;
+  border-bottom:1px solid rgba(var(--acc-rgb),.4);white-space:nowrap;
+}
+.seo-page tbody td{
+  padding:7px 10px;border-bottom:1px solid rgba(var(--acc-rgb),.25);color:var(--n-300);
+  vertical-align:top;
+}
+.seo-page tbody tr:nth-child(even) td{background:rgba(var(--acc-rgb),.045)}
+.seo-page tbody tr:hover td{background:rgba(var(--acc-rgb),.09)}
+.seo-page tbody td:first-child{color:var(--text);font-weight:600;white-space:nowrap}
+
+/* ---------- FAQ ---------- */
+.seo-page .seo-faq-item{margin-bottom:22px}
+.seo-page .seo-faq-item h2{margin-top:0}
+
+/* ---------- pied de page ---------- */
+.seo-page .seo-footer{
+  max-width:960px;width:100%;margin:24px auto 0;padding:14px 18px 28px;
+  border-top:1px solid rgba(var(--acc-rgb),.18);
+}
+.seo-page .seo-legal{font-size:10.5px;line-height:1.6;color:var(--n-400)}
+.seo-page .seo-legal a{color:var(--n-400);text-decoration:underline}
+.seo-page .seo-legal a:hover{color:var(--accent-300)}
+.seo-page .seo-version{
+  margin-top:9px;font-family:var(--font-hud);font-size:9px;letter-spacing:.1em;color:var(--n-500);
+}
+
+@media (max-width:600px){
+  .seo-page .seo-hdr{padding:11px 14px}
+  .seo-page .seo-main{padding:22px 14px 12px;font-size:14px}
+  .seo-page .seo-main h1{font-size:19px}
+}

@@ -31,6 +31,16 @@ jobs:
         if: steps.drift.outputs.drift == 'true'
         run: python3 tools/update-gamedata.py
 
+      - name: Set up Node.js
+        if: steps.drift.outputs.drift == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate SEO content pages and sitemap
+        if: steps.drift.outputs.drift == 'true'
+        run: node tools/generate-seo-pages.js
+
       - name: Run tracker tests against the new data
         if: steps.drift.outputs.drift == 'true'
         working-directory: tests
@@ -45,13 +55,20 @@ jobs:
           branch: bot/gamedata-update
           title: '🤖 Game data update detected on tycoon-tools'
           commit-message: 'Update game data from tycoon-tools'
+          add-paths: |
+            site/data.js
+            site/value-list
+            site/rebirth-requirements
+            site/faq
+            site/sitemap.xml
           body: |
             The scheduled check found that [tycoon-tools](https://tycoon-tools.com/droid-tycoon/) no longer matches `site/data.js` — the game was probably patched.
 
-            `site/data.js` has been regenerated and the tracker test suite passed against the new data.
+            `site/data.js` has been regenerated, the SEO content pages and sitemap were rebuilt from the new data, and the tracker test suite passed against it.
 
             **Before merging:**
             - [ ] Review the diff (rebalanced requirements? new incomes? new droid?)
+            - [ ] SEO pages regenerated (value list / rebirths / FAQ / sitemap)
             - [ ] Bump `APP_VERSION` in `site/version.js`
             - [ ] Add a `CHANGELOG.md` entry
             - [ ] After merge: `cd /opt/sites/droidex && git pull && docker compose up -d --build droidex`

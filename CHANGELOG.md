@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 — 2026-07-18
+
+- **SEO/discoverability**: keyword page title, real Open Graph images (1200×630 + square), ~300-word crawlable noscript fallback
+- **Three static content pages generated from the game data** (auto-refreshed by the scheduled data watch): [value list](https://droidex.nackz.dev/value-list/), [rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/), [FAQ](https://droidex.nackz.dev/faq/) — English, no JS, Nocturne-styled, linked from the app footer
+- Sitemap now lists the 4 pages with data-driven lastmod; llms.txt links the new pages
+
 ## 1.3.2 — 2026-07-18
 
 - C-3PO perk filled in from in-game observation: **+25% workers** (still absent from community sources)

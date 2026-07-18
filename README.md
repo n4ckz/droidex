@@ -107,6 +107,8 @@ Serve the `site/` folder with any static file server. To disable sync entirely (
 site/               The complete static site
   index.html
   styles.css        Dark Tatooine theme
+  seo-pages.css     Styles for the generated content pages below (scoped, does
+                    not touch styles.css)
   i18n.js           EN/FR translations, language selector logic
   data.js           ⚠ Game data (droids, requirements, credits) — the ONLY file
                     to edit when the game adds content
@@ -120,6 +122,10 @@ site/               The complete static site
   sw.js             Service worker (offline shell cache, versioned by version.js)
   fonts/            Self-hosted fonts (no Google Fonts requests)
   icons/            PWA icons
+  value-list/               Generated content page (see "Content pages" below)
+  rebirth-requirements/     Generated content page
+  faq/                      Generated content page
+  sitemap.xml               Generated, lists all 4 pages
 deploy/
   nginx.conf              nginx config (caching, gzip, sw.js never cached)
   pocketbase.Dockerfile   PocketBase image (pinned version)
@@ -127,8 +133,11 @@ deploy/
 tests/                    Test suites (see below)
 tools/
   update-gamedata.py      Regenerates site/data.js from tycoon-tools
+  generate-seo-pages.js   Regenerates the content pages + sitemap.xml from
+                          site/data.js (see "Content pages" below)
 .github/workflows/
   gamedata-check.yml      Scheduled watch: opens a PR when the game data changes
+                          (and regenerates the content pages with it)
 Dockerfile                Static site image
 docker-compose.yml        Production (Traefik): site + API
 docker-compose.local.yml  Local testing
@@ -191,6 +200,16 @@ git diff site/data.js                      # review what the game changed
 Then bump `APP_VERSION` in `site/version.js`, add a CHANGELOG entry and run the tests. If the game adds a brand-new droid, the script stops and tells you to add its id to `NAME2ID`/`DISPLAY` first.
 
 This check also runs automatically **twice a week** (GitHub Actions): when a game patch changes the data, the workflow regenerates `site/data.js`, runs the test suite against it and opens a reviewable pull request.
+
+### Content pages
+
+Three static, crawlable pages are generated straight from `site/data.js` — no build step, no duplicated data: a [value list](https://droidex.nackz.dev/value-list/), the [rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/) for all 4 cycles, and a [FAQ](https://droidex.nackz.dev/faq/). They're linked from the app footer and from `site/sitemap.xml`.
+
+```bash
+node tools/generate-seo-pages.js   # regenerates site/value-list, site/rebirth-requirements, site/faq, site/sitemap.xml
+```
+
+The scheduled game-data watch above regenerates these pages automatically whenever it regenerates `site/data.js`, so they stay in sync with the game without manual upkeep.
 
 ## License and disclaimers
 

@@ -356,6 +356,23 @@ const setTarget = (w, rb) => {
     assert(gonk.querySelector('.value-line .ico-cred'), 'icône crédits dans la ligne de valeur');
   }
 
+  /* ---- 19. Pages SEO générées ---- */
+  console.log('\n[19] Pages SEO générées');
+  {
+    const read = f => fs.readFileSync(path.join(SITE, f), 'utf8');
+    const vl = read('value-list/index.html');
+    assert(vl.includes('Strike-Orb') && vl.includes('Beskar'), 'value list : droïdes + libellés longs');
+    assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
+    const rb = read('rebirth-requirements/index.html');
+    assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
+    const faq = read('faq/index.html');
+    assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
+    const sm = read('sitemap.xml');
+    assert((sm.match(/<loc>/g) || []).length === 4, 'sitemap : 4 URLs');
+    ['value-list','rebirth-requirements','faq'].forEach(p =>
+      assert(sm.includes('https://droidex.nackz.dev/' + p + '/'), 'sitemap contient ' + p));
+  }
+
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
   process.exit(failures ? 1 : 0);
 })();
