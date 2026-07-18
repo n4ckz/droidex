@@ -383,20 +383,41 @@ const setTarget = (w, rb) => {
     assert(panel && panel.hidden === false, 'première visite (registre vide) → aide visible d\'office');
     assert(panel.textContent.includes('2 taps = in base'), 'le panneau contient l\'aide des taps (EN)');
     assert(btn.getAttribute('aria-expanded') === 'true', 'aria-expanded=true ouvert');
-    // clic ailleurs → fermé + mémorisé
+    // phase d'apprentissage : un clic ailleurs ne le ferme PAS
     w.document.getElementById('search').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
-    assert(panel.hidden === true, 'clic ailleurs → panneau fermé');
+    assert(panel.hidden === false, 'clic ailleurs pendant l\'apprentissage → panneau toujours ouvert');
+    // 29 droïdes distincts possédés → toujours ouvert
+    for (let i = 0; i < 29; i++) {
+      const cards = [...w.document.querySelectorAll('.droid')];
+      cards[i].querySelector('.tier[data-t="0"]').click();
+    }
+    assert(panel.hidden === false, '29 droïdes distincts → panneau toujours ouvert');
+    // 30e droïde distinct → fermeture automatique + mémorisée
+    [...w.document.querySelectorAll('.droid')][29].querySelector('.tier[data-t="0"]').click();
+    assert(panel.hidden === true, '30 droïdes distincts → panneau fermé automatiquement');
     assert(w.localStorage.getItem('droidex-hint-seen') === '1', 'fermeture mémorisée (droidex-hint-seen)');
-    // la pastille reste utilisable
+    // la pastille reste utilisable et un clic ailleurs referme désormais
     btn.click();
     assert(panel.hidden === false, 'tap sur « i » → panneau rouvert');
-    btn.click();
-    assert(panel.hidden === true, 're-tap → panneau fermé');
+    w.document.getElementById('search').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+    assert(panel.hidden === true, 'après apprentissage : clic ailleurs → fermé');
   }
   {
-    // utilisateur existant : registre non vide → aide cachée
+    // registre entamé (< 30 distincts), aide jamais fermée → encore visible
     const { window: w } = boot(JSON.stringify({ owned: { gonk: [1,0,0,0,0] }, targetRB: 1, targetCycle: 1 }));
-    assert(w.document.getElementById('hintPanel').hidden === true, 'registre non vide → aide cachée par défaut');
+    assert(w.document.getElementById('hintPanel').hidden === false, '1 droïde distinct sans fermeture → aide encore visible');
+    // fermeture explicite via la pastille → mémorisée
+    w.document.getElementById('hintI').click();
+    assert(w.document.getElementById('hintPanel').hidden === true && w.localStorage.getItem('droidex-hint-seen') === '1',
+      'fermeture via la pastille → mémorisée');
+  }
+  {
+    // registre avancé (≥ 30 distincts) → aide cachée d'office
+    const ids = ['mouse','pit','gonk','cb','r3','r5','r8','improbe','b1battle','drk1','id10','bdx','arg','senate','bu4d',
+                 'balcore','rollr','2bb','alt','r4','r9','b1sec','navex','vectarm','hovr','groundmech','lo','amp','sentri','optipod'];
+    const owned = {}; ids.forEach(id => owned[id] = [1,0,0,0,0]);
+    const { window: w } = boot(JSON.stringify({ owned, targetRB: 1, targetCycle: 1 }));
+    assert(w.document.getElementById('hintPanel').hidden === true, '30 droïdes distincts au chargement → aide cachée');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

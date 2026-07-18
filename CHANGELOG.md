@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.3 — 2026-07-18
+
+- The tap-cycle help now stays open through the learning phase and closes itself once you own 30 distinct droids (or when dismissed via the "i" pastille) — closing it at the first tap was defeating its purpose
+
 ## 1.4.2 — 2026-07-18
 
 - The tap-cycle help now opens automatically on first visit (empty registry) and stays away once dismissed — a corner "i" pastille alone was never going to be discovered

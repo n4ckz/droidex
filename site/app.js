@@ -447,6 +447,17 @@ function renderAll(){
   renderProgress();
   renderFilters();
   renderList();
+  hintAutoClose();
+}
+/* fin de la phase d'apprentissage : dès HINT_LEARN_DROIDS droïdes distincts,
+   l'aide se ferme d'elle-même (définitivement) */
+function hintAutoClose(){
+  try{
+    if(!hintPanel.hidden && !localStorage.getItem('droidex-hint-seen') &&
+       distinctOwned()>=HINT_LEARN_DROIDS){
+      hintDismiss();
+    }
+  }catch(e){}
 }
 
 /* ================= EVENTS ================= */
@@ -466,11 +477,23 @@ function setHint(open){
   hintPanel.hidden=!open;
   hintBtn.setAttribute('aria-expanded',open?'true':'false');
 }
-hintBtn.addEventListener('click',()=>setHint(hintPanel.hidden));
+/* phase d'apprentissage : l'aide reste affichée tant que l'utilisateur possède
+   moins de HINT_LEARN_DROIDS droïdes distincts et ne l'a pas fermée lui-même */
+const HINT_LEARN_DROIDS=30;
+function hintDismiss(){
+  setHint(false);
+  try{ localStorage.setItem('droidex-hint-seen','1'); }catch(e){}
+}
+function hintLearning(){
+  try{ return !localStorage.getItem('droidex-hint-seen') && distinctOwned()<HINT_LEARN_DROIDS; }
+  catch(e){ return false; }
+}
+hintBtn.addEventListener('click',()=>{
+  if(hintPanel.hidden) setHint(true); else hintDismiss();
+});
 document.addEventListener('click',e=>{
-  if(!hintPanel.hidden && e.target!==hintBtn && !hintPanel.contains(e.target)){
-    setHint(false);
-    try{ localStorage.setItem('droidex-hint-seen','1'); }catch(e2){}
+  if(!hintPanel.hidden && !hintLearning() && e.target!==hintBtn && !hintPanel.contains(e.target)){
+    hintDismiss();
   }
 });
 document.getElementById('resetBtn').addEventListener('click',()=>{
@@ -513,14 +536,9 @@ document.getElementById('importFile').addEventListener('change',e=>{
   document.getElementById('list').style.display='block';
   document.getElementById('appVersion').textContent='DROIDEX V'+APP_VERSION;
   renderAll();
-  /* première visite (registre vide, aide jamais fermée) : l'aide s'affiche d'office —
+  /* premières visites : l'aide s'affiche d'office pendant la phase d'apprentissage —
      un « i » en bout de ligne ne serait jamais découvert par un nouvel utilisateur */
-  try{
-    if(!localStorage.getItem('droidex-hint-seen') &&
-       !Object.keys(state.owned).length && !Object.keys(state.inBase).length){
-      setHint(true);
-    }
-  }catch(e){}
+  if(hintLearning()) setHint(true);
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{ /* hors ligne au premier chargement : sans conséquence */ });
   }
