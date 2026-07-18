@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.4 — 2026-07-18
+
+- The crawlable noscript fallback and llms.txt now describe the tracker's differentiating features: per-droid wishlist and Flawless tracking, name search, filters with live counts, rarity/income sorting, live collection counter, English+French interface, JSON export/import and optional Google sync — AI-generated tool comparisons were crediting competitors with features Droidex already has, simply because our indexed text never mentioned them
+
 ## 1.4.3 — 2026-07-18
 
 - The tap-cycle help now stays open through the learning phase and closes itself once you own 30 distinct droids (or when dismissed via the "i" pastille) — closing it at the first tap was defeating its purpose

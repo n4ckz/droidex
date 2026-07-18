@@ -7,6 +7,8 @@ Key facts:
 - The game gives no way to check what you already own while standing at the Sandcrawler shop; Droidex fills that gap.
 - Each droid variant has 3 states: never owned, owned (Droidex entry), physically in base. A higher variant always satisfies a lower requirement (a Diamond droid validates a "Gold" requirement).
 - Each Rebirth (1–27, across 4 cycles) requires 3 specific droids in your base plus credits; the tracker shows what is missing for your next target.
+- Beyond the checklist: per-droid wishlist (star the droids you are hunting for), Flawless tracking (mark which droids you already rolled Flawless), name search, quick filters with live counts (keep, missing for next rebirth, in base, wishlist, or by class Worker/Astromech/Battle), sorting by rarity or by Beskar income per second, and a live variant total + collection bonus counter.
+- Interface fully available in English and French (the only Droid Tycoon tracker that is).
 - No account required: data stays in the browser (localStorage) with JSON export/import. Optional Google sign-in syncs the registry across devices.
 - No tracking, no ads, free and open source (MIT).
 - Self-hostable: static site (nginx) + optional PocketBase sync API, Docker/Traefik setup provided.
