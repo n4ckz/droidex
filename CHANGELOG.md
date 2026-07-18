@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1 — 2026-07-18
+
+- The "i" hint pastille is now tappable: on touch devices the tap-cycle help (1 tap = owned · 2 taps = in base · 3 taps = clear) opens as a small panel under the search bar — it was hover-only since the redesign
+
 ## 1.4.0 — 2026-07-18
 
 - **SEO/discoverability**: keyword page title, real Open Graph images (1200×630 + square), ~300-word crawlable noscript fallback

@@ -373,6 +373,24 @@ const setTarget = (w, rb) => {
       assert(sm.includes('https://droidex.nackz.dev/' + p + '/'), 'sitemap contient ' + p));
   }
 
+  /* ---- 20. Panneau d'aide tappable ---- */
+  console.log('\n[20] Panneau d\'aide tappable');
+  {
+    const { window: w } = boot();
+    const btn = w.document.getElementById('hintI');
+    const panel = w.document.getElementById('hintPanel');
+    assert(panel && panel.hidden === true, 'panneau d\'aide caché par défaut');
+    btn.click();
+    assert(panel.hidden === false, 'tap sur « i » → panneau visible');
+    assert(panel.textContent.includes('2 taps = in base'), 'le panneau contient l\'aide des taps (EN)');
+    assert(btn.getAttribute('aria-expanded') === 'true', 'aria-expanded=true ouvert');
+    btn.click();
+    assert(panel.hidden === true, 're-tap → panneau fermé');
+    btn.click();
+    w.document.getElementById('search').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+    assert(panel.hidden === true, 'clic ailleurs → panneau fermé');
+  }
+
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
   process.exit(failures ? 1 : 0);
 })();

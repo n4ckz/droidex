@@ -459,6 +459,17 @@ document.getElementById('sortSelect').addEventListener('change',e=>{
   sortMode=e.target.value;
   renderList();
 });
+/* pastille « i » : l'infobulle title est invisible au tactile → le tap ouvre un encart */
+const hintBtn=document.getElementById('hintI');
+const hintPanel=document.getElementById('hintPanel');
+function setHint(open){
+  hintPanel.hidden=!open;
+  hintBtn.setAttribute('aria-expanded',open?'true':'false');
+}
+hintBtn.addEventListener('click',()=>setHint(hintPanel.hidden));
+document.addEventListener('click',e=>{
+  if(!hintPanel.hidden && e.target!==hintBtn && !hintPanel.contains(e.target)) setHint(false);
+});
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm(t('resetConfirm'))) return;
   state={owned:{},inBase:{},targetRB:1,targetCycle:1,flawless:{},wish:{}};
