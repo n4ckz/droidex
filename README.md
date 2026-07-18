@@ -14,7 +14,7 @@ The game features a Droidex of 200+ collectible droids across 5 variants (Basic,
 
 ## Features
 
-- **Per-variant tracking** with 3 tap-cyclable states: never owned → owned (Droidex entry) → 🏠 in base (physical presence) → clear.
+- **Per-variant tracking** with 3 tap-cyclable states: never owned → owned (Droidex entry) → ⌂ in base (physical presence) → clear. A help panel explains the tap cycle on first visits (until 30 distinct droids are owned) and stays reachable behind the "i" pastille.
 - **Higher-variant rule**: a Diamond droid always satisfies a "Gold" requirement.
 - **"Next targeted rebirth" panel** (1–27, across the 4 super-rebirth cycles): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready), the credits needed and the slot unlocked.
 - **Requirement badges** on each droid (e.g. "RB9·GLD"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
@@ -122,7 +122,8 @@ site/               The complete static site
                     footer display and the offline cache invalidation)
   sw.js             Service worker (offline shell cache, versioned by version.js)
   fonts/            Self-hosted fonts (no Google Fonts requests)
-  icons/            PWA icons
+  icons/            PWA icons (+ icons/game/: in-game class/credits/rebirth icons)
+  og/               Open Graph share images (1200×630 + square)
   value-list/               Generated content page (see "Content pages" below)
   rebirth-requirements/     Generated content page
   faq/                      Generated content page
