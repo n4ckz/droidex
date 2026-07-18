@@ -146,14 +146,14 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .value-line .ico-cred{width:13px;height:13px;flex:none;background:url('icons/game/credits.webp') center/contain no-repeat}
 .value-line .dim{color:var(--n-400)}
 .tiers{display:flex;border:1px solid rgba(var(--acc-rgb),.25);margin-top:auto}
-.tier{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px;cursor:pointer;border:none;border-right:1px solid rgba(var(--acc-rgb),.18);background:transparent;font-family:var(--font-hud);font-size:9px;letter-spacing:.08em;transition:background .3s ease,box-shadow .3s ease}
+.tier{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px;cursor:pointer;border:none;border-right:1px solid rgba(var(--acc-rgb),.18);background:transparent;font-family:var(--font-hud);font-size:9px;letter-spacing:.08em;transition:background .3s ease,box-shadow .3s ease}
 .tier:last-child{border-right:none}
 .tier[data-t="0"]{color:var(--tier-0)} .tier[data-t="1"]{color:var(--tier-1)} .tier[data-t="2"]{color:var(--tier-2)} .tier[data-t="3"]{color:var(--tier-3)} .tier[data-t="4"]{color:var(--tier-4)}
 .tier .lamp{width:16px;height:4px;border:1px solid currentColor;background:transparent;transition:background .3s ease,box-shadow .3s ease}
 .tier.on{background:color-mix(in oklab,currentColor 8%,transparent)}
 .tier.on .lamp{border:none;background:currentColor;box-shadow:0 0 8px currentColor}
 .tier.base{background:color-mix(in oklab,currentColor 16%,transparent);box-shadow:inset 0 0 10px color-mix(in oklab,currentColor 30%,transparent)}
-.tier .ico-base{display:block;margin-top:1px;filter:drop-shadow(0 0 4px currentColor)}
+.tier .ico-base{position:absolute;top:2px;right:2px;width:9px;height:9px;filter:drop-shadow(0 0 4px currentColor)}
 .iconic-own,.base-toggle{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-family:var(--font-hud);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:7px 4px;cursor:pointer;background:transparent;color:var(--n-400);border:1px solid var(--n-700)}
 .iconic-own.on,.base-toggle.on{background:rgba(var(--acc-rgb),.12);color:var(--accent-300);border-color:var(--accent)}
 .iconic-row{display:flex;gap:6px;margin-top:auto}

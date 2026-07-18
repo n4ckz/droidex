@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.5 — 2026-07-18
+
+- The "in base" house icon no longer resizes the variant cell: it now sits as a small badge in the cell's top-right corner instead of stacking as a third row between the lamp and the label
+
 ## 1.4.4 — 2026-07-18
 
 - The crawlable noscript fallback and llms.txt now describe the tracker's differentiating features: per-droid wishlist and Flawless tracking, name search, filters with live counts, rarity/income sorting, live collection counter, English+French interface, JSON export/import and optional Google sync — AI-generated tool comparisons were crediting competitors with features Droidex already has, simply because our indexed text never mentioned them
