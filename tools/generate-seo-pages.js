@@ -141,8 +141,8 @@ ${bodyHtml}
 function buildValueList() {
   const intro = `<p class="seo-intro">This value list gives the income per second and Beskar upgrade cost for every ` +
     `droid in Star Wars: Droid Tycoon, across all five variants: Basic, Gold, Diamond, Rainbow and Beskar. Numbers ` +
-    `are cross-checked against community sources (data recoupée le ${DATE_FR}) rather than a single guide, and ` +
-    `Droidex's own cycle 1 rebirth requirements have been verified against real in-game play. Iconic droids have ` +
+    `are cross-checked against community sources (${DATE_ISO}) rather than a single guide, and ` +
+    `Droidex's own cycle 1 rebirth requirements have been verified in-game through rebirth 23. Iconic droids have ` +
     `no variants: owning one simply adds a flat +15% income bonus alongside its unique perk. Remember that in ` +
     `Droidex's rebirth panel, a higher variant always satisfies a lower requirement — if a rebirth asks for a ` +
     `droid at Gold minimum, owning it at Diamond or better already counts, so this list also doubles as a quick ` +
@@ -207,7 +207,7 @@ function buildRebirthRequirements() {
     `Super Rebirth instead of a normal one: it keeps your Droidex, droidsmith level, cosmetics, unlocked Flawless ` +
     `droids, Nova crystals and Iconic unlocks, but resets your base, its droids, your currencies, rebirth rank, ` +
     `pickaxe level and blueprints, before advancing you straight into the next cycle. This page lists every ` +
-    `cycle's requirements in full, cross-checked against community sources (data recoupée le ${DATE_FR}).</p>`;
+    `cycle's requirements in full, cross-checked against community sources (${DATE_ISO}).</p>`;
 
   const droidById = {};
   DROIDS.forEach(d => { droidById[d.id] = d; });
