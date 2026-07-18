@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2 — 2026-07-18
+
+- The tap-cycle help now opens automatically on first visit (empty registry) and stays away once dismissed — a corner "i" pastille alone was never going to be discovered
+
 ## 1.4.1 — 2026-07-18
 
 - The "i" hint pastille is now tappable: on touch devices the tap-cycle help (1 tap = owned · 2 taps = in base · 3 taps = clear) opens as a small panel under the search bar — it was hover-only since the redesign

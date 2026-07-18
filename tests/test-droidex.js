@@ -373,22 +373,30 @@ const setTarget = (w, rb) => {
       assert(sm.includes('https://droidex.nackz.dev/' + p + '/'), 'sitemap contient ' + p));
   }
 
-  /* ---- 20. Panneau d'aide tappable ---- */
-  console.log('\n[20] Panneau d\'aide tappable');
+  /* ---- 20. Panneau d'aide : auto-ouvert à la première visite, tappable ensuite ---- */
+  console.log('\n[20] Panneau d\'aide (première visite + pastille)');
   {
+    // première visite : registre vide → aide visible d'office
     const { window: w } = boot();
     const btn = w.document.getElementById('hintI');
     const panel = w.document.getElementById('hintPanel');
-    assert(panel && panel.hidden === true, 'panneau d\'aide caché par défaut');
-    btn.click();
-    assert(panel.hidden === false, 'tap sur « i » → panneau visible');
+    assert(panel && panel.hidden === false, 'première visite (registre vide) → aide visible d\'office');
     assert(panel.textContent.includes('2 taps = in base'), 'le panneau contient l\'aide des taps (EN)');
     assert(btn.getAttribute('aria-expanded') === 'true', 'aria-expanded=true ouvert');
-    btn.click();
-    assert(panel.hidden === true, 're-tap → panneau fermé');
-    btn.click();
+    // clic ailleurs → fermé + mémorisé
     w.document.getElementById('search').dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
     assert(panel.hidden === true, 'clic ailleurs → panneau fermé');
+    assert(w.localStorage.getItem('droidex-hint-seen') === '1', 'fermeture mémorisée (droidex-hint-seen)');
+    // la pastille reste utilisable
+    btn.click();
+    assert(panel.hidden === false, 'tap sur « i » → panneau rouvert');
+    btn.click();
+    assert(panel.hidden === true, 're-tap → panneau fermé');
+  }
+  {
+    // utilisateur existant : registre non vide → aide cachée
+    const { window: w } = boot(JSON.stringify({ owned: { gonk: [1,0,0,0,0] }, targetRB: 1, targetCycle: 1 }));
+    assert(w.document.getElementById('hintPanel').hidden === true, 'registre non vide → aide cachée par défaut');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

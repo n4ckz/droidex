@@ -468,7 +468,10 @@ function setHint(open){
 }
 hintBtn.addEventListener('click',()=>setHint(hintPanel.hidden));
 document.addEventListener('click',e=>{
-  if(!hintPanel.hidden && e.target!==hintBtn && !hintPanel.contains(e.target)) setHint(false);
+  if(!hintPanel.hidden && e.target!==hintBtn && !hintPanel.contains(e.target)){
+    setHint(false);
+    try{ localStorage.setItem('droidex-hint-seen','1'); }catch(e2){}
+  }
 });
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm(t('resetConfirm'))) return;
@@ -510,6 +513,14 @@ document.getElementById('importFile').addEventListener('change',e=>{
   document.getElementById('list').style.display='block';
   document.getElementById('appVersion').textContent='DROIDEX V'+APP_VERSION;
   renderAll();
+  /* première visite (registre vide, aide jamais fermée) : l'aide s'affiche d'office —
+     un « i » en bout de ligne ne serait jamais découvert par un nouvel utilisateur */
+  try{
+    if(!localStorage.getItem('droidex-hint-seen') &&
+       !Object.keys(state.owned).length && !Object.keys(state.inBase).length){
+      setHint(true);
+    }
+  }catch(e){}
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{ /* hors ligne au premier chargement : sans conséquence */ });
   }
