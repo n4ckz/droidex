@@ -17,13 +17,14 @@ The game features a Droidex of 200+ collectible droids across 5 variants (Basic,
 - **Per-variant tracking** with 3 tap-cyclable states: never owned → owned (Droidex entry) → 🏠 in base (physical presence) → clear.
 - **Higher-variant rule**: a Diamond droid always satisfies a "Gold" requirement.
 - **"Next targeted rebirth" panel** (1–27, across the 4 super-rebirth cycles): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready), the credits needed and the slot unlocked.
-- **Requirement badges** on each droid (e.g. "RB9 · Gold"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
+- **Requirement badges** on each droid (e.g. "RB9·GLD"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
+- **Super Rebirth button**: applies the in-game reset semantics in one tap — droids in your base drop back to "owned (Droidex)", Iconic droids leave the base (unlock kept), the targeted rebirth returns to 1 and the cycle advances.
 - **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
 - **Value data on every droid**: income per second (Basic → Beskar), Beskar upgrade cost and passive perk — plus a "sort by income" mode to decide what to buy at the Sandcrawler.
-- **Flawless ✨ and wishlist ★ toggles** on every droid, with a Wishlist filter.
+- **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
 - **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
-- **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2): simple owned + in-base toggles, no variants.
+- **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2, C-3PO): simple owned + in-base toggles, no variants.
 - **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no tracking, no mandatory signup.
 - **JSON export/import** as a fallback, or to stay 100 % offline.
 - **Two languages**: English (default) and French, switchable from the header dropdown.
@@ -38,7 +39,7 @@ Just open the site and tick your droids. On mobile, use "Add to Home Screen" to 
 
 Two options:
 
-- **Google account** (recommended): "Sign in with Google" button at the bottom of the page. Your registry is saved server-side and automatically restored on any device signed in with the same account. Last write wins; "Delete my account" wipes everything server-side.
+- **Google account** (recommended): "Sign in with Google" button in the top bar. Your registry is saved server-side and automatically restored on any device signed in with the same account. Last write wins; "Delete my account" wipes everything server-side.
 - **Manual**: **Export backup** → downloads `droidex-backup.json` → transfer the file (AirDrop, email…) → **Import** on the other device.
 
 ## Self-hosting (Docker)
@@ -106,7 +107,7 @@ Serve the `site/` folder with any static file server. To disable sync entirely (
 ```
 site/               The complete static site
   index.html
-  styles.css        Dark Tatooine theme
+  styles.css        "Nocturne" dark HUD theme (self-hosted Chakra Petch + IBM Plex Sans)
   seo-pages.css     Styles for the generated content pages below (scoped, does
                     not touch styles.css)
   i18n.js           EN/FR translations, language selector logic
@@ -172,7 +173,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 27 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-17:
+The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 27 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-18:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
@@ -185,7 +186,7 @@ The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 
 - Some classifications changed vs. earlier community sources and now follow the tycoon-tools value list: CB-23 is Iconic, Proto-Roller is Legendary, DRFT-R is an Astromech, DJ R-3X is a Worker.
 - The game is updated frequently. If you spot a discrepancy, open an issue or a PR against `site/data.js`.
 
-**About Flawless**: a Flawless is a rare permanent drop chance on any droid (1/1000 on Basic up to 1/100 on Beskar) kept forever in your Droidex — hence the ✨ toggle per droid.
+**About Flawless**: a Flawless is a rare permanent drop chance on any droid (1/1000 on Basic up to 1/100 on Beskar) kept forever in your Droidex — hence the ✦ toggle per droid.
 
 ### Updating game data after a game patch
 
@@ -215,4 +216,4 @@ The scheduled game-data watch above regenerates these pages automatically whenev
 
 Code under the [MIT license](LICENSE).
 
-Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd. Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. No game assets are used.
+Fan project not affiliated with Epic Games, Lucasfilm or Disney. Star Wars is a trademark of Lucasfilm Ltd. Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. A handful of small in-game icons (droid classes, credits, rebirth) are used for identification purposes only; all rights on those assets belong to their respective owners and they will be removed on request.
