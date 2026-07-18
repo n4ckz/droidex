@@ -52,7 +52,7 @@
   font-family:var(--font-hud);font-size:15px;font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;color:var(--accent-300);margin:32px 0 12px;
 }
-.seo-page .seo-main h2:first-of-type{margin-top:20px}
+.seo-page .seo-main > h2:first-of-type{margin-top:20px}
 .seo-page .seo-intro{color:var(--n-300);margin-bottom:8px}
 .seo-page .seo-main p{margin:0 0 12px}
 .seo-page .seo-main a{color:var(--accent-300)}
