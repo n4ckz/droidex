@@ -19,6 +19,7 @@ Key facts:
 - [Application](https://droidex.nackz.dev/): the tracker itself
 - [Value list](https://droidex.nackz.dev/value-list/): income per second and Beskar cost for every droid and variant
 - [Rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/): the 3 droids and credit cost needed for each of the 28 rebirth levels, across all 4 cycles
+- [Live stats](https://droidex.nackz.dev/stats/): how many people play Droid Tycoon right now, plus daily peak CCU, plays, unique players and retention — official Epic Ecosystem API data, archived daily since 2026-07-14 (Epic only keeps a 7-day window)
 - [FAQ](https://droidex.nackz.dev/faq/): answers about variants (including the new Galactic tier), rebirths, Flawless odds, the collection bonus, and syncing
 - [Source code and documentation](https://github.com/n4ckz/droidex): README with self-hosting guide, game data sources and known data uncertainties
 - [Game data file](https://github.com/n4ckz/droidex/blob/main/site/data.js): the tracked droids, rebirth requirements and credit costs

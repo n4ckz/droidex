@@ -75,6 +75,7 @@ function fmtInc(n) {
 const NAV_ITEMS = [
   { slug: 'value-list', label: 'Value list' },
   { slug: 'rebirth-requirements', label: 'Rebirth requirements' },
+  { slug: 'stats', label: 'Live stats' },
   { slug: 'faq', label: 'FAQ' },
 ];
 
@@ -83,7 +84,7 @@ const LEGAL_HTML = 'Fan project not affiliated with Epic Games, Lucasfilm or Dis
   '<a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>.';
 
 /* Gabarit commun aux 3 pages de contenu. */
-function page({ slug, title, description, jsonld, h1, bodyHtml }) {
+function page({ slug, title, description, jsonld, h1, bodyHtml, extraHead = '' }) {
   const navHtml = NAV_ITEMS.map(n => {
     const current = n.slug === slug;
     return `<a href="../${n.slug}/" class="seo-navlink${current ? ' active' : ''}"${current ? ' aria-current="page"' : ''}>${n.label}</a>`;
@@ -111,7 +112,7 @@ function page({ slug, title, description, jsonld, h1, bodyHtml }) {
 <script type="application/ld+json">
 ${JSON.stringify(jsonld, null, 2)}
 </script>
-</head>
+${extraHead}</head>
 <body class="seo-page">
 <header class="seo-header">
   <div class="seo-hdr">
@@ -383,10 +384,108 @@ function buildFaq() {
   });
 }
 
-/* ---------- 7. sitemap.xml ---------- */
+/* ---------- 7. Live stats ---------- */
+
+/* Archive quotidienne (tools/archive-metrics.py) : valeurs statiques de la
+   page (SEO + sans JS), ré-hydratées côté client par site/stats.js. */
+const DAILY_METRICS = JSON.parse(
+  fs.readFileSync(path.join(ROOT, 'data', 'metrics', 'daily.json'), 'utf8'));
+
+function fmtBig(n) {
+  if (n == null) return '—';
+  if (n >= 1e6) { const m = Math.round(n / 1e5) / 10; return (m === Math.round(m) ? Math.round(m) : m) + 'M'; }
+  return fmtInc(n);
+}
+const pctTxt = v => v == null ? '—' : Math.round(v * 100) + '%';
+
+function buildStats() {
+  const days = Object.keys(DAILY_METRICS).sort();
+  const last = days[days.length - 1];
+  const d = DAILY_METRICS[last];
+
+  const intro = `<p class="seo-intro">Live player count and daily statistics for Star Wars: Droid Tycoon, the ` +
+    `Fortnite creative mode by FOAD/Blzn Studios — peak concurrent players (CCU), plays, unique players, ` +
+    `average session length and D1/D7 retention. Every number comes from Epic's official, public Ecosystem ` +
+    `API for the island (code 7865-8305-9184). Epic only exposes a rolling 7-day window, so Droidex archives ` +
+    `the official daily values every morning: this history, kept since 2026-07-14, exists nowhere else. ` +
+    `Tiles and charts refresh in your browser with the latest data.</p>`;
+
+  const tiles = [
+    ['stat-live', 'In game right now', '—', 'live, refreshed every 5 min'],
+    ['stat-peak', `Peak players`, fmtBig(d.peakCCU), `on <span id="stat-peak-day">${last}</span> <span id="stat-peak-delta"></span>`],
+    ['stat-unique', 'Unique players', fmtBig(d.uniquePlayers), 'per day'],
+    ['stat-plays', 'Plays', fmtBig(d.plays), 'per day'],
+    ['stat-avgmin', 'Avg. session', d.averageMinutesPerPlayer == null ? '—' : Math.round(d.averageMinutesPerPlayer) + ' min', 'per player per day'],
+    ['stat-d1', 'D1 retention', pctTxt(d.retentionD1), `D7: <span id="stat-d7">${pctTxt(d.retentionD7)}</span>`],
+  ];
+  const tilesHtml = `  <div class="stat-grid">\n` + tiles.map(([id, label, value, sub]) =>
+    `    <div class="stat-tile"><span class="stat-label">${label}</span>` +
+    `<span class="stat-value" id="${id}">${value}</span>` +
+    `<span class="stat-sub">${sub}</span></div>`).join('\n') + `\n  </div>`;
+
+  const chartsHtml = `
+  <figure class="stat-chart" id="chart-ccu">
+    <figcaption>◈ Peak concurrent players per day</figcaption>
+    <div class="chart-box"></div>
+  </figure>
+  <figure class="stat-chart" id="chart-plays">
+    <figcaption>◈ Plays per day</figcaption>
+    <div class="chart-box"></div>
+  </figure>`;
+
+  const rows = days.slice().reverse().map(day => {
+    const v = DAILY_METRICS[day];
+    return `      <tr><td>${day}</td><td>${fmtBig(v.peakCCU)}</td><td>${fmtBig(v.uniquePlayers)}</td>` +
+      `<td>${fmtBig(v.plays)}</td><td>${v.averageMinutesPerPlayer == null ? '—' : Math.round(v.averageMinutesPerPlayer)}</td>` +
+      `<td>${pctTxt(v.retentionD1)}</td><td>${pctTxt(v.retentionD7)}</td></tr>`;
+  }).join('\n');
+
+  const tableHtml = `  <h2>◈ Day by day</h2>
+  <div class="seo-table-wrap">
+    <table>
+      <thead>
+        <tr><th>Date (UTC)</th><th>Peak CCU</th><th>Unique players</th><th>Plays</th><th>Avg. min/player</th><th>D1</th><th>D7</th></tr>
+      </thead>
+      <tbody id="stats-tbody">
+${rows}
+      </tbody>
+    </table>
+  </div>
+  <p class="seo-note">Numbers on this page are the official values aggregated by Epic (no estimates, no scraping).
+  The Galactic update of July 16, 2026 more than doubled the island's daily peak. Data archive:
+  <a href="https://github.com/n4ckz/droidex/tree/main/data/metrics" rel="noopener">github.com/n4ckz/droidex</a>.</p>`;
+
+  const jsonld = {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: 'Star Wars: Droid Tycoon — daily player statistics',
+    description: 'Daily peak concurrent players (CCU), plays, unique players, average session length and retention for the Fortnite island Star Wars: Droid Tycoon, archived from Epic\'s official Ecosystem API.',
+    url: `${SITE_URL}/stats/`,
+    license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
+    creator: { '@type': 'Person', name: 'Nackz' },
+    temporalCoverage: `2026-07-14/${last}`,
+    distribution: [{
+      '@type': 'DataDownload',
+      encodingFormat: 'application/json',
+      contentUrl: 'https://raw.githubusercontent.com/n4ckz/droidex/main/data/metrics/daily.json',
+    }],
+  };
+
+  return page({
+    slug: 'stats',
+    title: 'Droid Tycoon Live Player Count & Daily Stats | Droidex',
+    description: 'How many people play Star Wars: Droid Tycoon right now, plus daily peak CCU, plays, unique players and retention — official Epic data, archived daily.',
+    h1: 'Droid Tycoon player stats',
+    jsonld,
+    bodyHtml: `${intro}\n\n${tilesHtml}\n${chartsHtml}\n\n${tableHtml}`,
+    extraHead: `<script src="../stats.js" defer></script>\n`,
+  });
+}
+
+/* ---------- 8. sitemap.xml ---------- */
 
 function buildSitemap() {
-  const urls = ['', 'value-list/', 'rebirth-requirements/', 'faq/'];
+  const urls = ['', 'value-list/', 'rebirth-requirements/', 'stats/', 'faq/'];
   const body = urls.map(u => `  <url>
     <loc>${SITE_URL}/${u}</loc>
     <lastmod>${DATE_ISO}</lastmod>
@@ -399,7 +498,7 @@ ${body}
 `;
 }
 
-/* ---------- 8. Écriture ---------- */
+/* ---------- 9. Écriture ---------- */
 
 function write(relPath, content) {
   const full = path.join(SITE, relPath);
@@ -410,6 +509,7 @@ function write(relPath, content) {
 
 write('value-list/index.html', buildValueList());
 write('rebirth-requirements/index.html', buildRebirthRequirements());
+write('stats/index.html', buildStats());
 write('faq/index.html', buildFaq());
 write('sitemap.xml', buildSitemap());
-console.log('Done — 4 files generated from site/data.js (' + DATE_FR + ').');
+console.log('Done — 5 files generated from site/data.js + data/metrics (' + DATE_FR + ').');

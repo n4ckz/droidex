@@ -98,6 +98,7 @@ const I18N = {
       '· <a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a> ' +
       '· <a href="value-list/">Value list</a> ' +
       '· <a href="rebirth-requirements/">Rebirth requirements</a> ' +
+      '· <a href="stats/">Live stats</a> ' +
       '· <a href="faq/">FAQ</a> ' +
       '· Without an account, everything stays in your browser. With an optional account, only your email ' +
       'and your registry are stored on our server, deletable at any time via “Delete my account”.'
@@ -188,6 +189,7 @@ const I18N = {
       '· <a href="https://github.com/n4ckz/droidex" rel="noopener">Code source sur GitHub</a> ' +
       '· <a href="value-list/">Liste des valeurs</a> ' +
       '· <a href="rebirth-requirements/">Exigences de renaissance</a> ' +
+      '· <a href="stats/">Stats en direct</a> ' +
       '· <a href="faq/">FAQ</a> ' +
       '· Sans compte, tout reste dans votre navigateur. Avec un compte (optionnel), seuls votre email ' +
       'et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».'

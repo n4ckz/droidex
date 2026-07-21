@@ -97,3 +97,23 @@
   .seo-page .seo-main{padding:22px 14px 12px;font-size:14px}
   .seo-page .seo-main h1{font-size:19px}
 }
+
+/* ---------- page stats ---------- */
+.seo-page .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.seo-page .stat-tile{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border:1px solid rgba(var(--acc-rgb),.25);background:rgba(var(--acc-rgb),.04)}
+.seo-page .stat-label{font-family:var(--font-hud);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--n-500)}
+.seo-page .stat-value{font-family:var(--font-hud);font-size:26px;font-weight:600;color:var(--text)}
+.seo-page .stat-sub{font-size:11px;color:var(--n-500)}
+.seo-page .stat-delta.up{color:var(--ok)}
+.seo-page .stat-delta.down{color:var(--danger)}
+.seo-page .stat-chart{margin:22px 0}
+.seo-page .stat-chart figcaption{font-family:var(--font-hud);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-300);margin-bottom:8px}
+.seo-page .chart-box{position:relative;border:1px solid rgba(var(--acc-rgb),.18);padding:6px}
+.seo-page .chart-box svg{display:block;width:100%;height:auto}
+.seo-page .chart-box .grid{stroke:var(--n-700);stroke-width:1;opacity:.35}
+.seo-page .chart-box .tick{fill:var(--n-500);font-family:var(--font-body);font-size:10px}
+.seo-page .chart-box .end-label{fill:var(--n-300);font-family:var(--font-hud);font-size:11px}
+.seo-page .chart-box .end-dot{stroke:var(--bg);stroke-width:2}
+.seo-page .chart-box .crosshair{stroke:var(--n-600);stroke-width:1}
+.seo-page .chart-tip{position:absolute;top:8px;transform:translateX(-50%);padding:3px 8px;background:var(--bg);border:1px solid var(--accent-700);font-family:var(--font-hud);font-size:11px;color:var(--n-300);pointer-events:none;white-space:nowrap}
+.seo-page .seo-note{font-size:12px;color:var(--n-500);margin-top:14px}
