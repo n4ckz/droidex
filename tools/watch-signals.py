@@ -7,6 +7,7 @@ Sources surveillées :
 - wiki dédié (star-wars-droid-tycoon.fandom.com) : API MediaWiki recentchanges
 - page Droid Tycoon du wiki Fortnite : timestamp de dernière révision
 - droidtycoonguide.com/events/ : empreinte du texte de la page (site statique)
+- droidtrakr.com : catalogue de leur tracker (data.json + inventaire d'images)
 
 État : tools/watch-state.json (commité — le workflow le met à jour).
 Codes de sortie : 0 = rien de neuf (ou première initialisation), 10 = au moins
@@ -137,12 +138,32 @@ def src_epic_island():
     return token, detail
 
 
+def src_droidtrakr():
+    """Catalogue du tracker droidtrakr.com (concurrent très réactif : Beskar
+    15 min et art Galactique répercutés en quelques heures/jours). On ne
+    retient que le catalogue STABLE — noms+raretés de data.json, droïdes
+    illustrés et paliers de variantes de droid-images.js — jamais les fichiers
+    bruts : data.json embarque les cases de progression des fondateurs du site
+    et les images s'ajoutent au compte-gouttes (faux signal quotidien sinon)."""
+    droids = json.loads(fetch('https://droidtrakr.com/data.json'))
+    catalog = sorted((str(d.get('name', '')), str(d.get('rarity', ''))) for d in droids)
+    raw = fetch('https://droidtrakr.com/droid-images.js')
+    pairs = re.findall(r'"([A-Z0-9]+):([A-Za-z]+)"\s*:', raw)
+    ids = sorted({i for i, _ in pairs})
+    tiers = sorted({t for _, t in pairs})
+    token = hashlib.sha256(json.dumps([catalog, ids, tiers]).encode()).hexdigest()[:16]
+    detail = (f"{len(catalog)} droïdes au catalogue, {len(ids)} illustrés, "
+              f"paliers {clean(', '.join(tiers))}")
+    return token, detail
+
+
 SOURCES = {
     'discord-patch-notes': (src_discord_patch_notes, 'canal miroir #patch-notes de ton serveur Discord'),
     'epic-island': (src_epic_island, 'https://api.fortnite.com/ecosystem/v1/islands/7865-8305-9184'),
     'wiki-droid-tycoon': (src_wiki_dedie, 'https://star-wars-droid-tycoon.fandom.com/wiki/Special:RecentChanges'),
     'wiki-fortnite': (src_wiki_fortnite, 'https://fortnite.fandom.com/wiki/Droid_Tycoon?action=history'),
     'guide-events': (src_guide_events, 'https://droidtycoonguide.com/events/'),
+    'droidtrakr': (src_droidtrakr, 'https://droidtrakr.com/'),
 }
 
 
