@@ -75,7 +75,33 @@ docker compose up -d
 docker compose exec pocketbase /pb/pocketbase superuser upsert YOUR@EMAIL.com YOUR_PASSWORD --dir=/pb/pb_data
 ```
 
-Both containers expose an HTTP healthcheck, visible via `docker ps`. PocketBase data lives in `./pb_data` (include it in your VPS backups).
+Both containers expose an HTTP healthcheck, visible via `docker ps`. PocketBase data lives in `./pb_data`.
+
+**Backups**: [`deploy/backup-pb.py`](deploy/backup-pb.py) takes a consistent daily snapshot of the database (Python stdlib only, safe while PocketBase runs) with 14-day rotation. Schedule it on the host, e.g. with a systemd timer:
+
+```ini
+# /etc/systemd/system/droidex-backup.service
+[Unit]
+Description=Droidex PocketBase daily backup
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/sites/droidex/deploy/backup-pb.py
+
+# /etc/systemd/system/droidex-backup.timer
+[Unit]
+Description=Droidex PocketBase daily backup (04:00)
+[Timer]
+OnCalendar=*-*-* 04:00:00
+Persistent=true
+[Install]
+WantedBy=timers.target
+```
+
+```bash
+sudo systemctl daemon-reload && sudo systemctl enable --now droidex-backup.timer
+```
+
+To restore: stop the pocketbase container, replace `pb_data/data.db` with the chosen snapshot from `backups/`, start it again. Note that these snapshots live on the same disk — they protect against bad manipulations and corruption, not against losing the whole server.
 
 **Admin console security**: the PocketBase dashboard (`/_/`) and the superuser auth endpoint are **not exposed to the internet** — Traefik returns 403 for them (on Traefik v2, replace `ipallowlist` with `ipwhitelist` in `docker-compose.yml`). To administer PocketBase, use an SSH tunnel:
 
@@ -139,6 +165,7 @@ deploy/
   nginx.conf              nginx config (caching, gzip, sw.js never cached)
   pocketbase.Dockerfile   PocketBase image (pinned version)
   pb_migrations/          Migration creating the "saves" collection
+  backup-pb.py            Daily database backup script (see "Backups" above)
 tests/                    Test suites (see below)
 tools/
   update-gamedata.py      Regenerates site/data.js from tycoon-tools
