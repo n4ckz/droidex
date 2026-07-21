@@ -171,7 +171,9 @@ The sync test creates its own test users (`alice@test.local`, `bob@test.local`) 
 
 ### Sync model
 
-`localStorage` remains the local cache and the offline mode. When signed in, every change is pushed (1 s debounce) to the `saves` collection; on load, the account backup is pulled. If the device and the account diverge at sign-in, the user picks which one to keep. Last write wins across devices.
+`localStorage` remains the local cache and the offline mode. When signed in, every change is pushed (1 s debounce) to the `saves` collection; on load, the account backup is pulled.
+
+Since v1.9.0, divergence between a device and the account is resolved **automatically by freshness**: every save carries a `savedAt` timestamp, and the most recent version wins — no dialog (older server backups fall back to PocketBase's `updated` time; a local state with no timestamp defers to the account). The replaced version is kept on the device under the `droidex-rescue` localStorage key as a safety copy, and the status bar reports what happened. Before pushing, a device also checks that the account backup hasn't changed since its last sync (another device passed by) and reconciles first instead of blindly overwriting — so a stale device waking up with old data can no longer roll back the account.
 
 ### Security
 
