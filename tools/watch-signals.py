@@ -15,6 +15,7 @@ signalée mais n'est jamais bloquante.
 """
 import hashlib
 import json
+import os
 import re
 import sys
 import urllib.parse
@@ -74,7 +75,30 @@ def src_guide_events():
     return hashlib.sha256(text.encode()).hexdigest()[:16], 'contenu de la page modifié'
 
 
+def src_discord_patch_notes():
+    """Canal #patch-notes officiel de FOAD, suivi (« Suivre ») sur le serveur
+    Discord personnel de Julien : un bot de CE serveur lit le canal miroir en
+    REST. Source officielle, activée seulement si DISCORD_BOT_TOKEN et
+    DISCORD_PATCH_CHANNEL_ID sont présents dans l'environnement."""
+    tok = os.environ.get('DISCORD_BOT_TOKEN')
+    chan = os.environ.get('DISCORD_PATCH_CHANNEL_ID')
+    if not tok or not chan:
+        return None, ''  # non configuré : source simplement absente
+    req = urllib.request.Request(
+        f'https://discord.com/api/v10/channels/{chan}/messages?limit=5',
+        headers={'Authorization': f'Bot {tok}', 'User-Agent': UA['User-Agent']})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        msgs = json.loads(r.read().decode('utf-8', 'replace'))
+    if not msgs:
+        return None, ''
+    detail = ' ; '.join(
+        f"{clean(m.get('content', '')) or '(image ou embed — voir le canal)'} ({clean(m.get('timestamp', '')[:16])})"
+        for m in msgs[:3])
+    return msgs[0]['id'], detail
+
+
 SOURCES = {
+    'discord-patch-notes': (src_discord_patch_notes, 'canal miroir #patch-notes de ton serveur Discord'),
     'wiki-droid-tycoon': (src_wiki_dedie, 'https://star-wars-droid-tycoon.fandom.com/wiki/Special:RecentChanges'),
     'wiki-fortnite': (src_wiki_fortnite, 'https://fortnite.fandom.com/wiki/Droid_Tycoon?action=history'),
     'guide-events': (src_guide_events, 'https://droidtycoonguide.com/events/'),

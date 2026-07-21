@@ -82,8 +82,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Check community sources (wikis, guide)
+      - name: Check community and official sources (Discord mirror, wikis, guide)
         id: sig
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_PATCH_CHANNEL_ID: ${{ secrets.DISCORD_PATCH_CHANNEL_ID }}
         run: |
           set +e
           python3 tools/watch-signals.py | tee signals.txt
