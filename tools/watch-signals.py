@@ -117,6 +117,33 @@ SOURCES = {
 }
 
 
+def ccu_anomaly(state, changed):
+    """Pic CCU de la veille vs moyenne des jours précédents de l'archive
+    (data/metrics/daily.json, alimentée par archive-metrics.py). Écart de plus
+    de ±40 % → signal. Un jour donné n'est signalé qu'une fois (token)."""
+    path = Path(__file__).resolve().parent.parent / 'data' / 'metrics' / 'daily.json'
+    if not path.exists():
+        return
+    daily = json.loads(path.read_text())
+    days = sorted(d for d, v in daily.items() if v.get('peakCCU'))
+    if len(days) < 4:  # baseline trop courte pour juger
+        return
+    last, base = days[-1], days[:-1]
+    mean = sum(daily[d]['peakCCU'] for d in base) / len(base)
+    value = daily[last]['peakCCU']
+    ratio = value / mean if mean else 1
+    if 0.6 <= ratio <= 1.4:
+        return
+    if state.get('ccu-anomaly', {}).get('token') == last:
+        return  # déjà signalé
+    state['ccu-anomaly'] = {'token': last}
+    changed.append('ccu-anomaly')
+    sens = 'bond' if ratio > 1 else 'chute'
+    print(f'CHANGED ccu-anomaly : {sens} du pic CCU le {last} — {value:.0f} vs '
+          f'{mean:.0f} en moyenne sur les {len(base)} jours précédents ({ratio:+.0%})')
+    print('  → patch, événement ou incident probable côté jeu')
+
+
 def main():
     state = json.loads(STATE.read_text()) if STATE.exists() else {}
     first_run = not state
@@ -135,6 +162,7 @@ def main():
             print(f'CHANGED {name} : {detail}')
             print(f'  → vérifier : {link}')
         state[name] = {'token': token}
+    ccu_anomaly(state, changed)
     STATE.write_text(json.dumps(state, indent=1, sort_keys=True) + '\n')
     if first_run:
         print('État initialisé (aucun signal émis au premier passage).')
