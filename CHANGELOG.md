@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.0 — 2026-07-21
+
+- **New public page `/stats/`** — Droid Tycoon live player count and daily statistics: KPI tiles (in game right now, peak CCU with day-over-day delta, unique players, plays, average session, D1/D7 retention), two interactive SVG charts (peak CCU and plays per day, crosshair + tooltip) and a day-by-day table. Official Epic Ecosystem API data, hydrated in the browser, with a static SEO-crawlable snapshot baked in at build time.
+- Daily metrics archive (`data/metrics/`, cron job): Epic only keeps a rolling 7-day window, Droidex now archives the official daily values forever — the week of the Galactic patch (peak CCU 21.5K → 49.4K) was captured just in time.
+- Watch: CCU anomaly signal (yesterday's peak vs archive average, ±40%) feeding the gamedata-signal issue.
+
 ## 1.6.0 — 2026-07-21
 
 - **Live player counter** in the header ("● 12.5K in game"): concurrent players on the Star Wars Droid Tycoon island, straight from Epic's official, public Ecosystem API (10-minute buckets, refreshed every 5 minutes). Hidden gracefully when offline or if the API is unreachable — no error, no tracking, no key required.
