@@ -22,9 +22,15 @@
     return String(Math.round(n));
   }
   function pct(v) { return v == null ? '—' : Math.round(v * 100) + '%'; }
-  function monthDay(iso) {  /* '2026-07-14' -> 'Jul 14' (page EN) */
-    var m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return m[parseInt(iso.slice(5, 7), 10) - 1] + ' ' + parseInt(iso.slice(8, 10), 10);
+  /* textes dynamiques : suivent la langue de la page (générée en EN ou FR) */
+  var FR = document.documentElement.lang === 'fr';
+  var MONTHS = FR
+    ? ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.']
+    : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function monthDay(iso) {  /* '2026-07-14' -> 'Jul 14' / '14 juil.' */
+    var m = MONTHS[parseInt(iso.slice(5, 7), 10) - 1];
+    var d = parseInt(iso.slice(8, 10), 10);
+    return FR ? d + ' ' + m : m + ' ' + d;
   }
   function getJson(url) {
     return fetch(url).then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(r.status)); });
@@ -178,7 +184,8 @@
       var delta = (d.peakCCU - prev.peakCCU) / prev.peakCCU;
       var el = document.getElementById('stat-peak-delta');
       if (el) {
-        el.textContent = (delta >= 0 ? '▲ +' : '▼ ') + Math.round(delta * 100) + '% vs previous day';
+        el.textContent = (delta >= 0 ? '▲ +' : '▼ ') + Math.round(delta * 100) + '%' +
+          (FR ? ' vs veille' : ' vs previous day');
         el.className = 'stat-delta ' + (delta >= 0 ? 'up' : 'down');
       }
     }

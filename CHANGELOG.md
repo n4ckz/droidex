@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0 — 2026-07-21
+
+- **French versions of all four content pages** under `/fr/` (value list, rebirth requirements, live stats, FAQ) — fully translated, generated from the same data, cross-linked with `hreflang` tags (x-default: English). Sitemap now lists 9 URLs.
+- **Language detection like the app**: first visit with a French browser on an English content page redirects to the French version; the EN/FR selector in the page header persists the explicit choice in the same key as the tracker, so the app and the content pages always agree. No redirect ever happens from the French pages (crawler-safe).
+- Stats page dynamic texts (months, day-over-day delta) follow the page language.
+
 ## 1.7.1 — 2026-07-21
 
 - SEO content pages now ship Open Graph + Twitter card tags (`summary_large_image`): generic Droidex card for value list / rebirths / FAQ, and a dedicated `/stats/` image (KPI tiles + the Galactic-update CCU spike) so shared links render a proper preview on X/Discord.
