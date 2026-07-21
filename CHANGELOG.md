@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.2 — 2026-07-21
+
+- Sync status wording: "Registry updated from your Google account" / « Registre mis à jour depuis votre compte Google » — "account" alone was ambiguous, Google is the vocabulary users actually know from the sign-in button.
+
 ## 1.9.1 — 2026-07-21
 
 - Sync status copy simplified: when the account backup replaces the device's registry, the bar now just says "Registry updated from your account" (no timestamps, no jargon); when the device wins, nothing special is shown — it's just normal syncing. The safety copy and timestamps still work behind the scenes.
