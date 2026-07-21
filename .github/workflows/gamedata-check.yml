@@ -95,8 +95,14 @@ jobs:
           if ! git diff --quiet data/metrics; then
             git add data/metrics
             git commit -m "bot: archive des métriques de l'île (Ecosystem API)"
-            git pull --rebase origin main
-            git push
+            # archive et signals committent sur main en parallèle : un push
+            # peut être rejeté si l'autre job vient d'écrire → rebase + retry
+            for i in 1 2 3 4 5; do
+              git pull --rebase origin main
+              git push && exit 0
+              sleep "$i"
+            done
+            exit 1
           fi
 
   signals:
@@ -129,8 +135,15 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tools/watch-state.json
           git commit -m "bot: état des signaux communautaires"
-          git pull --rebase origin main
-          git push
+          # archive et signals committent sur main en parallèle : un push
+          # peut être rejeté si l'autre job vient d'écrire → rebase + retry
+          # (course réellement vue le 21/07/2026 : état + issue du jour perdus)
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main
+            git push && exit 0
+            sleep "$i"
+          done
+          exit 1
 
       - name: Open or update the signal issue
         if: steps.sig.outputs.changed == 'true'
