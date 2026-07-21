@@ -97,8 +97,20 @@ def src_discord_patch_notes():
     return msgs[0]['id'], detail
 
 
+def src_epic_island():
+    """Fiche officielle de l'île sur l'Ecosystem API d'Epic (publique, sans
+    auth). Pas de numéro de version exposé, mais FOAD retouche titre/tags au
+    fil des mises à jour : tout changement de la fiche est un signal officiel."""
+    raw = fetch('https://api.fortnite.com/ecosystem/v1/islands/7865-8305-9184')
+    data = json.loads(raw)
+    token = hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()[:16]
+    detail = f"titre « {clean(data.get('title', '?'))} », tags {clean(', '.join(data.get('tags', [])))}"
+    return token, detail
+
+
 SOURCES = {
     'discord-patch-notes': (src_discord_patch_notes, 'canal miroir #patch-notes de ton serveur Discord'),
+    'epic-island': (src_epic_island, 'https://api.fortnite.com/ecosystem/v1/islands/7865-8305-9184'),
     'wiki-droid-tycoon': (src_wiki_dedie, 'https://star-wars-droid-tycoon.fandom.com/wiki/Special:RecentChanges'),
     'wiki-fortnite': (src_wiki_fortnite, 'https://fortnite.fandom.com/wiki/Droid_Tycoon?action=history'),
     'guide-events': (src_guide_events, 'https://droidtycoonguide.com/events/'),
