@@ -15,10 +15,17 @@ function syncHasLocalData(){
   return Object.keys(state.owned).length > 0 || Object.keys(state.inBase).length > 0;
 }
 function syncStatesEqual(a, b){
-  const norm = s => JSON.stringify({
-    owned:s.owned||{}, inBase:s.inBase||{}, targetRB:s.targetRB||1,
-    targetCycle:s.targetCycle||1, flawless:s.flawless||{}, wish:s.wish||{}
-  });
+  /* normaliser les DEUX côtés avant de comparer : une sauvegarde serveur
+     d'un ancien format (ex. 5 variantes avant la Galactique) est équivalente
+     à l'état local migré — sans ça, le dialogue de conflit boucle à chaque
+     visite tant que le serveur n'a pas été réécrit */
+  const norm = s => {
+    const n = normalizeParsedState(s || {});
+    return JSON.stringify({
+      owned:n.owned, inBase:n.inBase, targetRB:n.targetRB,
+      targetCycle:n.targetCycle, flawless:n.flawless, wish:n.wish
+    });
+  };
   return norm(a) === norm(b);
 }
 function syncSetStatus(msg, isErr){

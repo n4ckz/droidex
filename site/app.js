@@ -62,39 +62,56 @@ function fmtInc(n){
 }
 
 /* ================= STORAGE ================= */
-/* Normalise un état brut (localStorage ou import JSON) vers le format courant.
-   Conserve la migration historique : anciens booléens -> états numériques 0/1/2. */
-function applyParsedState(parsed){
-  if(!(parsed && typeof parsed==='object')) return false;
-  state.owned = parsed.owned || {};
-  state.inBase = parsed.inBase || {};
-  state.targetRB = parsed.targetRB || 1;
-  state.targetCycle = parsed.targetCycle || 1;
-  state.flawless = parsed.flawless || {};
-  state.wish = parsed.wish || {};
-  /* migration : anciens booléens -> états numériques 0/1/2 */
+/* Normalisation PURE d'un état brut (localStorage, import JSON ou sauvegarde
+   serveur) vers le format courant, SANS toucher à l'entrée. Migrations :
+   anciens booléens -> 0/1/2, promotion du toggle "en base" historique,
+   padding à 6 variantes (v1.5.0, Galactique), CB-23 reclassé Iconique.
+   Utilisée par applyParsedState ET par syncStatesEqual (sync.js) : comparer
+   du non-migré à du migré ferait boucler le dialogue de conflit de synchro. */
+function normalizeParsedState(parsed){
+  const out = {
+    owned: {},
+    inBase: Object.assign({}, parsed.inBase || {}),
+    targetRB: parsed.targetRB || 1,
+    targetCycle: parsed.targetCycle || 1,
+    flawless: Object.assign({}, parsed.flawless || {}),
+    wish: Object.assign({}, parsed.wish || {})
+  };
   const iconicIds = new Set(DROIDS.filter(d=>d.iconic).map(d=>d.id));
-  Object.keys(state.owned).forEach(id=>{
-    const v = state.owned[id];
+  Object.keys(parsed.owned || {}).forEach(id=>{
+    const v = (parsed.owned || {})[id];
     if(Array.isArray(v) && !iconicIds.has(id)){
-      state.owned[id] = v.map(x=>x===true?1:(typeof x==='number'?x:0));
+      const arr = v.map(x=>x===true?1:(typeof x==='number'?x:0));
       /* v1.5.0 : padding à 6 entrées (variante Galactique) */
-      while(state.owned[id].length<6) state.owned[id].push(0);
+      while(arr.length<6) arr.push(0);
       /* ancien toggle global "en base" -> promotion de la meilleure variante possédée */
-      if(state.inBase[id]===true){
-        const arr = state.owned[id];
+      if(out.inBase[id]===true){
         for(let i=arr.length-1;i>=0;i--){ if(arr[i]>=1){ arr[i]=2; break; } }
-        delete state.inBase[id];
+        delete out.inBase[id];
       }
+      out.owned[id] = arr;
+    }else{
+      out.owned[id] = v;
     }
   });
   /* migration : CB-23 reclassé Iconique (variantes -> possédé + en base) */
-  const cb23 = state.owned.cb23;
+  const cb23 = out.owned.cb23;
   if(Array.isArray(cb23)){
     const arr = cb23.map(x=>x===true?1:(typeof x==='number'?x:0));
-    if(arr.some(v=>v>=1)) state.owned.cb23 = true; else delete state.owned.cb23;
-    if(arr.some(v=>v===2) || state.inBase.cb23===true) state.inBase.cb23 = true;
+    if(arr.some(v=>v>=1)) out.owned.cb23 = true; else delete out.owned.cb23;
+    if(arr.some(v=>v===2) || out.inBase.cb23===true) out.inBase.cb23 = true;
   }
+  return out;
+}
+function applyParsedState(parsed){
+  if(!(parsed && typeof parsed==='object')) return false;
+  const n = normalizeParsedState(parsed);
+  state.owned = n.owned;
+  state.inBase = n.inBase;
+  state.targetRB = n.targetRB;
+  state.targetCycle = n.targetCycle;
+  state.flawless = n.flawless;
+  state.wish = n.wish;
   return true;
 }
 function loadState(){
