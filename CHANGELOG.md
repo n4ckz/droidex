@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.3 — 2026-07-21
+
+- Sync status wording, final: "Registry updated" / « Registre mis à jour » — naming the source (account, server) only confused users; what matters is that the screen just refreshed with the latest version.
+
 ## 1.9.2 — 2026-07-21
 
 - Sync status wording: "Registry updated from your Google account" / « Registre mis à jour depuis votre compte Google » — "account" alone was ambiguous, Google is the vocabulary users actually know from the sign-in button.
