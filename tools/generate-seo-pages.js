@@ -84,7 +84,7 @@ const LEGAL_HTML = 'Fan project not affiliated with Epic Games, Lucasfilm or Dis
   '<a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>.';
 
 /* Gabarit commun aux 3 pages de contenu. */
-function page({ slug, title, description, jsonld, h1, bodyHtml, extraHead = '' }) {
+function page({ slug, title, description, jsonld, h1, bodyHtml, extraHead = '', ogImage = 'og/og-1200x630.png' }) {
   const navHtml = NAV_ITEMS.map(n => {
     const current = n.slug === slug;
     return `<a href="../${n.slug}/" class="seo-navlink${current ? ' active' : ''}"${current ? ' aria-current="page"' : ''}>${n.label}</a>`;
@@ -103,6 +103,13 @@ function page({ slug, title, description, jsonld, h1, bodyHtml, extraHead = '' }
 <meta property="og:type" content="website">
 <meta property="og:url" content="${SITE_URL}/${slug}/">
 <meta property="og:site_name" content="Droidex">
+<meta property="og:image" content="${SITE_URL}/${ogImage}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${escapeHtml(title)}">
+<meta name="twitter:description" content="${escapeHtml(description)}">
+<meta name="twitter:image" content="${SITE_URL}/${ogImage}">
 <meta name="theme-color" content="#101120">
 <link rel="manifest" href="../manifest.json">
 <link rel="icon" type="image/png" sizes="192x192" href="../icons/icon-192.png">
@@ -479,6 +486,7 @@ ${rows}
     jsonld,
     bodyHtml: `${intro}\n\n${tilesHtml}\n${chartsHtml}\n\n${tableHtml}`,
     extraHead: `<script src="../stats.js" defer></script>\n`,
+    ogImage: 'og/og-stats-1200x630.png',
   });
 }
 

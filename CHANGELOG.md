@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1 — 2026-07-21
+
+- SEO content pages now ship Open Graph + Twitter card tags (`summary_large_image`): generic Droidex card for value list / rebirths / FAQ, and a dedicated `/stats/` image (KPI tiles + the Galactic-update CCU spike) so shared links render a proper preview on X/Discord.
+
 ## 1.7.0 — 2026-07-21
 
 - **New public page `/stats/`** — Droid Tycoon live player count and daily statistics: KPI tiles (in game right now, peak CCU with day-over-day delta, unique players, plays, average session, D1/D7 retention), two interactive SVG charts (peak CCU and plays per day, crosshair + tooltip) and a day-by-day table. Official Epic Ecosystem API data, hydrated in the browser, with a static SEO-crawlable snapshot baked in at build time.

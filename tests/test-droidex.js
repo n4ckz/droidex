@@ -385,6 +385,8 @@ const setTarget = (w, rb) => {
     assert(st.includes('In game right now') && st.includes('stats.js'), 'stats : tuiles statiques + script d\'hydratation');
     assert(st.includes('"@type": "Dataset"') || st.includes('"@type":"Dataset"'), 'stats : JSON-LD Dataset');
     assert(st.includes('id="stats-tbody"') && st.includes('Peak CCU'), 'stats : tableau jour par jour');
+    assert(st.includes('summary_large_image') && st.includes('og/og-stats-1200x630.png'), 'stats : carte twitter + image OG dédiée');
+    assert(vl.includes('summary_large_image') && vl.includes('og/og-1200x630.png'), 'pages SEO : carte twitter + image OG générique');
     const sm = read('sitemap.xml');
     assert((sm.match(/<loc>/g) || []).length === 5, 'sitemap : 5 URLs');
     ['value-list','rebirth-requirements','stats','faq'].forEach(p =>
