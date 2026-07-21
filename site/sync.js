@@ -133,12 +133,6 @@ async function syncFetchRecord(){
   }
 }
 
-function syncWhen(ts){
-  const d = new Date(ts);
-  if(isNaN(d)) return '—';
-  return d.toLocaleString(LANG === 'fr' ? 'fr-FR' : 'en-GB', { dateStyle: 'short', timeStyle: 'short' });
-}
-
 /* Réconciliation à la connexion / au démarrage (v1.9.0 : plus de dialogue) :
    - serveur vide  -> le registre local devient la sauvegarde du compte ;
    - local vide    -> la sauvegarde du compte est chargée ;
@@ -163,11 +157,14 @@ async function syncReconcile(){
     applyParsedState(server);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     renderAll();
-    syncSetStatus(t('syncNewerLoaded', syncWhen(server.savedAt || rec.updated)));
+    /* message court : l'écran vient de changer, on dit juste pourquoi —
+       les détails (horodatages, copie de secours) restent en coulisses */
+    syncSetStatus(t('syncNewerLoaded'));
   }else{
+    /* l'appareil courant gagne : rien de visible ne change, la synchro
+       normale suit son cours — aucun message particulier */
     syncStashReplaced(server, 'server');
     await syncPush(true);
-    syncSetStatus(t('syncNewerSent', syncWhen(state.savedAt)));
   }
 }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.1 — 2026-07-21
+
+- Sync status copy simplified: when the account backup replaces the device's registry, the bar now just says "Registry updated from your account" (no timestamps, no jargon); when the device wins, nothing special is shown — it's just normal syncing. The safety copy and timestamps still work behind the scenes.
+
 ## 1.9.0 — 2026-07-21
 
 Sync overhaul — no more conflict dialog:
