@@ -1,16 +1,20 @@
-# Vérifie deux fois par semaine si tycoon-tools a changé (patch du jeu).
+# Vérifie chaque jour si tycoon-tools a changé (patch du jeu).
 # En cas d'écart : régénère site/data.js et ouvre une Pull Request à relire.
+# Le job « signals » surveille en plus des sources communautaires indépendantes
+# (wikis, guide) et ouvre une issue quand elles bougent — alerte précoce, sans
+# toucher aux données.
 # Lancement manuel possible : onglet Actions → Check game data → Run workflow.
 name: Check game data
 
 on:
   schedule:
-    - cron: '0 8 * * 1,4'   # lundi et jeudi, 08:00 UTC
+    - cron: '30 7 * * *'   # tous les jours, 07:30 UTC
   workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   check:
@@ -72,3 +76,53 @@ jobs:
             - [ ] Bump `APP_VERSION` in `site/version.js`
             - [ ] Add a `CHANGELOG.md` entry
             - [ ] After merge: `cd /opt/sites/droidex && git pull && docker compose up -d --build droidex`
+
+  signals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check community sources (wikis, guide)
+        id: sig
+        run: |
+          set +e
+          python3 tools/watch-signals.py | tee signals.txt
+          code=$?
+          set -e
+          if [ "$code" = "10" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          elif [ "$code" != "0" ]; then
+            exit "$code"
+          fi
+
+      - name: Persist watch state
+        if: steps.sig.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/watch-state.json
+          git commit -m "bot: état des signaux communautaires"
+          git pull --rebase origin main
+          git push
+
+      - name: Open or update the signal issue
+        if: steps.sig.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "Des sources communautaires indépendantes de tycoon-tools ont bougé — le jeu a peut-être été patché."
+            echo
+            echo '```'
+            cat signals.txt
+            echo '```'
+            echo
+            echo "_Ce signal n'a modifié aucune donnée : la veille tycoon-tools ouvrira sa PR \`bot/gamedata-update\` quand la value list changera. Fermer cette issue une fois le patch identifié (ou écarté)._"
+          } > body.md
+          NUM=$(gh issue list --label gamedata-signal --state open --json number --jq '.[0].number')
+          if [ -n "$NUM" ]; then
+            gh issue comment "$NUM" --body-file body.md
+          else
+            gh issue create --title "📡 Signal communautaire : patch du jeu possible" \
+              --label gamedata-signal --body-file body.md
+          fi
