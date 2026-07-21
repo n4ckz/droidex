@@ -112,7 +112,7 @@ jobs:
         run: |
           set +e
           python3 tools/watch-signals.py | tee signals.txt
-          code=$?
+          code=${PIPESTATUS[0]}   # code de python, pas celui de tee
           set -e
           if [ "$code" = "10" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
