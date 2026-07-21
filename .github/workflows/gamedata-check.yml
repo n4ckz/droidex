@@ -77,6 +77,28 @@ jobs:
             - [ ] Add a `CHANGELOG.md` entry
             - [ ] After merge: `cd /opt/sites/droidex && git pull && docker compose up -d --build droidex`
 
+  # L'Ecosystem API d'Epic ne garde que 7 jours glissants : on recopie chaque
+  # jour les métriques officielles de l'île dans data/metrics/ (histoire
+  # complète du jeu, introuvable ailleurs).
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Archive island metrics (Ecosystem API, 7-day window)
+        run: python3 tools/archive-metrics.py
+
+      - name: Commit the archive
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet data/metrics; then
+            git add data/metrics
+            git commit -m "bot: archive des métriques de l'île (Ecosystem API)"
+            git pull --rebase origin main
+            git push
+          fi
+
   signals:
     runs-on: ubuntu-latest
     steps:
