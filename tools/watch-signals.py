@@ -91,6 +91,7 @@ def src_discord_patch_notes():
         msgs = json.loads(r.read().decode('utf-8', 'replace'))
     if not msgs:
         return None, ''
+    print(f'· discord-patch-notes : canal miroir lu, {len(msgs)} message(s), dernier id {msgs[0]["id"]}')
     detail = ' ; '.join(
         f"{clean(m.get('content', '')) or '(image ou embed — voir le canal)'} ({clean(m.get('timestamp', '')[:16])})"
         for m in msgs[:3])
