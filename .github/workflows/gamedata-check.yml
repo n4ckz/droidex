@@ -57,7 +57,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           branch: bot/gamedata-update
-          title: '🤖 Game data update detected on tycoon-tools'
+          title: 'Game data update detected on tycoon-tools'
           commit-message: 'Update game data from tycoon-tools'
           add-paths: |
             site/data.js
