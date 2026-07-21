@@ -10,6 +10,29 @@
 let pb = null;
 let syncRecordId = null;
 let syncPushTimer = null;
+/* `updated` PocketBase de la dernière version serveur vue par CET appareil :
+   la garde anti-écrasement du push compare avant d'écrire (v1.9.0) */
+let syncLastServerUpdated = null;
+
+/* Quelle version est la plus fraîche ? savedAt (horodaté à chaque écriture,
+   v1.9.0) ; repli sur le `updated` PocketBase pour les sauvegardes serveur
+   d'avant ; un état local sans savedAt s'incline devant le compte (référence). */
+function syncNewerSide(serverState, serverUpdated, localState){
+  const serverAt = Date.parse((serverState && serverState.savedAt) ||
+    String(serverUpdated || '').replace(' ', 'T')) || 0;
+  const localAt = Date.parse(localState && localState.savedAt) || 0;
+  return localAt > serverAt ? 'local' : 'server';
+}
+
+/* Filet de récupération : la version écartée par la résolution automatique
+   est gardée localement (une seule case, écrasée à chaque résolution). */
+function syncStashReplaced(replacedState, side){
+  try{
+    localStorage.setItem('droidex-rescue', JSON.stringify({
+      side, at: new Date().toISOString(), state: replacedState
+    }));
+  }catch(e){ /* stockage plein : le filet saute, la synchro continue */ }
+}
 
 function syncHasLocalData(){
   return Object.keys(state.owned).length > 0 || Object.keys(state.inBase).length > 0;
@@ -57,24 +80,39 @@ function syncNotifyLocalChange(){
   syncPushTimer = setTimeout(syncPush, 1000);
 }
 
-async function syncPush(){
+async function syncPush(skipGuard){
   if(!pb || !pb.authStore.isValid) return;
   const userId = pb.authStore.record.id;
   const payload = { user: userId, data: state };
   try{
     if(syncRecordId){
+      /* garde anti-écrasement : si le serveur a changé depuis la dernière
+         synchro de CET appareil (autre appareil passé entre-temps), on
+         réconcilie par fraîcheur au lieu d'écraser en aveugle */
+      if(!skipGuard){
+        try{
+          const cur = await pb.collection('saves').getOne(syncRecordId);
+          if(syncLastServerUpdated && cur.updated !== syncLastServerUpdated){
+            await syncReconcile();
+            return;
+          }
+        }catch(e){ if(e.status !== 404) throw e; }
+      }
       try{
-        await pb.collection('saves').update(syncRecordId, payload);
+        const rec = await pb.collection('saves').update(syncRecordId, payload);
+        syncLastServerUpdated = rec.updated;
       }catch(e){
         if(e.status === 404){ // supprimé ailleurs : on recrée
           syncRecordId = null;
           const rec = await pb.collection('saves').create(payload);
           syncRecordId = rec.id;
+          syncLastServerUpdated = rec.updated;
         }else throw e;
       }
     }else{
       const rec = await pb.collection('saves').create(payload);
       syncRecordId = rec.id;
+      syncLastServerUpdated = rec.updated;
     }
     syncUpdateUI();
   }catch(e){
@@ -87,6 +125,7 @@ async function syncFetchRecord(){
   try{
     const rec = await pb.collection('saves').getFirstListItem('user="' + userId + '"');
     syncRecordId = rec.id;
+    syncLastServerUpdated = rec.updated;
     return rec;
   }catch(e){
     if(e.status === 404) return null;
@@ -94,15 +133,23 @@ async function syncFetchRecord(){
   }
 }
 
-/* Réconciliation à la connexion / au démarrage :
+function syncWhen(ts){
+  const d = new Date(ts);
+  if(isNaN(d)) return '—';
+  return d.toLocaleString(LANG === 'fr' ? 'fr-FR' : 'en-GB', { dateStyle: 'short', timeStyle: 'short' });
+}
+
+/* Réconciliation à la connexion / au démarrage (v1.9.0 : plus de dialogue) :
    - serveur vide  -> le registre local devient la sauvegarde du compte ;
    - local vide    -> la sauvegarde du compte est chargée ;
-   - les deux pleins et différents -> l'utilisateur choisit. */
-async function syncReconcile(interactive){
+   - les deux pleins et différents -> LA PLUS RÉCENTE GAGNE (savedAt, repli
+     sur updated PocketBase), la version écartée est gardée en local dans
+     droidex-rescue — aucune question posée, aucune perte silencieuse. */
+async function syncReconcile(){
   const rec = await syncFetchRecord();
   const server = rec && rec.data && typeof rec.data === 'object' ? rec.data : null;
   if(!server || (!Object.keys(server.owned||{}).length && !Object.keys(server.inBase||{}).length)){
-    if(syncHasLocalData() || !rec) await syncPush();
+    if(syncHasLocalData() || !rec) await syncPush(true);
     return;
   }
   if(!syncHasLocalData() || syncStatesEqual(server, state)){
@@ -111,13 +158,16 @@ async function syncReconcile(interactive){
     renderAll();
     return;
   }
-  const useServer = !interactive || confirm(t('syncConflict'));
-  if(useServer){
+  if(syncNewerSide(server, rec.updated, state) === 'server'){
+    syncStashReplaced(state, 'local');
     applyParsedState(server);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     renderAll();
+    syncSetStatus(t('syncNewerLoaded', syncWhen(server.savedAt || rec.updated)));
   }else{
-    await syncPush();
+    syncStashReplaced(server, 'server');
+    await syncPush(true);
+    syncSetStatus(t('syncNewerSent', syncWhen(state.savedAt)));
   }
 }
 
@@ -125,8 +175,8 @@ async function syncLogin(){
   syncSetStatus(t('syncInProgress'));
   try{
     await pb.collection('users').authWithOAuth2({ provider: 'google' });
-    await syncReconcile(true);
-    syncUpdateUI();
+    syncUpdateUI();          /* avant la réconciliation : son message d'issue doit rester visible */
+    await syncReconcile();
   }catch(e){
     syncSetStatus(t('syncLoginFailed'), true);
     setTimeout(syncUpdateUI, 4000);
@@ -160,8 +210,7 @@ async function syncDeleteAccount(){
   if(pb.authStore.isValid){
     // rafraîchit le jeton et tire la sauvegarde du compte
     pb.collection('users').authRefresh()
-      .then(()=>syncReconcile(true))
-      .then(syncUpdateUI)
+      .then(()=>{ syncUpdateUI(); return syncReconcile(); })
       .catch(e=>{
         if(e && (e.status === 401 || e.status === 403)){ pb.authStore.clear(); syncUpdateUI(); }
         else syncSetStatus(t('syncOffline'), true);

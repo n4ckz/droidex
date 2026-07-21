@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.9.0 — 2026-07-21
+
+Sync overhaul — no more conflict dialog:
+
+- **Every save is timestamped** (`savedAt` on each local write).
+- **Freshness wins automatically**: when the device and the account backup diverge, the most recent one is applied — no question asked. Pre-1.9 server backups fall back to the PocketBase `updated` time; a local state with no timestamp defers to the account.
+- **Nothing is lost silently**: the replaced version is kept on the device (`droidex-rescue` key) as a safety copy, and the status bar says what happened and when.
+- **Anti-clobber guard**: before pushing, a device checks whether the account backup changed since its last sync (another device passed by) — if so it reconciles by freshness instead of blindly overwriting. This closes the incident where a stale device rolled back the account.
+
 ## 1.8.1 — 2026-07-21
 
 - **Sync fix**: the account-conflict dialog no longer reappears on every page load after a data-format migration. The local/server comparison now normalizes both sides through the same migrations (boolean legacy states, CB-23 reclassification, the v1.5.0 six-variant padding) before comparing — a pre-Galactic server backup is recognized as identical to its migrated local counterpart. Real conflicts are still detected.

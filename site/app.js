@@ -112,6 +112,9 @@ function applyParsedState(parsed){
   state.targetCycle = n.targetCycle;
   state.flawless = n.flawless;
   state.wish = n.wish;
+  /* fraîcheur de la sauvegarde adoptée, conservée telle quelle (v1.9.0) —
+     hors de normalizeParsedState : ce n'est pas une donnée de collection */
+  state.savedAt = typeof parsed.savedAt === 'string' ? parsed.savedAt : null;
   return true;
 }
 function loadState(){
@@ -121,6 +124,9 @@ function loadState(){
   }catch(e){ /* première utilisation ou JSON invalide : on garde l'état vide */ }
 }
 function persistState(){
+  /* chaque écriture est horodatée : c'est ce qui permet à la synchro de
+     départager deux appareils (la sauvegarde la plus récente gagne) */
+  state.savedAt = new Date().toISOString();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   /* synchronisation de compte optionnelle (sync.js) */
   if(typeof syncNotifyLocalChange === 'function') syncNotifyLocalChange();

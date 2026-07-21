@@ -39,7 +39,7 @@ function boot(localStorageSeed, lang, navLang, fetchImpl) {
   try {
     // les <script> classiques partagent la portée lexicale globale ; on simule en concaténant
     window.eval(bundle +
-      '\n;window.__test = { getState: () => state, applyParsedState, persistState, renderAll, setLang, syncStatesEqual };');
+      '\n;window.__test = { getState: () => state, applyParsedState, persistState, renderAll, setLang, syncStatesEqual, syncNewerSide, syncStashReplaced };');
   } catch (e) {
     errors.push(e.stack || e.message);
   }
@@ -110,8 +110,9 @@ const setTarget = (w, rb) => {
     assert(ok, 'import du JSON exporté sans erreur');
     const dia = findCard(w, 'Strike-Orb').querySelector('.tier[data-t="2"]');
     assert(dia.classList.contains('base'), 'état restauré à l\'identique après import');
-    assert(w.localStorage.getItem('droidex-tracker-v1') === JSON.stringify(JSON.parse(savedJson)),
-      'localStorage réécrit après import');
+    const rewritten = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
+    assert(w.__test.syncStatesEqual(rewritten, JSON.parse(savedJson)),
+      'localStorage réécrit après import (contenu identique, savedAt ré-horodaté)');
   }
 
   /* ---- 4. Scénario badges (critère 4) : Strike-Orb reqs [[10,1]] ---- */
@@ -526,6 +527,39 @@ const setTarget = (w, rb) => {
     const serverDiff = { owned: { r6: [1, 1, 0, 0, 0] }, inBase: {}, targetRB: 10, targetCycle: 1 };
     assert(w.__test.syncStatesEqual(serverDiff, w.__test.getState()) === false,
       'états réellement différents → conflit toujours détecté');
+  }
+
+  /* ---- 24. Synchro horodatée : la plus récente gagne, l'écartée est stashée ---- */
+  console.log('\n[24] Synchro : résolution par fraîcheur');
+  {
+    const { window: w } = boot();
+    // persistState horodate la sauvegarde
+    findCard(w, 'Gonk').querySelector('.tier[data-t="0"]').click();
+    await sleep(600);
+    const saved = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
+    assert(typeof saved.savedAt === 'string' && !isNaN(Date.parse(saved.savedAt)),
+      'persistState horodate la sauvegarde (savedAt ISO)');
+    // savedAt n'entre pas dans la comparaison d'égalité
+    const clone = JSON.parse(JSON.stringify(saved)); clone.savedAt = '1999-01-01T00:00:00.000Z';
+    assert(w.__test.syncStatesEqual(saved, clone) === true, 'savedAt ignoré par syncStatesEqual');
+    // résolution : la plus récente gagne
+    const older = { savedAt: '2026-07-18T10:00:00.000Z' };
+    const newer = { savedAt: '2026-07-21T10:00:00.000Z' };
+    assert(w.__test.syncNewerSide(newer, '', older) === 'server', 'serveur plus récent → server');
+    assert(w.__test.syncNewerSide(older, '', newer) === 'local', 'local plus récent → local');
+    // sauvegarde serveur sans savedAt (ancien format) : repli sur updated PocketBase
+    assert(w.__test.syncNewerSide({}, '2026-07-21 12:00:00.000Z', older) === 'server',
+      'sans savedAt serveur : repli sur record.updated');
+    assert(w.__test.syncNewerSide({}, '2026-07-10 12:00:00.000Z', newer) === 'local',
+      'updated serveur plus vieux → local');
+    // état local sans savedAt (pré-v1.9) : le serveur (référence) gagne
+    assert(w.__test.syncNewerSide({ savedAt: '2026-07-18T10:00:00.000Z' }, '', {}) === 'server',
+      'local sans savedAt → le compte reste la référence');
+    // la version écartée est mise de côté (filet de récupération)
+    w.__test.syncStashReplaced({ owned: { gonk: [1,0,0,0,0,0] } }, 'local');
+    const rescue = JSON.parse(w.localStorage.getItem('droidex-rescue'));
+    assert(rescue && rescue.side === 'local' && rescue.state.owned.gonk[0] === 1 && rescue.at,
+      'version écartée stashée dans droidex-rescue (side, state, at)');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
