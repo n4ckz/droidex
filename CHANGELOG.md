@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 — 2026-07-21
+
+- **Live player counter** in the header ("● 12.5K in game"): concurrent players on the Star Wars Droid Tycoon island, straight from Epic's official, public Ecosystem API (10-minute buckets, refreshed every 5 minutes). Hidden gracefully when offline or if the API is unreachable — no error, no tracking, no key required.
+
 ## 1.5.1 — 2026-07-21
 
 SEO follow-up for the Galactic update (new searches expected):

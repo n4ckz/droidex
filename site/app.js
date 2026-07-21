@@ -246,6 +246,29 @@ function renderProgress(){
   document.getElementById('galacticCount').textContent=t('galacticCount', gal, galTotal);
   const n=distinctOwned();
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
+  renderLiveCcu();  /* relibellé aussi à la bascule de langue (renderAll) */
+}
+
+/* Joueurs en direct — Ecosystem API officielle d'Epic (peakCCU par tranches
+   de 10 min, dernier point non-null). Échec réseau/API/hors-ligne : badge
+   simplement caché, jamais d'erreur visible. */
+const LIVE_CCU_URL='https://api.fortnite.com/ecosystem/v1/islands/7865-8305-9184/metrics/minute';
+let liveCcu=null;
+function renderLiveCcu(){
+  const el=document.getElementById('liveCcu');
+  el.hidden=liveCcu==null;
+  if(liveCcu!=null) el.textContent=t('liveCcu', fmtInc(liveCcu));
+}
+function refreshLiveCcu(){
+  if(typeof fetch==='undefined') return;
+  fetch(LIVE_CCU_URL)
+    .then(r=>r.ok?r.json():Promise.reject(new Error(r.status)))
+    .then(d=>{
+      const pts=(d.peakCCU||[]).filter(p=>typeof p.value==='number');
+      liveCcu=pts.length?pts[pts.length-1].value:null;
+      renderLiveCcu();
+    })
+    .catch(()=>{ liveCcu=null; renderLiveCcu(); });
 }
 
 const FILTER_DEFS=[['all','filterAll'],['keep','filterKeep'],['missing','filterMissing'],['base','filterBase'],['wish','filterWish'],['Worker','filterWorker'],['Astromech','filterAstromech'],['Battle','filterBattle']];
@@ -545,6 +568,8 @@ document.getElementById('importFile').addEventListener('change',e=>{
   document.getElementById('list').style.display='block';
   document.getElementById('appVersion').textContent='DROIDEX V'+APP_VERSION;
   renderAll();
+  refreshLiveCcu();
+  setInterval(refreshLiveCcu, 5*60*1000);
   /* premières visites : l'aide s'affiche d'office pendant la phase d'apprentissage —
      un « i » en bout de ligne ne serait jamais découvert par un nouvel utilisateur */
   if(hintLearning()) setHint(true);

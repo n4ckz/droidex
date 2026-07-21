@@ -15,11 +15,22 @@ function assert(cond, msg) {
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function boot(localStorageSeed, lang, navLang) {
+/* Fixture CCU : forme réelle de l'Ecosystem API Epic (dernier bucket en cours = null) */
+const CCU_FIXTURE = { peakCCU: [
+  { value: 27431, timestamp: '2026-07-20T00:00:00.000Z' },
+  { value: 12505, timestamp: '2026-07-21T07:40:00.000Z' },
+  { value: null,  timestamp: '2026-07-21T07:50:00.000Z' }
+] };
+
+function boot(localStorageSeed, lang, navLang, fetchImpl) {
   const errors = [];
   const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only' });
   const { window } = dom;
   window.confirm = () => true;
+  /* aucun appel réseau réel dans les tests : stub de fetch (API CCU d'Epic) */
+  window.fetch = fetchImpl || (url => String(url).includes('api.fortnite.com')
+    ? Promise.resolve({ ok: true, json: () => Promise.resolve(CCU_FIXTURE) })
+    : Promise.reject(new Error('réseau interdit dans les tests : ' + url)));
   if (navLang) Object.defineProperty(window.navigator, 'language', { get: () => navLang });
   if (localStorageSeed) window.localStorage.setItem('droidex-tracker-v1', localStorageSeed);
   if (lang) window.localStorage.setItem('droidex-lang', lang);
@@ -456,6 +467,24 @@ const setTarget = (w, rb) => {
     const badge = findCard(w, 'R6').querySelector('.req-badge');
     assert(badge.textContent === '✓ RB9·GLD' && badge.classList.contains('ready'),
       'R6 Galactique en base satisfait l\'exigence Or (obtenu : "' + badge.textContent + '")');
+  }
+
+  /* ---- 22. Compteur de joueurs en direct (Ecosystem API Epic) ---- */
+  console.log('\n[22] Compteur de joueurs en direct');
+  {
+    const { window: w } = boot();
+    await sleep(50);   // fetch stub + microtâches
+    const el = w.document.getElementById('liveCcu');
+    assert(el && el.hidden === false, 'badge CCU visible après fetch');
+    assert(el.textContent === '● 12.5K in game',
+      'texte "● 12.5K in game", dernier bucket null ignoré (obtenu : "' + (el && el.textContent) + '")');
+    w.__test.setLang('fr');
+    assert(el.textContent === '● 12.5K en jeu', 'bascule FR : "● 12.5K en jeu" (obtenu : "' + el.textContent + '")');
+  }
+  {
+    const { window: w } = boot(null, null, null, () => Promise.reject(new Error('API down')));
+    await sleep(50);
+    assert(w.document.getElementById('liveCcu').hidden === true, 'API en échec → badge caché, pas d\'erreur');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
