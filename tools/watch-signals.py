@@ -8,6 +8,7 @@ Sources surveillées :
 - page Droid Tycoon du wiki Fortnite : timestamp de dernière révision
 - droidtycoonguide.com/events/ : empreinte du texte de la page (site statique)
 - droidtrakr.com : catalogue de leur tracker (data.json + inventaire d'images)
+  et leur retranscription des patch notes officiels (PATCH_NOTES_VERSION)
 
 État : tools/watch-state.json (commité — le workflow le met à jour).
 Codes de sortie : 0 = rien de neuf (ou première initialisation), 10 = au moins
@@ -144,16 +145,22 @@ def src_droidtrakr():
     retient que le catalogue STABLE — noms+raretés de data.json, droïdes
     illustrés et paliers de variantes de droid-images.js — jamais les fichiers
     bruts : data.json embarque les cases de progression des fondateurs du site
-    et les images s'ajoutent au compte-gouttes (faux signal quotidien sinon)."""
+    et les images s'ajoutent au compte-gouttes (faux signal quotidien sinon).
+    Suivi aussi : PATCH_NOTES_VERSION de leur app.js — ils retranscrivent à la
+    main les patch notes du Discord officiel (que « Suivre » ne relaie pas si
+    FOAD ne publie pas ses messages, constat du 21/07/2026)."""
     droids = json.loads(fetch('https://droidtrakr.com/data.json'))
     catalog = sorted((str(d.get('name', '')), str(d.get('rarity', ''))) for d in droids)
     raw = fetch('https://droidtrakr.com/droid-images.js')
     pairs = re.findall(r'"([A-Z0-9]+):([A-Za-z]+)"\s*:', raw)
     ids = sorted({i for i, _ in pairs})
     tiers = sorted({t for _, t in pairs})
-    token = hashlib.sha256(json.dumps([catalog, ids, tiers]).encode()).hexdigest()[:16]
+    app = fetch('https://droidtrakr.com/app.js')
+    m = re.search(r"PATCH_NOTES_VERSION\s*=\s*'([^']*)'", app)
+    patch = m.group(1) if m else ''
+    token = hashlib.sha256(json.dumps([catalog, ids, tiers, patch]).encode()).hexdigest()[:16]
     detail = (f"{len(catalog)} droïdes au catalogue, {len(ids)} illustrés, "
-              f"paliers {clean(', '.join(tiers))}")
+              f"paliers {clean(', '.join(tiers))}, patch notes retranscrits « {clean(patch)} »")
     return token, detail
 
 
