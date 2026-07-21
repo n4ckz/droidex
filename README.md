@@ -174,7 +174,8 @@ tools/
   archive-metrics.py      Archives the island's daily metrics into data/metrics/
   watch-signals.py        Patch signals from independent sources (official island
                           card, wikis, events page, Discord patch-notes mirror,
-                          CCU anomaly) — opens a GitHub issue when something moves
+                          droidtrakr catalog + patch-notes transcript, CCU
+                          anomaly) — opens a GitHub issue when something moves
 .github/workflows/
   gamedata-check.yml      Daily watch (3 jobs): game-data drift → reviewable PR;
                           metrics archiving; patch signals → issue
@@ -241,7 +242,7 @@ git diff site/data.js                      # review what the game changed
 
 Then bump `APP_VERSION` in `site/version.js`, add a CHANGELOG entry and run the tests. If the game adds a brand-new droid, the script stops and tells you to add its id to `NAME2ID`/`DISPLAY` first.
 
-This check also runs automatically **every day** (GitHub Actions): when a game patch changes the data, the workflow regenerates `site/data.js`, runs the test suite against it and opens a reviewable pull request. Two sibling jobs run alongside it: one archives the island's official daily metrics (Epic's API only keeps a rolling 7-day window), the other watches independent sources — the official island card, the community wikis, the events page, a mirror of the official Discord #patch-notes channel and a CCU anomaly detector — and opens a GitHub issue as an early warning when something moves, without ever touching the data.
+This check also runs automatically **every day** (GitHub Actions): when a game patch changes the data, the workflow regenerates `site/data.js`, runs the test suite against it and opens a reviewable pull request. Two sibling jobs run alongside it: one archives the island's official daily metrics (Epic's API only keeps a rolling 7-day window), the other watches independent sources — the official island card, the community wikis, the events page, a mirror of the official Discord #patch-notes channel (best effort: channel follows only relay messages the source server explicitly publishes), the droidtrakr catalog and its hand-transcribed official patch notes, and a CCU anomaly detector — and opens a GitHub issue as an early warning when something moves, without ever touching the data.
 
 ### Content pages
 
