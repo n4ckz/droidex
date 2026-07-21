@@ -184,6 +184,8 @@ def main():
         if old is not None and old != token:
             changed.append(name)
             print(f'CHANGED {name} : {detail}')
+            if '\n' in detail:
+                print()  # sans ligne vide, le markdown avale la ligne suivante dans la citation
             print(f'  → vérifier : {link}')
         state[name] = {'token': token}
     ccu_anomaly(state, changed)
