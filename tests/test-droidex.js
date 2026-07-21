@@ -5,7 +5,9 @@ const path = require('path');
 
 const SITE = path.join(__dirname, '..', 'site');
 const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
-const bundle = ['version.js', 'i18n.js', 'data.js', 'app.js']
+/* sync.js est inclus SANS config.js : PB_URL indéfini → initSync() se coupe
+   net, mais syncStatesEqual/normalizeParsedState deviennent testables */
+const bundle = ['version.js', 'i18n.js', 'data.js', 'app.js', 'sync.js']
   .map(f => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n;\n');
 
 let failures = 0;
@@ -37,7 +39,7 @@ function boot(localStorageSeed, lang, navLang, fetchImpl) {
   try {
     // les <script> classiques partagent la portée lexicale globale ; on simule en concaténant
     window.eval(bundle +
-      '\n;window.__test = { getState: () => state, applyParsedState, persistState, renderAll, setLang };');
+      '\n;window.__test = { getState: () => state, applyParsedState, persistState, renderAll, setLang, syncStatesEqual };');
   } catch (e) {
     errors.push(e.stack || e.message);
   }
@@ -503,6 +505,27 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(null, null, null, () => Promise.reject(new Error('API down')));
     await sleep(50);
     assert(w.document.getElementById('liveCcu').hidden === true, 'API en échec → badge caché, pas d\'erreur');
+  }
+
+  /* ---- 23. Synchro : la comparaison ignore les migrations de format ---- */
+  console.log('\n[23] Comparaison de synchro insensible aux migrations');
+  {
+    // sauvegarde serveur d'AVANT la v1.5.0 (tableaux à 5) vs état local migré (6) :
+    // sémantiquement identiques → PAS de dialogue de conflit
+    const serverOld = { owned: { r6: [1, 2, 0, 0, 0], strikeorb: [0, 0, 2, 0, 0] }, inBase: {}, targetRB: 10, targetCycle: 1 };
+    const { window: w } = boot(JSON.stringify(serverOld));   // le local est migré au chargement
+    assert(w.__test.syncStatesEqual(serverOld, w.__test.getState()) === true,
+      'serveur 5 entrées ≍ local migré 6 entrées (sinon : boucle de conflit à chaque visite)');
+    // très vieille sauvegarde (booléens + inBase global) : toujours équivalente
+    const serverBool = { owned: { r6: [true, true, false, false, false], strikeorb: [false, false, true, false, false] }, inBase: { r6: true, strikeorb: true }, targetRB: 10, targetCycle: 1 };
+    const localFromBool = JSON.parse(JSON.stringify(w.__test.getState()));
+    localFromBool.owned.r6 = [1, 2, 0, 0, 0, 0];
+    assert(w.__test.syncStatesEqual(serverBool, { owned: { r6: [1, 2, 0, 0, 0, 0], strikeorb: [0, 0, 2, 0, 0, 0] }, inBase: {}, targetRB: 10, targetCycle: 1 }) === true,
+      'serveur format booléens ≍ état migré équivalent');
+    // et un VRAI conflit reste détecté
+    const serverDiff = { owned: { r6: [1, 1, 0, 0, 0] }, inBase: {}, targetRB: 10, targetCycle: 1 };
+    assert(w.__test.syncStatesEqual(serverDiff, w.__test.getState()) === false,
+      'états réellement différents → conflit toujours détecté');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

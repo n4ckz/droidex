@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.1 — 2026-07-21
+
+- **Sync fix**: the account-conflict dialog no longer reappears on every page load after a data-format migration. The local/server comparison now normalizes both sides through the same migrations (boolean legacy states, CB-23 reclassification, the v1.5.0 six-variant padding) before comparing — a pre-Galactic server backup is recognized as identical to its migrated local counterpart. Real conflicts are still detected.
+
 ## 1.8.0 — 2026-07-21
 
 - **French versions of all four content pages** under `/fr/` (value list, rebirth requirements, live stats, FAQ) — fully translated, generated from the same data, cross-linked with `hreflang` tags (x-default: English). Sitemap now lists 9 URLs.
