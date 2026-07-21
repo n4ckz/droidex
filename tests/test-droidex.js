@@ -369,6 +369,7 @@ const setTarget = (w, rb) => {
     assert(rb.includes('45T'), 'rebirths : RB28 (45T) présent');
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
+    assert(faq.includes('What is the Galactic variant'), 'FAQ : entrée dédiée à la variante Galactic');
     const sm = read('sitemap.xml');
     assert((sm.match(/<loc>/g) || []).length === 4, 'sitemap : 4 URLs');
     ['value-list','rebirth-requirements','faq'].forEach(p =>

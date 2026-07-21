@@ -7,6 +7,7 @@ Key facts:
 - The game gives no way to check what you already own while standing at the Sandcrawler shop; Droidex fills that gap.
 - Each droid variant has 3 states: never owned, owned (Droidex entry), physically in base. A higher variant always satisfies a lower requirement (a Diamond droid validates a "Gold" requirement).
 - Each Rebirth (1–28, across 4 cycles) requires 3 specific droids in your base plus credits; the tracker shows what is missing for your next target. Rebirth 28 requires a Galactic-tier droid.
+- The Galactic variant (added mid-July 2026) is the 6th tier, above Beskar. Like the in-game Droidex screen, it is counted separately from the main 317-variant total: the tracker shows a dedicated "Galactic x/62" counter, one per standard droid, and RB·GLC requirement badges. A Galactic copy satisfies any lower variant requirement. Galactic incomes are still being documented by the community (undocumented values show as "—" in the value list).
 - Beyond the checklist: per-droid wishlist (star the droids you are hunting for), Flawless tracking (mark which droids you already rolled Flawless), name search, quick filters with live counts (keep, missing for next rebirth, in base, wishlist, or by class Worker/Astromech/Battle), sorting by rarity or by Beskar income per second, and a live variant total + collection bonus counter.
 - Interface fully available in English and French (the only Droid Tycoon tracker that is).
 - No account required: data stays in the browser (localStorage) with JSON export/import. Optional Google sign-in syncs the registry across devices.
@@ -18,6 +19,6 @@ Key facts:
 - [Application](https://droidex.nackz.dev/): the tracker itself
 - [Value list](https://droidex.nackz.dev/value-list/): income per second and Beskar cost for every droid and variant
 - [Rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/): the 3 droids and credit cost needed for each of the 28 rebirth levels, across all 4 cycles
-- [FAQ](https://droidex.nackz.dev/faq/): answers about variants, rebirths, Flawless odds, the collection bonus, and syncing
+- [FAQ](https://droidex.nackz.dev/faq/): answers about variants (including the new Galactic tier), rebirths, Flawless odds, the collection bonus, and syncing
 - [Source code and documentation](https://github.com/n4ckz/droidex): README with self-hosting guide, game data sources and known data uncertainties
 - [Game data file](https://github.com/n4ckz/droidex/blob/main/site/data.js): the tracked droids, rebirth requirements and credit costs

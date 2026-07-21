@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.1 — 2026-07-21
+
+SEO follow-up for the Galactic update (new searches expected):
+
+- Dedicated FAQ entry "What is the Galactic variant and how does it work?" (separate x/62 counter, RB28 requirement, hourly spawn per community sources, partial income data)
+- Value list and rebirth pages: intros explicitly mention the mid-July 2026 Galactic update and the RB28 Galactic requirement
+- llms.txt: dedicated Galactic bullet (tier above Beskar, x/62 counter, RB·GLC badges, "—" for undocumented incomes)
+- README screenshots regenerated with Galactic (GLC) cells visible
+
 ## 1.5.0 — 2026-07-21
 
 Game update (Galactic variant):

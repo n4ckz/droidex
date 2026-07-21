@@ -140,7 +140,9 @@ ${bodyHtml}
 
 function buildValueList() {
   const intro = `<p class="seo-intro">This value list gives the income per second and Beskar upgrade cost for every ` +
-    `droid in Star Wars: Droid Tycoon, across all six variants: Basic, Gold, Diamond, Rainbow, Beskar and Galactic. Numbers ` +
+    `droid in Star Wars: Droid Tycoon, across all six variants: Basic, Gold, Diamond, Rainbow, Beskar and Galactic ` +
+    `(the new tier added in the mid-July 2026 update — Galactic incomes are still being documented by the ` +
+    `community, undocumented values show as "—"). Numbers ` +
     `are cross-checked against community sources (${DATE_ISO}) rather than a single guide, and ` +
     `Droidex's own cycle 1 rebirth requirements have been verified in-game through rebirth 23. Iconic droids have ` +
     `no variants: owning one simply adds a flat +15% income bonus alongside its unique perk. Remember that in ` +
@@ -203,7 +205,8 @@ function buildRebirthRequirements() {
   const intro = `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 28 rebirth levels, repeated ` +
     `across 4 cycles in an endless loop. Each level requires three specific droids placed in your base at a ` +
     `minimum variant, plus a credit cost that is identical across all 4 cycles for the same level, climbing from ` +
-    `10K at rebirth 1 to 45T at rebirth 28. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
+    `10K at rebirth 1 to 45T at rebirth 28. Rebirth 28, added with the Galactic update of mid-July 2026, is the ` +
+    `first level to require a Galactic-tier droid in your base. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
     `Super Rebirth instead of a normal one: it keeps your Droidex, droidsmith level, cosmetics, unlocked Flawless ` +
     `droids, Nova crystals and Iconic unlocks, but resets your base, its droids, your currencies, rebirth rank, ` +
     `pickaxe level and blueprints, before advancing you straight into the next cycle. This page lists every ` +
@@ -293,6 +296,19 @@ const FAQ = [
       'cycles in a loop, and each cycle can ask for a different trio of droids at the same level even though the ' +
       'credit cost stays identical across cycles. Certain rebirth levels also unlock a new slot for your base, ' +
       'such as an extra Worker or Astromech slot.',
+  },
+  {
+    q: 'What is the Galactic variant and how does it work?',
+    a: 'Galactic is the newest variant tier, added above Beskar in the mid-July 2026 game update, bringing the ' +
+      'total to six variants per standard droid. Exactly like the in-game Droidex screen, the Galactic tier is ' +
+      'not counted in the main 317-variant total: it has its own separate counter over the 62 standard droids, ' +
+      'and Droidex mirrors that with a dedicated "Galactic x/62" counter. Rebirth 28 — the new top level of each ' +
+      'of the 4 cycles — requires one specific Galactic droid placed in your base (for example a Galactic ' +
+      'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
+      'variant, a Galactic copy also satisfies any lower requirement for the same droid. Community sources are ' +
+      'still documenting Galactic income values, and report Galactic droids appearing in-game on an hourly ' +
+      'spawn timer; Droidex tracks each Galactic copy with the same tap-through states (owned, in base) and ' +
+      'shows RB·GLC requirement badges so you know exactly which Galactic droids your next rebirth needs.',
   },
   {
     q: 'What is a Super Rebirth and what do you keep or lose?',
