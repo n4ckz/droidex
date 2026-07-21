@@ -387,10 +387,22 @@ const setTarget = (w, rb) => {
     assert(st.includes('id="stats-tbody"') && st.includes('Peak CCU'), 'stats : tableau jour par jour');
     assert(st.includes('summary_large_image') && st.includes('og/og-stats-1200x630.png'), 'stats : carte twitter + image OG dédiée');
     assert(vl.includes('summary_large_image') && vl.includes('og/og-1200x630.png'), 'pages SEO : carte twitter + image OG générique');
+    // versions françaises : contenu traduit + hreflang + redirection EN→FR
+    const vlfr = read('fr/value-list/index.html');
+    assert(vlfr.includes('lang="fr"') && vlfr.includes('Liste des valeurs de Droid Tycoon'), 'FR : value list traduite');
+    assert(vlfr.includes('<th>Diamant</th>') && vlfr.includes('<th>Galactique</th>'), 'FR : en-têtes de variantes traduits');
+    assert(vl.includes('hreflang="fr"') && vlfr.includes('hreflang="en"'), 'hreflang croisés EN↔FR');
+    assert(vl.includes('lang-redirect.js'), 'pages EN : script de détection de langue');
+    const faqfr = read('fr/faq/index.html');
+    assert(faqfr.includes('variante Galactique'), 'FR : FAQ traduite (entrée Galactique)');
+    const stfr = read('fr/stats/index.html');
+    assert(stfr.includes('En jeu en ce moment'), 'FR : page stats traduite');
     const sm = read('sitemap.xml');
-    assert((sm.match(/<loc>/g) || []).length === 5, 'sitemap : 5 URLs');
-    ['value-list','rebirth-requirements','stats','faq'].forEach(p =>
-      assert(sm.includes('https://droidex.nackz.dev/' + p + '/'), 'sitemap contient ' + p));
+    assert((sm.match(/<loc>/g) || []).length === 9, 'sitemap : 9 URLs (1 + 4 EN + 4 FR)');
+    ['value-list','rebirth-requirements','stats','faq'].forEach(p => {
+      assert(sm.includes('https://droidex.nackz.dev/' + p + '/'), 'sitemap contient ' + p);
+      assert(sm.includes('https://droidex.nackz.dev/fr/' + p + '/'), 'sitemap contient fr/' + p);
+    });
   }
 
   /* ---- 20. Panneau d'aide : auto-ouvert à la première visite, tappable ensuite ---- */

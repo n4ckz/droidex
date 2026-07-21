@@ -36,6 +36,11 @@
 .seo-page .seo-navlink:hover{color:var(--accent-300);border-color:var(--accent-800)}
 .seo-page .seo-navlink.active{color:var(--accent-300);border-color:var(--accent-700)}
 .seo-page .seo-cta{text-decoration:none;display:inline-block}
+.seo-page .seo-langs{display:flex;align-items:center;gap:5px;font-family:var(--font-hud);font-size:10px;letter-spacing:.08em}
+.seo-page .seo-lang{color:var(--n-400);text-decoration:none;padding:5px 6px;border:1px solid transparent}
+.seo-page a.seo-lang:hover{color:var(--accent-300);border-color:var(--accent-800)}
+.seo-page .seo-lang.current{color:var(--accent-300);border-color:var(--accent-700)}
+.seo-page .seo-lang-sep{color:var(--n-600)}
 
 /* ---------- corps ---------- */
 .seo-page .seo-main{

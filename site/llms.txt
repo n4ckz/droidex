@@ -14,6 +14,8 @@ Key facts:
 - No tracking, no ads, free and open source (MIT).
 - Self-hostable: static site (nginx) + optional PocketBase sync API, Docker/Traefik setup provided.
 
+All four content pages below are also available in French under https://droidex.nackz.dev/fr/ (linked via hreflang; the language selector is in each page's header).
+
 ## Links
 
 - [Application](https://droidex.nackz.dev/): the tracker itself
