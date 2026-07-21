@@ -27,17 +27,17 @@ function reqsFor(d){
 
 function ownedTiers(id){
   const v = state.owned[id];
-  return Array.isArray(v) ? v : [0,0,0,0,0];
+  return Array.isArray(v) ? v : [0,0,0,0,0,0];
 }
 /* états par variante : 0 = pas eu, 1 = possédé (Droidex), 2 = en base */
 function meetsReq(id, tier){
   const o = ownedTiers(id);
-  for(let i=tier;i<5;i++) if(o[i]>=1) return true;
+  for(let i=tier;i<6;i++) if(o[i]>=1) return true;
   return false;
 }
 function inBaseReq(id, tier){
   const o = ownedTiers(id);
-  for(let i=tier;i<5;i++) if(o[i]===2) return true;
+  for(let i=tier;i<6;i++) if(o[i]===2) return true;
   return false;
 }
 function hasAnyInBase(id){
@@ -78,10 +78,12 @@ function applyParsedState(parsed){
     const v = state.owned[id];
     if(Array.isArray(v) && !iconicIds.has(id)){
       state.owned[id] = v.map(x=>x===true?1:(typeof x==='number'?x:0));
+      /* v1.5.0 : padding à 6 entrées (variante Galactique) */
+      while(state.owned[id].length<6) state.owned[id].push(0);
       /* ancien toggle global "en base" -> promotion de la meilleure variante possédée */
       if(state.inBase[id]===true){
         const arr = state.owned[id];
-        for(let i=4;i>=0;i--){ if(arr[i]>=1){ arr[i]=2; break; } }
+        for(let i=arr.length-1;i>=0;i--){ if(arr[i]>=1){ arr[i]=2; break; } }
         delete state.inBase[id];
       }
     }
@@ -168,7 +170,8 @@ function importStateFile(file){
 function renderRBPanel(){
   const sel = document.getElementById('rbSelect');
   if(!sel.options.length){
-    for(let i=1;i<=27;i++){
+    const maxRB = Math.max(...Object.keys(REBIRTHS[1]).map(Number));
+    for(let i=1;i<=maxRB;i++){
       const o=document.createElement('option');
       o.value=i;
       sel.appendChild(o);
@@ -226,15 +229,21 @@ function renderRBPanel(){
 }
 
 function renderProgress(){
-  let total=0,done=0;
+  let total=0,done=0,gal=0,galTotal=0;
   DROIDS.forEach(d=>{
     if(d.iconic){total+=1;if(state.owned[d.id]===true)done+=1;}
-    else{total+=5;done+=ownedTiers(d.id).filter(v=>v>=1).length;}
+    else{
+      const o=ownedTiers(d.id);
+      /* le jeu n'inclut pas le Galactique dans le total Droidex (317) */
+      total+=5;done+=o.slice(0,5).filter(v=>v>=1).length;
+      galTotal+=1;if(o[5]>=1)gal+=1;
+    }
   });
   const segs=document.getElementById('progressSegs');
   const lit=total?Math.round(done/total*10):0;
   [...segs.children].forEach((s,i)=>s.classList.toggle('on',i<lit));
   document.getElementById('progressLabel').textContent=String(done).padStart(3,'0')+'/'+total;
+  document.getElementById('galacticCount').textContent=t('galacticCount', gal, galTotal);
   const n=distinctOwned();
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
 }

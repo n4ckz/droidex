@@ -141,7 +141,7 @@ const setTarget = (w, rb) => {
     const seed = JSON.stringify({ owned: { r6: [true, true, false, false, false], bb8: true }, inBase: { r6: true, bb8: true }, targetRB: 9 });
     const { window: w } = boot(seed);
     const s = JSON.parse(JSON.stringify(w.__test.getState()));
-    assert(JSON.stringify(s.owned.r6) === '[1,2,0,0,0]', 'r6 [true,true,…] + inBase → [1,2,0,0,0] (obtenu : ' + JSON.stringify(s.owned.r6) + ')');
+    assert(JSON.stringify(s.owned.r6) === '[1,2,0,0,0,0]', 'r6 [true,true,…] + inBase → [1,2,0,0,0,0] + padding Galactique (obtenu : ' + JSON.stringify(s.owned.r6) + ')');
     assert(s.inBase.r6 === undefined, 'inBase.r6 supprimé après promotion');
     assert(s.owned.bb8 === true && s.inBase.bb8 === true, 'iconique bb8 inchangé (owned + inBase conservés)');
   }
@@ -217,7 +217,7 @@ const setTarget = (w, rb) => {
   console.log('\n[11] Cycles et RB 24-27');
   {
     const { window: w } = boot(savedJson);
-    assert(w.document.getElementById('rbSelect').options.length === 27, 'sélecteur RB : 27 niveaux');
+    assert(w.document.getElementById('rbSelect').options.length === 28, 'sélecteur RB : 28 niveaux');
     assert(w.document.getElementById('cycleSelect').options.length === 4, 'sélecteur cycle : 4 cycles');
     // RB24 cycle 1 : BESKAR BB9, BESKAR CYCLO-GRAV, BASE MO-TRAK · 9T
     const sel = w.document.getElementById('rbSelect');
@@ -285,7 +285,7 @@ const setTarget = (w, rb) => {
   console.log('\n[15] Super-renaissance');
   {
     const seed = JSON.stringify({
-      owned: { strikeorb: [1, 2, 2, 0, 0], mouse: [2, 0, 0, 0, 0], bb8: true },
+      owned: { strikeorb: [1, 2, 2, 0, 0, 2], mouse: [2, 0, 0, 0, 0], bb8: true },
       inBase: { bb8: true },
       flawless: { mouse: true },
       wish: { r2: true },
@@ -295,8 +295,8 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(seed);
     w.document.getElementById('superRebirthBtn').click();
     const st = w.__test.getState();
-    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0]', 'variantes en base → possédé (Strike-Orb)');
-    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0]', 'variantes en base → possédé (Mouse)');
+    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0,1]', 'variantes en base → possédé, Galactique compris (Strike-Orb)');
+    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0,0]', 'variantes en base → possédé (Mouse, paddée à 6)');
     assert(st.owned.bb8 === true, 'iconique : possédé (Droidex) conservé');
     assert(!st.inBase.bb8, 'iconique : plus en base');
     assert(st.flawless.mouse === true, 'flawless conservé');
@@ -304,7 +304,7 @@ const setTarget = (w, rb) => {
     assert(st.targetRB === 1 && w.document.getElementById('rbSelect').value === '1', 'renaissance visée revenue à 1');
     assert(st.targetCycle === 2 && w.document.getElementById('cycleSelect').value === '2', 'cycle visé passé à 2');
     const saved = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
-    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0]', 'transition persistée dans localStorage');
+    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0,1]', 'transition persistée dans localStorage');
     const cyc = w.document.getElementById('cycleSelect');
     cyc.value = '4';
     cyc.dispatchEvent(new w.Event('change', { bubbles: true }));
@@ -418,6 +418,41 @@ const setTarget = (w, rb) => {
     const owned = {}; ids.forEach(id => owned[id] = [1,0,0,0,0]);
     const { window: w } = boot(JSON.stringify({ owned, targetRB: 1, targetCycle: 1 }));
     assert(w.document.getElementById('hintPanel').hidden === true, '30 droïdes distincts au chargement → aide cachée');
+  }
+
+  /* ---- 21. Variante Galactique (6ᵉ palier) + RB28 ---- */
+  console.log('\n[21] Variante Galactique et RB28');
+  {
+    const { window: w } = boot();
+    // 6 pastilles par carte, la 6ᵉ = GLC
+    const tiers = findCard(w, 'R6').querySelectorAll('.tier');
+    assert(tiers.length === 6, '6 pastilles de variante par carte (obtenu : ' + tiers.length + ')');
+    assert(tiers[5].dataset.t === '5' && tiers[5].textContent.includes('GLC'), '6ᵉ pastille libellée GLC');
+    // compteur galactique à vide
+    const gc = w.document.getElementById('galacticCount');
+    assert(gc && gc.textContent.includes('0/62'), 'compteur galactique "0/62" (obtenu : "' + (gc && gc.textContent) + '")');
+    // Proto-Roller Galactique en base → badge RB28 vert, compteur principal inchangé
+    findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 0 → 1
+    findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 1 → 2 en base
+    setTarget(w, 28);
+    // Proto-Roller a plusieurs exigences (dont RB12) : on cible le badge RB28
+    const badge = [...findCard(w, 'Proto-Roller').querySelectorAll('.req-badge')].find(b => b.textContent.includes('RB28'));
+    assert(badge && badge.textContent === '✓ RB28·GLC', 'badge "✓ RB28·GLC" (obtenu : "' + (badge && badge.textContent) + '")');
+    assert(badge.classList.contains('ready') && !badge.classList.contains('done'), 'badge RB28 vert non barré');
+    assert(w.document.getElementById('rbCreditsBig').textContent.includes('45T'), 'crédits RB28 : 45T');
+    assert(w.document.getElementById('progressLabel').textContent === '000/317',
+      'Galactique possédé : compteur principal toujours 000/317');
+    assert(w.document.getElementById('galacticCount').textContent.includes('1/62'), 'compteur galactique passé à 1/62');
+    assert(w.document.getElementById('collectionBonus').textContent.includes('+1%'),
+      'droïde possédé en Galactique seul → compte comme distinct (+1%)');
+  }
+  {
+    // le Galactique satisfait une exigence inférieure (règle variante supérieure)
+    const seed = JSON.stringify({ owned: { r6: [0, 0, 0, 0, 0, 2] }, inBase: {}, targetRB: 9 });  // req R6 [[9,1]]
+    const { window: w } = boot(seed);
+    const badge = findCard(w, 'R6').querySelector('.req-badge');
+    assert(badge.textContent === '✓ RB9·GLD' && badge.classList.contains('ready'),
+      'R6 Galactique en base satisfait l\'exigence Or (obtenu : "' + badge.textContent + '")');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
