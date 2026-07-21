@@ -84,20 +84,40 @@ def src_discord_patch_notes():
     chan = os.environ.get('DISCORD_PATCH_CHANNEL_ID')
     if not tok or not chan:
         return None, ''  # non configuré : source simplement absente
-    req = urllib.request.Request(
-        f'https://discord.com/api/v10/channels/{chan}/messages?limit=5',
-        # Discord refuse (403) les User-Agents de navigateur sur l'API bot :
-        # format « DiscordBot (url, version) » requis par leur documentation
-        headers={'Authorization': f'Bot {tok}',
-                 'User-Agent': 'DiscordBot (https://github.com/n4ckz/droidex, 1.0)'})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        msgs = json.loads(r.read().decode('utf-8', 'replace'))
+
+    def api_discord(path):
+        req = urllib.request.Request(
+            f'https://discord.com/api/v10{path}',
+            # Discord refuse (403) les User-Agents de navigateur sur l'API
+            # bot : format « DiscordBot (url, version) » requis par leur doc
+            headers={'Authorization': f'Bot {tok}',
+                     'User-Agent': 'DiscordBot (https://github.com/n4ckz/droidex, 1.0)'})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.loads(r.read().decode('utf-8', 'replace'))
+
+    msgs = api_discord(f'/channels/{chan}/messages?limit=5')
     if not msgs:
         return None, ''
     print(f'· discord-patch-notes : canal miroir lu, {len(msgs)} message(s), dernier id {msgs[0]["id"]}')
-    detail = ' ; '.join(
-        f"{clean(m.get('content', '')) or '(image ou embed — voir le canal)'} ({clean(m.get('timestamp', '')[:16])})"
-        for m in msgs[:3])
+    guild = api_discord(f'/channels/{chan}').get('guild_id', '@me')
+
+    # citation intégrale des messages (du plus ancien au plus récent) :
+    # texte multi-lignes conservé, neutralisé pour le markdown des issues
+    # (backticks/chevrons retirés, @ désamorcé pour ne pinger personne)
+    def quote(m):
+        who = clean(m.get('author', {}).get('username', '?'))
+        when = clean(m.get('timestamp', '')[:16].replace('T', ' '))
+        body = re.sub(r'[`<>]', '', m.get('content', ''))
+        body = re.sub(r'[\x00-\x08\x0b-\x1f\x7f]', '', body)
+        body = body.replace('@', '＠')[:1500].strip()
+        lines = ['> ' + l for l in body.splitlines() if l.strip()] or []
+        extras = len(m.get('attachments', [])) + len(m.get('embeds', []))
+        if extras:
+            lines.append(f'> _(+{extras} image(s)/embed(s) — voir le message)_')
+        link = f'https://discord.com/channels/{guild}/{chan}/{m["id"]}'
+        return f'**{when} — {who}** · {link}\n' + '\n'.join(lines)
+
+    detail = '\n\n' + '\n\n'.join(quote(m) for m in reversed(msgs[:3]))
     return msgs[0]['id'], detail
 
 
