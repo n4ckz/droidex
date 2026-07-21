@@ -138,11 +138,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           {
-            echo "Des sources communautaires indépendantes de tycoon-tools ont bougé — le jeu a peut-être été patché."
+            echo "Des sources ont bougé — le jeu a peut-être été patché."
             echo
-            echo '```'
+            # signals.txt est du markdown déjà assaini par watch-signals.py
             cat signals.txt
-            echo '```'
             echo
             echo "_Ce signal n'a modifié aucune donnée : la veille tycoon-tools ouvrira sa PR \`bot/gamedata-update\` quand la value list changera. Fermer cette issue une fois le patch identifié (ou écarté)._"
           } > body.md
