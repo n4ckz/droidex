@@ -23,6 +23,8 @@ The game features a Droidex of 200+ collectible droids across 6 variants (Basic,
 - **Value data on every droid**: income per second (Basic → Beskar), Beskar upgrade cost and passive perk — plus a "sort by income" mode to decide what to buy at the Sandcrawler.
 - **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
+- **Galactic counter**: the Galactic tier (added mid-July 2026) is counted separately from the main /317 total, exactly like the in-game Droidex screen — the header shows your Galactic x/62 alongside the collection bonus, and RB·GLC badges tell you which Galactic droids rebirth 28 needs.
+- **Live player counter**: "● 12.5K in game" in the header — concurrent players on the island, straight from Epic's official Ecosystem API, refreshed every 5 minutes (hidden gracefully when offline). A full [stats page](https://droidex.nackz.dev/stats/) adds daily peaks, retention and charts.
 - **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
 - **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2, C-3PO): simple owned + in-base toggles, no variants.
 - **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no tracking, no mandatory signup.
@@ -114,6 +116,7 @@ site/               The complete static site
   data.js           ⚠ Game data (droids, requirements, credits) — the ONLY file
                     to edit when the game adds content
   app.js            Logic (states, rendering, persistence, export/import)
+  stats.js          Client hydration of the /stats/ page (Epic Ecosystem API + archive)
   config.js         Sync API URL ('' to disable)
   sync.js           Account sync (PocketBase, optional)
   vendor/           Self-hosted PocketBase JS SDK (0.27.0)
@@ -126,8 +129,12 @@ site/               The complete static site
   og/               Open Graph share images (1200×630 + square)
   value-list/               Generated content page (see "Content pages" below)
   rebirth-requirements/     Generated content page
+  stats/                    Generated content page (live player count & daily stats)
   faq/                      Generated content page
-  sitemap.xml               Generated, lists all 4 pages
+  sitemap.xml               Generated, lists all 5 pages
+data/
+  metrics/                  Daily archive of the island's official metrics (Epic
+                            only keeps a rolling 7-day window — we don't lose it)
 deploy/
   nginx.conf              nginx config (caching, gzip, sw.js never cached)
   pocketbase.Dockerfile   PocketBase image (pinned version)
@@ -136,10 +143,14 @@ tests/                    Test suites (see below)
 tools/
   update-gamedata.py      Regenerates site/data.js from tycoon-tools
   generate-seo-pages.js   Regenerates the content pages + sitemap.xml from
-                          site/data.js (see "Content pages" below)
+                          site/data.js and data/metrics (see "Content pages" below)
+  archive-metrics.py      Archives the island's daily metrics into data/metrics/
+  watch-signals.py        Patch signals from independent sources (official island
+                          card, wikis, events page, Discord patch-notes mirror,
+                          CCU anomaly) — opens a GitHub issue when something moves
 .github/workflows/
-  gamedata-check.yml      Scheduled watch: opens a PR when the game data changes
-                          (and regenerates the content pages with it)
+  gamedata-check.yml      Daily watch (3 jobs): game-data drift → reviewable PR;
+                          metrics archiving; patch signals → issue
 Dockerfile                Static site image
 docker-compose.yml        Production (Traefik): site + API
 docker-compose.local.yml  Local testing
@@ -201,14 +212,14 @@ git diff site/data.js                      # review what the game changed
 
 Then bump `APP_VERSION` in `site/version.js`, add a CHANGELOG entry and run the tests. If the game adds a brand-new droid, the script stops and tells you to add its id to `NAME2ID`/`DISPLAY` first.
 
-This check also runs automatically **twice a week** (GitHub Actions): when a game patch changes the data, the workflow regenerates `site/data.js`, runs the test suite against it and opens a reviewable pull request.
+This check also runs automatically **every day** (GitHub Actions): when a game patch changes the data, the workflow regenerates `site/data.js`, runs the test suite against it and opens a reviewable pull request. Two sibling jobs run alongside it: one archives the island's official daily metrics (Epic's API only keeps a rolling 7-day window), the other watches independent sources — the official island card, the community wikis, the events page, a mirror of the official Discord #patch-notes channel and a CCU anomaly detector — and opens a GitHub issue as an early warning when something moves, without ever touching the data.
 
 ### Content pages
 
-Three static, crawlable pages are generated straight from `site/data.js` — no build step, no duplicated data: a [value list](https://droidex.nackz.dev/value-list/), the [rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/) for all 4 cycles, and a [FAQ](https://droidex.nackz.dev/faq/). They're linked from the app footer and from `site/sitemap.xml`.
+Four static, crawlable pages are generated straight from `site/data.js` and `data/metrics/` — no build step, no duplicated data: a [value list](https://droidex.nackz.dev/value-list/), the [rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/) for all 4 cycles, [live player stats](https://droidex.nackz.dev/stats/) (hydrated in the browser from Epic's official API, with a crawlable snapshot baked in), and a [FAQ](https://droidex.nackz.dev/faq/). They're linked from the app footer and from `site/sitemap.xml`.
 
 ```bash
-node tools/generate-seo-pages.js   # regenerates site/value-list, site/rebirth-requirements, site/faq, site/sitemap.xml
+node tools/generate-seo-pages.js   # regenerates site/value-list, site/rebirth-requirements, site/stats, site/faq, site/sitemap.xml
 ```
 
 The scheduled game-data watch above regenerates these pages automatically whenever it regenerates `site/data.js`, so they stay in sync with the game without manual upkeep.
