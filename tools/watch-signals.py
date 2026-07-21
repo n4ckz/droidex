@@ -98,8 +98,7 @@ def src_discord_patch_notes():
     msgs = api_discord(f'/channels/{chan}/messages?limit=5')
     if not msgs:
         return None, ''
-    print(f'· discord-patch-notes : canal miroir lu, {len(msgs)} message(s), dernier id {msgs[0]["id"]}')
-    guild = api_discord(f'/channels/{chan}').get('guild_id', '@me')
+    print(f'· discord-patch-notes : canal miroir lu, {len(msgs)} message(s)')
 
     # citation intégrale des messages (du plus ancien au plus récent) :
     # texte multi-lignes conservé, neutralisé pour le markdown des issues
@@ -114,8 +113,14 @@ def src_discord_patch_notes():
         extras = len(m.get('attachments', [])) + len(m.get('embeds', []))
         if extras:
             lines.append(f'> _(+{extras} image(s)/embed(s) — voir le message)_')
-        link = f'https://discord.com/channels/{guild}/{chan}/{m["id"]}'
-        return f'**{when} — {who}** · {link}\n' + '\n'.join(lines)
+        # le dépôt est PUBLIC : on lie vers le message D'ORIGINE sur le serveur
+        # public de FOAD (message_reference du crosspost), jamais vers le
+        # serveur personnel qui héberge le miroir
+        ref = m.get('message_reference') or {}
+        if ref.get('guild_id') and ref.get('message_id'):
+            link = f'https://discord.com/channels/{ref["guild_id"]}/{ref["channel_id"]}/{ref["message_id"]}'
+            return f'**{when} — {who}** · {link}\n' + '\n'.join(lines)
+        return f'**{when} — {who}**\n' + '\n'.join(lines)
 
     detail = '\n\n' + '\n\n'.join(quote(m) for m in reversed(msgs[:3]))
     return msgs[0]['id'], detail
