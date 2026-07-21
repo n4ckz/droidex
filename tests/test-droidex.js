@@ -363,8 +363,10 @@ const setTarget = (w, rb) => {
     const vl = read('value-list/index.html');
     assert(vl.includes('Strike-Orb') && vl.includes('Beskar'), 'value list : droïdes + libellés longs');
     assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
+    assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
+    assert(rb.includes('45T'), 'rebirths : RB28 (45T) présent');
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
     const sm = read('sitemap.xml');
