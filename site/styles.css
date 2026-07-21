@@ -4,7 +4,7 @@
   --accent:#9184d9; --accent-300:#d2cefd; --accent-700:#5d5294; --accent-800:#423a6a;
   --n-300:#cfd3e5; --n-400:#b2b6ca; --n-500:#9397ab; --n-600:#75798c; --n-700:#595d6c;
   --ok:#8fbf8f; --danger:#d98a8a; --flaw:#E3B341;
-  --tier-0:#8d90a0; --tier-1:#E3B341; --tier-2:#7FD4E8; --tier-3:#D98CE0; --tier-4:#C8CDD4;
+  --tier-0:#8d90a0; --tier-1:#E3B341; --tier-2:#7FD4E8; --tier-3:#D98CE0; --tier-4:#C8CDD4; --tier-5:#9D6BFF;
   --acc-rgb:145,132,217;
   --font-hud:'Chakra Petch',sans-serif;
   --font-body:'IBM Plex Sans',system-ui,sans-serif;
@@ -37,6 +37,7 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .seg.on{background:var(--accent);box-shadow:0 0 8px rgba(var(--acc-rgb),.6)}
 .progress-label{font-family:var(--font-hud);font-size:11px;color:var(--accent-300);white-space:nowrap}
 .collection-bonus{font-family:var(--font-hud);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--n-400)}
+.galactic-count{color:var(--tier-5)}
 .lang-select{font-family:var(--font-hud);font-size:10px;letter-spacing:.1em;color:var(--n-300);border:1px solid var(--accent-800);background:rgba(var(--acc-rgb),.06);padding:3px 6px}
 .sync-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between;padding:8px 14px;border-bottom:1px solid rgba(var(--acc-rgb),.15);background:rgba(var(--acc-rgb),.03)}
 .sync-bar[hidden]{display:none}
@@ -148,7 +149,7 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .tiers{display:flex;border:1px solid rgba(var(--acc-rgb),.25);margin-top:auto}
 .tier{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px;cursor:pointer;border:none;border-right:1px solid rgba(var(--acc-rgb),.18);background:transparent;font-family:var(--font-hud);font-size:9px;letter-spacing:.08em;transition:background .3s ease,box-shadow .3s ease}
 .tier:last-child{border-right:none}
-.tier[data-t="0"]{color:var(--tier-0)} .tier[data-t="1"]{color:var(--tier-1)} .tier[data-t="2"]{color:var(--tier-2)} .tier[data-t="3"]{color:var(--tier-3)} .tier[data-t="4"]{color:var(--tier-4)}
+.tier[data-t="0"]{color:var(--tier-0)} .tier[data-t="1"]{color:var(--tier-1)} .tier[data-t="2"]{color:var(--tier-2)} .tier[data-t="3"]{color:var(--tier-3)} .tier[data-t="4"]{color:var(--tier-4)} .tier[data-t="5"]{color:var(--tier-5)}
 .tier .lamp{width:16px;height:4px;border:1px solid currentColor;background:transparent;transition:background .3s ease,box-shadow .3s ease}
 .tier.on{background:color-mix(in oklab,currentColor 8%,transparent)}
 .tier.on .lamp{border:none;background:currentColor;box-shadow:0 0 8px currentColor}

@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.5.0 — 2026-07-21
+
+Game update (Galactic variant):
+
+- New **Galactic** variant (6th tier, above Beskar) on every standard droid: tappable GLC cell (owned / in base), `RB·GLC` requirement badges
+- Rebirth level **28** in all 4 cycles (45T; cycle 1: Galactic Proto-Roller + Rainbow MO-TRAK + Beskar DRFT-R)
+- Main counter unchanged (**/317**, matching the in-game Droidex screen); new **Galactic x/62** counter next to the collection bonus
+- Value list with 6 income columns (Galactic incomes still partial in community sources: "—" when undocumented); SEO pages regenerated
+- Automatic save migration (variant arrays padded to 6); Super Rebirth covers the Galactic tier (in base → owned)
+- Data generator: BB-8/C-3P0 aliases (new tycoon-tools spellings), C-3PO perk observed in-game preserved
+
 ## 1.4.5 — 2026-07-18
 
 - The "in base" house icon no longer resizes the variant cell: it now sits as a small badge in the cell's top-right corner instead of stacking as a third row between the lamp and the label

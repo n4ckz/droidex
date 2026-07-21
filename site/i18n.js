@@ -13,8 +13,8 @@ const BASE_ICON = '<svg class="ico-base" viewBox="0 0 24 24" width="12" height="
 
 const I18N = {
   en: {
-    _tiers: ['Basic','Gold','Diamond','Rainbow','Beskar'],
-    _tierShort: ['BAS','GLD','DIA','RBW','BSK'],
+    _tiers: ['Basic','Gold','Diamond','Rainbow','Beskar','Galactic'],
+    _tierShort: ['BAS','GLD','DIA','RBW','BSK','GLC'],
     _rarities: {Common:'Common',Rare:'Rare',Epic:'Epic',Legendary:'Legendary',Mythic:'Mythic',Iconic:'Iconic'},
     title: "Droidex — Star Wars: Droid Tycoon Collection Tracker (Fortnite)",
     h1: "Droidex — Droidsmith's Registry",
@@ -29,6 +29,7 @@ const I18N = {
     rbShort: 'RB',
     unlocks: 'Unlock: {0}',
     collectionBonus: '{0} distinct · bonus +{1}%',
+    galacticCount: '✧ Galactic {0}/{1}',
     filterWish: 'Wish ★',
     sortRarity: 'Rarity',
     sortIncome: 'Income',
@@ -101,8 +102,8 @@ const I18N = {
       'and your registry are stored on our server, deletable at any time via “Delete my account”.'
   },
   fr: {
-    _tiers: ['Basic','Or','Diamant','Arc-en-ciel','Beskar'],
-    _tierShort: ['BAS','GLD','DIA','RBW','BSK'],
+    _tiers: ['Basic','Or','Diamant','Arc-en-ciel','Beskar','Galactique'],
+    _tierShort: ['BAS','GLD','DIA','RBW','BSK','GLC'],
     _rarities: {Common:'Commun',Rare:'Rare',Epic:'Épique',Legendary:'Légendaire',Mythic:'Mythique',Iconic:'Iconique'},
     title: 'Droidex — Tracker de collection Star Wars: Droid Tycoon (Fortnite)',
     h1: 'Droidex — Registre du droïdesmith',
@@ -117,6 +118,7 @@ const I18N = {
     rbShort: 'RB',
     unlocks: 'Débloque : {0}',
     collectionBonus: '{0} distincts · bonus +{1}%',
+    galacticCount: '✧ Galactique {0}/{1}',
     filterWish: 'Wish ★',
     sortRarity: 'Rareté',
     sortIncome: 'Revenu',

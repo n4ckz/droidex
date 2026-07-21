@@ -2,7 +2,7 @@
 
 Community collection tracker for **Star Wars: Droid Tycoon**, the Fortnite mode created by FOAD/Blzn Studios (released May 1st, 2026).
 
-The game features a Droidex of 200+ collectible droids across 5 variants (Basic, Gold, Diamond, Rainbow, Beskar) and 27 Rebirth levels across the 4 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
+The game features a Droidex of 200+ collectible droids across 6 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic) and 28 Rebirth levels across the 4 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
 
 > 📱 Designed to be used on your phone, next to the console. Installable as an app (PWA). English by default, French available from the in-app language selector.
 
@@ -16,7 +16,7 @@ The game features a Droidex of 200+ collectible droids across 5 variants (Basic,
 
 - **Per-variant tracking** with 3 tap-cyclable states: never owned → owned (Droidex entry) → ⌂ in base (physical presence) → clear. A help panel explains the tap cycle on first visits (until 30 distinct droids are owned) and stays reachable behind the "i" pastille.
 - **Higher-variant rule**: a Diamond droid always satisfies a "Gold" requirement.
-- **"Next targeted rebirth" panel** (1–27, across the 4 super-rebirth cycles): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready), the credits needed and the slot unlocked.
+- **"Next targeted rebirth" panel** (1–28, across the 4 super-rebirth cycles): the 3 required droids with their status (✗ not owned, ⚠ owned but not in base, ✓ ready), the credits needed and the slot unlocked.
 - **Requirement badges** on each droid (e.g. "RB9·GLD"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
 - **Super Rebirth button**: applies the in-game reset semantics in one tap — droids in your base drop back to "owned (Droidex)", Iconic droids leave the base (unlock kept), the targeted rebirth returns to 1 and the cycle advances.
 - **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
@@ -174,7 +174,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 27 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-18:
+The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 28 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-21:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)

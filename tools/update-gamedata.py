@@ -40,8 +40,8 @@ NAME2ID = {
  'BAL-CORE':'balcore','NAV-EX':'navex','2BB':'2bb','BDX EXPLORER':'bdx',
  'IMPERIAL PROBE':'improbe','B1 BATTLE':'b1battle','GONK':'gonk','R8':'r8','ID10':'id10',
  'CB':'cb','R3':'r3','R5':'r5','DRK-1 PROBE':'drk1','MOUSE':'mouse','PIT':'pit',
- 'BB8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
- 'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po',
+ 'BB8':'bb8','BB-8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
+ 'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po','C-3P0':'c3po',
 }
 # noms d'affichage droidex (conservés tels quels dans l'interface)
 DISPLAY = {
@@ -59,7 +59,7 @@ DISPLAY = {
  'cyclens':'CYCLENS','drftr':'DRFT-R','kx':'KX','ig':'IG','bb8':'BB-8','misterbones':'Mister Bones',
  'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO',
 }
-TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4}
+TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4, 'GALACTIC': 5}
 RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Iconic']
 TYPE_ORDER = {'Worker': 0, 'Astromech': 1, 'Battle': 2}
 
@@ -102,8 +102,8 @@ def parse_values():
         vals[NAME2ID[c[0]]] = {
             'rarity': c[1].capitalize(), 'type': c[2].capitalize(),
             'perk': None if c[3] in ('—', '') else c[3],
-            'inc': [parse_income(x) for x in c[4:9]],
-            'beskarCost': None if c[9] in ('—', '') else c[9],
+            'inc': [parse_income(x) for x in c[4:10]],
+            'beskarCost': None if c[10] in ('—', '') else c[10],
         }
     return vals
 
@@ -136,6 +136,8 @@ def parse_rebirths():
 
 
 def js_num(v):
+    if v is None:
+        return 'null'
     return str(int(v)) if float(v).is_integer() else str(v)
 
 
@@ -174,20 +176,20 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    main : relancer le script puis relire le diff.
 
    Sources communautaires (recoupées le {checked_date}) :
-   - Exigences de renaissance (4 cycles × 27) et value list :
+   - Exigences de renaissance (4 cycles × 28) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
    - Droidex : https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/
    - Wiki : https://star-wars-droid-tycoon.fandom.com/wiki/
    - Événements / Iconiques : https://droidtycoonguide.com/events/
 
-   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar]
+   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique] (null = non documenté)
    bskCost: coût de l'amélioration Beskar ; perk: bonus passif (termes du jeu)
    Les Iconiques rapportent +15%/s (pas de variantes).
    ========================================================================= */
 
 /* Les libellés de variantes et de raretés (dépendants de la langue) sont dans i18n.js.
-   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar. */
+   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic. */
 
 const DROIDS = [""")
     for rar in RARITY_ORDER:
@@ -202,7 +204,7 @@ const DROIDS = [""")
     L.append('const RB_CREDITS = {' + ','.join(f"{k}:{js_str(credits[k], f'credits[{k}]')}" for k in sorted(credits)) + '};')
     L.append('')
     L.append("""/* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
-   Une variante supérieure valide toujours l'exigence. Après la renaissance 27
+   Une variante supérieure valide toujours l'exigence. Après la renaissance 28
    (ou dès la 12 en « super-renaissance »), on passe au cycle suivant (4 → 1). */
 const REBIRTHS = {""")
     for cyc in sorted(rebirths):
@@ -230,7 +232,11 @@ def main():
     # que la source est en retard. setdefault → la source primera dès qu'elle
     # le référencera (perk relevé en jeu par Julien le 18/07/2026).
     vals.setdefault('c3po', {'rarity': 'Iconic', 'type': 'Worker',
-                             'perk': '+25% workers', 'inc': [None] * 5, 'beskarCost': None})
+                             'perk': '+25% workers', 'inc': [None] * 6, 'beskarCost': None})
+    # tycoon-tools liste désormais C-3P0 mais sans perk : le relevé en jeu
+    # (+25% workers, 18/07/2026) prime tant que la source ne le documente pas.
+    if not vals['c3po'].get('perk'):
+        vals['c3po']['perk'] = '+25% workers'
     rebirths, unlocks, credits = parse_rebirths()
     print(f'  {len(vals)} droïdes · {len(rebirths)} cycles × {len(rebirths[1])} renaissances')
 

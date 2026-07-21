@@ -140,7 +140,7 @@ ${bodyHtml}
 
 function buildValueList() {
   const intro = `<p class="seo-intro">This value list gives the income per second and Beskar upgrade cost for every ` +
-    `droid in Star Wars: Droid Tycoon, across all five variants: Basic, Gold, Diamond, Rainbow and Beskar. Numbers ` +
+    `droid in Star Wars: Droid Tycoon, across all six variants: Basic, Gold, Diamond, Rainbow, Beskar and Galactic. Numbers ` +
     `are cross-checked against community sources (${DATE_ISO}) rather than a single guide, and ` +
     `Droidex's own cycle 1 rebirth requirements have been verified in-game through rebirth 23. Iconic droids have ` +
     `no variants: owning one simply adds a flat +15% income bonus alongside its unique perk. Remember that in ` +
@@ -153,9 +153,9 @@ function buildValueList() {
     const rows = droids.map(d => {
       if (d.iconic) {
         return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>` +
-          `<td colspan="5">+15%/s income</td><td>—</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
+          `<td colspan="6">+15%/s income</td><td>—</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
       }
-      const tierCells = d.inc.map(n => `<td>${fmtInc(n)}/s</td>`).join('');
+      const tierCells = d.inc.map(n => `<td>${n == null ? '—' : fmtInc(n) + '/s'}</td>`).join('');
       return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>${tierCells}` +
         `<td>${escapeHtml(d.bskCost)}</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
     }).join('\n');
@@ -164,7 +164,7 @@ function buildValueList() {
   <div class="seo-table-wrap">
     <table>
       <thead>
-        <tr><th>Droid</th><th>Class</th><th>Basic</th><th>Gold</th><th>Diamond</th><th>Rainbow</th><th>Beskar</th><th>Beskar cost</th><th>Perk</th></tr>
+        <tr><th>Droid</th><th>Class</th><th>Basic</th><th>Gold</th><th>Diamond</th><th>Rainbow</th><th>Beskar</th><th>Galactic</th><th>Beskar cost</th><th>Perk</th></tr>
       </thead>
       <tbody>
 ${rows}
@@ -190,7 +190,7 @@ ${rows}
   return page({
     slug: 'value-list',
     title: 'Droid Tycoon Value List — Income & Beskar Cost per Droid | Droidex',
-    description: 'Income per second and Beskar upgrade cost for every Star Wars: Droid Tycoon droid, across Basic, Gold, Diamond, Rainbow and Beskar variants.',
+    description: 'Income per second and Beskar upgrade cost for every Star Wars: Droid Tycoon droid, across Basic, Gold, Diamond, Rainbow, Beskar and Galactic variants.',
     h1: 'Droid Tycoon value list',
     jsonld,
     bodyHtml,
@@ -200,10 +200,10 @@ ${rows}
 /* ---------- 5. Rebirth requirements ---------- */
 
 function buildRebirthRequirements() {
-  const intro = `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 27 rebirth levels, repeated ` +
+  const intro = `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 28 rebirth levels, repeated ` +
     `across 4 cycles in an endless loop. Each level requires three specific droids placed in your base at a ` +
     `minimum variant, plus a credit cost that is identical across all 4 cycles for the same level, climbing from ` +
-    `10K at rebirth 1 to 32T at rebirth 27. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
+    `10K at rebirth 1 to 45T at rebirth 28. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
     `Super Rebirth instead of a normal one: it keeps your Droidex, droidsmith level, cosmetics, unlocked Flawless ` +
     `droids, Nova crystals and Iconic unlocks, but resets your base, its droids, your currencies, rebirth rank, ` +
     `pickaxe level and blueprints, before advancing you straight into the next cycle. This page lists every ` +
@@ -241,7 +241,7 @@ ${rows}
     '@context': 'https://schema.org',
     '@type': 'Dataset',
     name: 'Droidex rebirth requirements — Star Wars: Droid Tycoon',
-    description: 'Required droids, minimum variants and credit cost for all 27 rebirth levels across the 4 cycles in Star Wars: Droid Tycoon.',
+    description: 'Required droids, minimum variants and credit cost for all 28 rebirth levels across the 4 cycles in Star Wars: Droid Tycoon.',
     url: `${SITE_URL}/rebirth-requirements/`,
     license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
     creator: { '@type': 'Person', name: 'Nackz', url: 'https://github.com/n4ckz' },
@@ -251,8 +251,8 @@ ${rows}
 
   return page({
     slug: 'rebirth-requirements',
-    title: 'Droid Tycoon Rebirth Requirements — All 27 Levels, 4 Cycles | Droidex',
-    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level, from 1 to 27, across all 4 cycles.',
+    title: 'Droid Tycoon Rebirth Requirements — All 28 Levels, 4 Cycles | Droidex',
+    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level, from 1 to 28, across all 4 cycles.',
     h1: 'Droid Tycoon rebirth requirements',
     jsonld,
     bodyHtml,
@@ -273,8 +273,8 @@ const FAQ = [
   {
     q: 'How do I track variants (3 states)?',
     a: 'Each droid variant in Droidex cycles through three states with a single tap: never owned, owned in your ' +
-      'Droidex (the in-game collection log), and physically placed in your base. Most droids come in five variants ' +
-      '— Basic, Gold, Diamond, Rainbow and Beskar — so you tap through each variant independently as you obtain ' +
+      'Droidex (the in-game collection log), and physically placed in your base. Most droids come in six variants ' +
+      '— Basic, Gold, Diamond, Rainbow, Beskar and Galactic — so you tap through each variant independently as you obtain ' +
       'and place copies. A handful of Iconic droids have no variants; instead they get two separate toggles, one ' +
       'for ownership and one for being placed in your base.',
   },
@@ -288,8 +288,8 @@ const FAQ = [
   },
   {
     q: 'What are rebirth requirements?',
-    a: 'Each rebirth level, from 1 to 27, requires three specific droids placed in your base at a minimum variant, ' +
-      'plus a credit cost that climbs from 10K at rebirth 1 up to 32T at rebirth 27. The 27 levels repeat across 4 ' +
+    a: 'Each rebirth level, from 1 to 28, requires three specific droids placed in your base at a minimum variant, ' +
+      'plus a credit cost that climbs from 10K at rebirth 1 up to 45T at rebirth 28. The 28 levels repeat across 4 ' +
       'cycles in a loop, and each cycle can ask for a different trio of droids at the same level even though the ' +
       'credit cost stays identical across cycles. Certain rebirth levels also unlock a new slot for your base, ' +
       'such as an extra Worker or Astromech slot.',
