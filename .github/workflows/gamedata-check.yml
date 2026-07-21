@@ -162,6 +162,6 @@ jobs:
           if [ -n "$NUM" ]; then
             gh issue comment "$NUM" --body-file body.md
           else
-            gh issue create --title "📡 Signal communautaire : patch du jeu possible" \
+            gh issue create --title "Signal communautaire : patch du jeu possible" \
               --label gamedata-signal --body-file body.md
           fi
