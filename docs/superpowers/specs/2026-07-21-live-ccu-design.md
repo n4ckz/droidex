@@ -29,7 +29,8 @@ CORS ouvert (`access-control-allow-origin: *`), vérifié le 21/07/2026.
   setInterval 5 min dans init ; appel de `renderLiveCcu()` dans `renderProgress`.
 - `site/i18n.js` : clé `liveCcu` (« ● {0} in game » / « ● {0} en jeu »), 2 langues.
 - `site/styles.css` : `.live-ccu` en vert « ok » du DS.
-- `deploy/security-headers.conf` : `connect-src` += `https://api.fortnite.com`.
+- `deploy/security-headers.conf` : AUCUN changement — la CSP autorise déjà
+  `connect-src 'self' https:` (choix historique pour PocketBase multi-domaine).
 - `site/llms.txt` + noscript : mention de la fonctionnalité (visibilité IA).
 - `tests/test-droidex.js` : stub de `window.fetch` pour api.fortnite.com dans
   `boot()` (fixture peakCCU, dernier bucket null comme en réel) ; asserts :
