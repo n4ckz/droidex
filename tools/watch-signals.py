@@ -86,7 +86,10 @@ def src_discord_patch_notes():
         return None, ''  # non configuré : source simplement absente
     req = urllib.request.Request(
         f'https://discord.com/api/v10/channels/{chan}/messages?limit=5',
-        headers={'Authorization': f'Bot {tok}', 'User-Agent': UA['User-Agent']})
+        # Discord refuse (403) les User-Agents de navigateur sur l'API bot :
+        # format « DiscordBot (url, version) » requis par leur documentation
+        headers={'Authorization': f'Bot {tok}',
+                 'User-Agent': 'DiscordBot (https://github.com/n4ckz/droidex, 1.0)'})
     with urllib.request.urlopen(req, timeout=30) as r:
         msgs = json.loads(r.read().decode('utf-8', 'replace'))
     if not msgs:
