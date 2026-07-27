@@ -2518,5 +2518,158 @@
   "plays": 21959,
   "recommendations": 76,
   "uniquePlayers": 30774
+ },
+ "2026-07-26T09": {
+  "averageMinutesPerPlayer": 44.87,
+  "favorites": 75,
+  "minutesPlayed": 1357064,
+  "peakCCU": 23196,
+  "plays": 21362,
+  "recommendations": 56,
+  "uniquePlayers": 30243
+ },
+ "2026-07-26T10": {
+  "averageMinutesPerPlayer": 45.2,
+  "favorites": 72,
+  "minutesPlayed": 1352598,
+  "peakCCU": 22842,
+  "plays": 21231,
+  "recommendations": 51,
+  "uniquePlayers": 29925
+ },
+ "2026-07-26T11": {
+  "averageMinutesPerPlayer": 44.6,
+  "favorites": 68,
+  "minutesPlayed": 1409358,
+  "peakCCU": 24585,
+  "plays": 23309,
+  "recommendations": 69,
+  "uniquePlayers": 31601
+ },
+ "2026-07-26T12": {
+  "averageMinutesPerPlayer": 45.11,
+  "favorites": 82,
+  "minutesPlayed": 1541851,
+  "peakCCU": 26834,
+  "plays": 26409,
+  "recommendations": 64,
+  "uniquePlayers": 34182
+ },
+ "2026-07-26T13": {
+  "averageMinutesPerPlayer": 45.51,
+  "favorites": 79,
+  "minutesPlayed": 1706887,
+  "peakCCU": 29850,
+  "plays": 30946,
+  "recommendations": 63,
+  "uniquePlayers": 37505
+ },
+ "2026-07-26T14": {
+  "averageMinutesPerPlayer": 45.46,
+  "favorites": 105,
+  "minutesPlayed": 1937013,
+  "peakCCU": 34232,
+  "plays": 35020,
+  "recommendations": 73,
+  "uniquePlayers": 42607
+ },
+ "2026-07-26T15": {
+  "averageMinutesPerPlayer": 46.75,
+  "favorites": 97,
+  "minutesPlayed": 2194654,
+  "peakCCU": 37997,
+  "plays": 37820,
+  "recommendations": 64,
+  "uniquePlayers": 46947
+ },
+ "2026-07-26T20": {
+  "averageMinutesPerPlayer": 31.24,
+  "favorites": 143,
+  "minutesPlayed": 1665481,
+  "peakCCU": 49836,
+  "plays": 31077,
+  "recommendations": 76,
+  "uniquePlayers": 53305
+ },
+ "2026-07-26T22": {
+  "averageMinutesPerPlayer": 46.83,
+  "favorites": 135,
+  "minutesPlayed": 1357751,
+  "peakCCU": 23682,
+  "plays": 24435,
+  "recommendations": 71,
+  "uniquePlayers": 28995
+ },
+ "2026-07-27T00": {
+  "averageMinutesPerPlayer": 41.18,
+  "favorites": 131,
+  "minutesPlayed": 1271571,
+  "peakCCU": 21570,
+  "plays": 25050,
+  "recommendations": 74,
+  "uniquePlayers": 30878
+ },
+ "2026-07-27T01": {
+  "averageMinutesPerPlayer": 42.2,
+  "favorites": 114,
+  "minutesPlayed": 1269239,
+  "peakCCU": 21536,
+  "plays": 24249,
+  "recommendations": 64,
+  "uniquePlayers": 30080
+ },
+ "2026-07-27T03": {
+  "averageMinutesPerPlayer": 41.25,
+  "favorites": 94,
+  "minutesPlayed": 1139133,
+  "peakCCU": 20235,
+  "plays": 20558,
+  "recommendations": 56,
+  "uniquePlayers": 27618
+ },
+ "2026-07-27T05": {
+  "averageMinutesPerPlayer": 41.06,
+  "favorites": 90,
+  "minutesPlayed": 880518,
+  "peakCCU": 15981,
+  "plays": 15399,
+  "recommendations": 51,
+  "uniquePlayers": 21447
+ },
+ "2026-07-27T06": {
+  "averageMinutesPerPlayer": 40.65,
+  "favorites": 67,
+  "minutesPlayed": 771559,
+  "peakCCU": 13700,
+  "plays": 13380,
+  "recommendations": 42,
+  "uniquePlayers": 18981
+ },
+ "2026-07-27T07": {
+  "averageMinutesPerPlayer": 39.37,
+  "favorites": 59,
+  "minutesPlayed": 701620,
+  "peakCCU": 12476,
+  "plays": 12610,
+  "recommendations": 54,
+  "uniquePlayers": 17821
+ },
+ "2026-07-27T08": {
+  "averageMinutesPerPlayer": 38.7,
+  "favorites": 67,
+  "minutesPlayed": 668395,
+  "peakCCU": 11643,
+  "plays": 11977,
+  "recommendations": 39,
+  "uniquePlayers": 17269
+ },
+ "2026-07-27T09": {
+  "averageMinutesPerPlayer": 38.18,
+  "favorites": 60,
+  "minutesPlayed": 660751,
+  "peakCCU": 11369,
+  "plays": 12364,
+  "recommendations": 37,
+  "uniquePlayers": 17307
  }
 }
