@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0 — 2026-07-28
+
+- Game data refreshed from tycoon-tools: rebirth levels 29 and 30 added to all four cycles (up to 100T credits), including their required droids and variants.
+- Galactic income values added for the remaining standard droids; value lists and rebirth requirement pages regenerated.
+
 ## 1.9.3 — 2026-07-21
 
 - Sync status wording, final: "Registry updated" / « Registre mis à jour » — naming the source (account, server) only confused users; what matters is that the screen just refreshed with the latest version.

@@ -176,7 +176,7 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    main : relancer le script puis relire le diff.
 
    Sources communautaires (recoupées le {checked_date}) :
-   - Exigences de renaissance (4 cycles × 28) et value list :
+   - Exigences de renaissance (4 cycles × {len(rebirths[1])}) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
    - Droidex : https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/
@@ -204,7 +204,7 @@ const DROIDS = [""")
     L.append('const RB_CREDITS = {' + ','.join(f"{k}:{js_str(credits[k], f'credits[{k}]')}" for k in sorted(credits)) + '};')
     L.append('')
     L.append("""/* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
-   Une variante supérieure valide toujours l'exigence. Après la renaissance 28
+   Une variante supérieure valide toujours l'exigence. Après la renaissance {max(rebirths[1])}
    (ou dès la 12 en « super-renaissance »), on passe au cycle suivant (4 → 1). */
 const REBIRTHS = {""")
     for cyc in sorted(rebirths):

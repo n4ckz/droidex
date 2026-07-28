@@ -327,29 +327,29 @@ ${rows}
 
 const RB_TEXT = {
   en: {
-    title: 'Droid Tycoon Rebirth Requirements — All 28 Levels, 4 Cycles | Droidex',
-    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level, from 1 to 28, across all 4 cycles.',
+    title: 'Droid Tycoon Rebirth Requirements — All 30 Levels, 4 Cycles | Droidex',
+    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level, from 1 to 30, across all 4 cycles.',
     h1: 'Droid Tycoon rebirth requirements',
-    intro: `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 28 rebirth levels, repeated ` +
+    intro: `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 30 rebirth levels, repeated ` +
       `across 4 cycles in an endless loop. Each level requires three specific droids placed in your base at a ` +
       `minimum variant, plus a credit cost that is identical across all 4 cycles for the same level, climbing from ` +
-      `10K at rebirth 1 to 45T at rebirth 28. Rebirth 28, added with the Galactic update of mid-July 2026, is the ` +
+      `10K at rebirth 1 to 100T at rebirth 30. Rebirth 28, added with the Galactic update of mid-July 2026, is the ` +
       `first level to require a Galactic-tier droid in your base. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
       `Super Rebirth instead of a normal one: it keeps your Droidex, droidsmith level, cosmetics, unlocked Flawless ` +
       `droids, Nova crystals and Iconic unlocks, but resets your base, its droids, your currencies, rebirth rank, ` +
       `pickaxe level and blueprints, before advancing you straight into the next cycle. This page lists every ` +
       `cycle's requirements in full, cross-checked against community sources (${DATE_ISO}).</p>`,
     jsonName: 'Droidex rebirth requirements — Star Wars: Droid Tycoon',
-    jsonDesc: 'Required droids, minimum variants and credit cost for all 28 rebirth levels across the 4 cycles in Star Wars: Droid Tycoon.',
+    jsonDesc: 'Required droids, minimum variants and credit cost for all 30 rebirth levels across the 4 cycles in Star Wars: Droid Tycoon.',
   },
   fr: {
-    title: 'Droid Tycoon : exigences de renaissance — les 28 niveaux, 4 cycles | Droidex',
-    description: 'Les 3 droïdes requis, les variantes minimales et le coût en crédits de chaque niveau de renaissance de Star Wars: Droid Tycoon, de 1 à 28, sur les 4 cycles.',
+    title: 'Droid Tycoon : exigences de renaissance — les 30 niveaux, 4 cycles | Droidex',
+    description: 'Les 3 droïdes requis, les variantes minimales et le coût en crédits de chaque niveau de renaissance de Star Wars: Droid Tycoon, de 1 à 30, sur les 4 cycles.',
     h1: 'Exigences de renaissance de Droid Tycoon',
-    intro: `<p class="seo-intro">La progression de Star Wars: Droid Tycoon passe par 28 niveaux de renaissance, ` +
+    intro: `<p class="seo-intro">La progression de Star Wars: Droid Tycoon passe par 30 niveaux de renaissance, ` +
       `répétés sur 4 cycles en boucle infinie. Chaque niveau exige trois droïdes précis placés dans votre base à ` +
       `une variante minimale, plus un coût en crédits identique d'un cycle à l'autre pour un même niveau, qui ` +
-      `grimpe de 10K à la renaissance 1 jusqu'à 45T à la renaissance 28. La renaissance 28, ajoutée par la mise à ` +
+      `grimpe de 10K à la renaissance 1 jusqu'à 100T à la renaissance 30. La renaissance 28, ajoutée par la mise à ` +
       `jour Galactique de mi-juillet 2026, est le premier niveau à exiger un droïde de palier Galactique dans la ` +
       `base. À partir de la renaissance 12, remplir les exigences permet de déclencher une Super-renaissance au ` +
       `lieu d'une renaissance normale : elle conserve le Droidex, le niveau de fabricant, les cosmétiques, les ` +
@@ -358,7 +358,7 @@ const RB_TEXT = {
       `directement au cycle suivant. Cette page liste l'intégralité des exigences de chaque cycle, recoupées ` +
       `entre sources communautaires (${DATE_ISO}).</p>`,
     jsonName: 'Exigences de renaissance Droidex — Star Wars: Droid Tycoon',
-    jsonDesc: 'Droïdes requis, variantes minimales et coût en crédits des 28 niveaux de renaissance sur les 4 cycles de Star Wars: Droid Tycoon.',
+    jsonDesc: 'Droïdes requis, variantes minimales et coût en crédits des 30 niveaux de renaissance sur les 4 cycles de Star Wars: Droid Tycoon.',
   },
 };
 
@@ -571,13 +571,13 @@ const FAQ = [
   {
     q: { en: 'What are rebirth requirements?', fr: 'Que sont les exigences de renaissance ?' },
     a: {
-      en: 'Each rebirth level, from 1 to 28, requires three specific droids placed in your base at a minimum variant, ' +
-        'plus a credit cost that climbs from 10K at rebirth 1 up to 45T at rebirth 28. The 28 levels repeat across 4 ' +
+      en: 'Each rebirth level, from 1 to 30, requires three specific droids placed in your base at a minimum variant, ' +
+        'plus a credit cost that climbs from 10K at rebirth 1 up to 100T at rebirth 30. The 30 levels repeat across 4 ' +
         'cycles in a loop, and each cycle can ask for a different trio of droids at the same level even though the ' +
         'credit cost stays identical across cycles. Certain rebirth levels also unlock a new slot for your base, ' +
         'such as an extra Worker or Astromech slot.',
-      fr: 'Chaque niveau de renaissance, de 1 à 28, exige trois droïdes précis placés dans la base à une variante ' +
-        'minimale, plus un coût en crédits qui grimpe de 10K (renaissance 1) à 45T (renaissance 28). Les 28 niveaux ' +
+      fr: 'Chaque niveau de renaissance, de 1 à 30, exige trois droïdes précis placés dans la base à une variante ' +
+        'minimale, plus un coût en crédits qui grimpe de 10K (renaissance 1) à 100T (renaissance 30). Les 30 niveaux ' +
         'se répètent sur 4 cycles en boucle, et chaque cycle peut demander un trio de droïdes différent au même ' +
         'niveau, le coût en crédits restant identique d\'un cycle à l\'autre. Certains niveaux débloquent aussi un ' +
         'nouvel emplacement de base, par exemple un slot Worker ou Astromech supplémentaire.',
@@ -589,7 +589,7 @@ const FAQ = [
       en: 'Galactic is the newest variant tier, added above Beskar in the mid-July 2026 game update, bringing the ' +
         'total to six variants per standard droid. Exactly like the in-game Droidex screen, the Galactic tier is ' +
         'not counted in the main 317-variant total: it has its own separate counter over the 62 standard droids, ' +
-        'and Droidex mirrors that with a dedicated "Galactic x/62" counter. Rebirth 28 — the new top level of each ' +
+        'and Droidex mirrors that with a dedicated "Galactic x/62" counter. Rebirth 28 — the first Galactic-gated level in each ' +
         'of the 4 cycles — requires one specific Galactic droid placed in your base (for example a Galactic ' +
         'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
         'variant, a Galactic copy also satisfies any lower requirement for the same droid. Community sources are ' +
@@ -600,7 +600,7 @@ const FAQ = [
         'mi-juillet 2026, portant le total à six variantes par droïde standard. Exactement comme l\'écran Droidex ' +
         'du jeu, le palier Galactique n\'entre pas dans le total principal de 317 variantes : il a son propre ' +
         'compteur sur les 62 droïdes standard, et Droidex l\'affiche à l\'identique avec un compteur dédié ' +
-        '« Galactique x/62 ». La renaissance 28 — le nouveau niveau maximal de chacun des 4 cycles — exige un ' +
+        '« Galactique x/62 ». La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
         'droïde Galactique précis placé dans la base (par exemple un Proto-Roller Galactique au cycle 1), aux ' +
         'côtés d\'un droïde Arc-en-ciel, d\'un Beskar et de 45T de crédits. Comme toute variante supérieure, une ' +
         'copie Galactique valide aussi les exigences inférieures du même droïde. La communauté documente encore ' +

@@ -228,10 +228,12 @@ const setTarget = (w, rb) => {
   }
 
   /* ---- 11. Cycles de renaissance et données étendues ---- */
-  console.log('\n[11] Cycles et RB 24-27');
+  console.log('\n[11] Cycles et 30 niveaux de renaissance');
   {
     const { window: w } = boot(savedJson);
-    assert(w.document.getElementById('rbSelect').options.length === 28, 'sélecteur RB : 28 niveaux');
+    assert(w.document.getElementById('rbSelect').options.length === 30, 'sélecteur RB : 30 niveaux');
+    setTarget(w, 30);
+    assert(w.document.getElementById('rbCreditsBig').textContent.includes('100T'), 'crédits RB30 : 100T');
     assert(w.document.getElementById('cycleSelect').options.length === 4, 'sélecteur cycle : 4 cycles');
     // RB24 cycle 1 : BESKAR BB9, BESKAR CYCLO-GRAV, BASE MO-TRAK · 9T
     const sel = w.document.getElementById('rbSelect');
@@ -380,7 +382,7 @@ const setTarget = (w, rb) => {
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
-    assert(rb.includes('45T'), 'rebirths : RB28 (45T) présent');
+    assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
     assert(faq.includes('What is the Galactic variant'), 'FAQ : entrée dédiée à la variante Galactic');
