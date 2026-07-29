@@ -380,12 +380,21 @@ const setTarget = (w, rb) => {
     assert(vl.includes('Strike-Orb') && vl.includes('Beskar'), 'value list : droïdes + libellés longs');
     assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
-    // le Galactique étant le palier max, son coût suit celui du Beskar
-    assert(vl.includes('<th>Beskar cost</th>') && vl.includes('<th>Galactic cost</th>'),
-      'value list : colonnes de coût Beskar ET Galactique');
-    assert(vl.indexOf('<th>Beskar cost</th>') < vl.indexOf('<th>Galactic cost</th>'),
-      'value list : coût Galactique après le coût Beskar');
-    assert(vl.includes('<td>240B</td><td>1.41T</td>'), 'value list : coûts du Loadlifter (240B → 1.41T)');
+    // le coût affiché est celui du palier le plus haut : Galactique, pas Beskar
+    assert(vl.includes('<th>Galactic cost</th>') && !vl.includes('<th>Beskar cost</th>'),
+      'value list : colonne de coût Galactique, sans colonne Beskar');
+    assert(vl.includes('<td>1.41T</td>'), 'value list : coût Galactique du Loadlifter (1.41T)');
+    // même nombre de cellules sur toutes les lignes, iconiques compris
+    {
+      const heads = (vl.match(/<thead>[\s\S]*?<\/thead>/) || [''])[0];
+      const cols = (heads.match(/<th>/g) || []).length;
+      const bad = (vl.match(/<tr><td>[\s\S]*?<\/tr>/g) || []).filter(r => {
+        const span = /colspan="(\d+)"/.exec(r);
+        return (r.match(/<td/g) || []).length + (span ? +span[1] - 1 : 0) !== cols;
+      });
+      assert(cols === 10 && bad.length === 0,
+        `value list : ${cols} colonnes, toutes les lignes alignées (${bad.length} écart(s))`);
+    }
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
     assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.1 — 2026-07-29
+
+- Value list: the Beskar cost column is gone. Galactic became the top variant tier in mid-July, so the cost that matters is the Galactic one — showing both made the table needlessly wide.
+- Value list: rows now all have the same height. Only the perk column ever wrapped, which made its rows twice as tall as the rest; the table scrolls inside its own frame, so nothing is lost.
+
 ## 1.12.0 — 2026-07-29
 
 - Value list: new **Galactic cost** column, next to the Beskar cost. Galactic became the top variant tier in mid-July, so "Beskar cost" was no longer the cost of a fully upgraded droid. No other value list publishes this figure.

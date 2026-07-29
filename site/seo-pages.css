@@ -122,3 +122,9 @@
 .seo-page .chart-box .crosshair{stroke:var(--n-600);stroke-width:1}
 .seo-page .chart-tip{position:absolute;top:8px;transform:translateX(-50%);padding:3px 8px;background:var(--bg);border:1px solid var(--accent-700);font-family:var(--font-hud);font-size:11px;color:var(--n-300);pointer-events:none;white-space:nowrap}
 .seo-page .seo-note{font-size:12px;color:var(--n-500);margin-top:14px}
+
+/* Value list : cellules toutes courtes (chiffres, coût, perk) mais colonnes
+   nombreuses — sans cette règle, seul le perk revient à la ligne et sa ligne
+   devient deux fois plus haute que les autres. Le conteneur défile déjà
+   horizontalement, donc rien n'est perdu. */
+.seo-page .seo-table-rows td{white-space:nowrap}
