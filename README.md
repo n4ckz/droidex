@@ -175,7 +175,10 @@ tools/
   watch-signals.py        Patch signals from independent sources (official island
                           card, wikis, events page, Discord patch-notes mirror,
                           droidtrakr catalog + patch-notes transcript, CCU
-                          anomaly) — opens a GitHub issue when something moves
+                          anomaly) — opens a GitHub issue when something moves.
+                          One source goes further and cross-checks the dedicated
+                          wiki's rebirth requirements against site/data.js, so a
+                          real disagreement is reported, not just a page edit
 .github/workflows/
   gamedata-check.yml      Daily watch (3 jobs): game-data drift → reviewable PR;
                           metrics archiving; patch signals → issue

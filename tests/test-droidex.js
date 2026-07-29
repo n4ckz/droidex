@@ -386,6 +386,11 @@ const setTarget = (w, rb) => {
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
     assert(faq.includes('What is the Galactic variant'), 'FAQ : entrée dédiée à la variante Galactic');
+    // table Flawless complète : le palier Galactic manquait jusqu'au 29/07/2026
+    assert(faq.includes('1 in 75'), 'FAQ : odds Flawless du palier Galactic');
+    assert(faq.includes('1 in 125') && faq.includes('1 in 500'), 'FAQ : odds Flawless intermédiaires (Gold, Rainbow)');
+    assert(faq.includes('Flawless Charm'), 'FAQ : Flawless Charm (doublement des chances)');
+    assert(faq.includes('How do I get Galactic droids'), 'FAQ : entrée sur l\'obtention des Galactiques');
     const st = read('stats/index.html');
     assert(st.includes('In game right now') && st.includes('stats.js'), 'stats : tuiles statiques + script d\'hydratation');
     assert(st.includes('"@type": "Dataset"') || st.includes('"@type":"Dataset"'), 'stats : JSON-LD Dataset');
@@ -400,6 +405,8 @@ const setTarget = (w, rb) => {
     assert(vl.includes('lang-redirect.js'), 'pages EN : script de détection de langue');
     const faqfr = read('fr/faq/index.html');
     assert(faqfr.includes('variante Galactique'), 'FR : FAQ traduite (entrée Galactique)');
+    assert(faqfr.includes('1 sur 75'), 'FAQ FR : odds Flawless du palier Galactique');
+    assert(faqfr.includes('Comment obtenir des droïdes Galactiques'), 'FAQ FR : entrée sur l\'obtention');
     const stfr = read('fr/stats/index.html');
     assert(stfr.includes('En jeu en ce moment'), 'FR : page stats traduite');
     const sm = read('sitemap.xml');

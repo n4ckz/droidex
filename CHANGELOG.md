@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.11.0 — 2026-07-29
+
+- FAQ: the Flawless entry now carries the complete odds table, including the Galactic tier (1 in 1000 at Basic down to 1 in 75 at Galactic), the Flawless Charm and event multipliers, the per-droid income bonus and the 51-droid milestone, and the fact that odds depend on the variant rather than the droid's rarity.
+- FAQ: new entry on how to obtain Galactic droids — Sandcrawler Galactic timer, Fishing, the dedicated Galactic Astromech Missions added with the Cantina Shop update, and Upgrade Chips.
+- Watch: the dedicated wiki's rebirth requirements are now cross-checked against `site/data.js` on every run. Unlike the other sources, this one reports actual disagreements — a level documented upstream but missing from our data, a changed requirement or credit cost — instead of merely noticing that a page was edited. First run: 39 requirements cross-checked, no divergence.
+- Watch: each day's signals now open their own dated issue. They used to be appended as comments to whichever signal issue was still open, which is how the v1.23 release and a +234% CCU spike went unnoticed for several days.
+
 ## 1.10.1 — 2026-07-29
 
 - Fixed a broken placeholder in the data generator that leaked an uninterpolated `{max(rebirths[1])}` into the header comment of the generated `site/data.js`.

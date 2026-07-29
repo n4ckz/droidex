@@ -629,16 +629,49 @@ const FAQ = [
   {
     q: { en: 'What is Flawless?', fr: 'Qu\'est-ce que le Flawless ?' },
     a: {
-      en: 'Flawless is a permanent, rare drop chance rolled independently for every droid you obtain, kept forever in ' +
-        'your Droidex once unlocked. The odds depend on variant rarity: roughly 1 in 1000 for a Basic droid down to ' +
-        '1 in 100 for a Beskar droid, so rarer, higher-value variants are noticeably more likely to roll Flawless. ' +
-        "Droidex lets you mark each droid's Flawless status with a toggle so you can track which ones you've already " +
-        'unlocked without relying on memory.',
-      fr: 'Le Flawless est une chance de drop rare et permanente, tirée indépendamment à chaque droïde obtenu, et ' +
-        'conservée à vie dans le Droidex une fois débloquée. Les chances dépendent de la variante : environ 1 sur ' +
-        '1000 pour un droïde Basic, jusqu\'à 1 sur 100 pour un Beskar — les variantes rares et chères ont donc ' +
-        'nettement plus de chances de sortir Flawless. Droidex propose un interrupteur ✦ par droïde pour marquer ' +
+      en: 'Flawless is a shiny cosmetic paint rolled once, at the moment a droid finishes crafting, and kept forever ' +
+        'in your Droidex. The odds depend only on the variant you crafted, never on the droid\'s rarity — a Mythic ' +
+        'droid is no more likely to roll Flawless than a Common one at the same variant. Base odds are 1 in 1000 for ' +
+        'Basic, 1 in 500 for Gold, 1 in 250 for Diamond, 1 in 125 for Rainbow, 1 in 100 for Beskar and 1 in 75 for ' +
+        'Galactic. Two multipliers stack on top: the Flawless Charm from the Nova Shop (500 Nova crystals) doubles ' +
+        'your chance, and events double it as well — running both during an event is the fastest way to fill the ' +
+        'Flawless column. Each unique Flawless droid also grants a small permanent income multiplier, with a further ' +
+        'reward once 51 unique Flawless droids are collected. Iconic droids cannot roll Flawless, since they are ' +
+        'never crafted. Droidex lets you mark each droid\'s Flawless status with a ✦ toggle so you can track which ' +
+        'ones you have already unlocked without relying on memory.',
+      fr: 'Le Flawless est une peinture cosmétique brillante, tirée une seule fois au moment où le craft d\'un ' +
+        'droïde se termine, et conservée à vie dans le Droidex. Les chances dépendent uniquement de la variante ' +
+        'craftée, jamais de la rareté du droïde : à variante égale, un Mythique n\'a pas plus de chances qu\'un ' +
+        'Commun. Les taux de base sont de 1 sur 1000 en Basic, 1 sur 500 en Or, 1 sur 250 en Diamant, 1 sur 125 en ' +
+        'Arc-en-ciel, 1 sur 100 en Beskar et 1 sur 75 en Galactique. Deux multiplicateurs se cumulent par-dessus : ' +
+        'le Flawless Charm de la boutique Nova (500 cristaux) double les chances, et les événements les doublent ' +
+        'aussi — cumuler les deux pendant un événement est le moyen le plus rapide de remplir la colonne Flawless. ' +
+        'Chaque droïde Flawless unique apporte en plus un petit multiplicateur de revenus permanent, avec une ' +
+        'récompense supplémentaire une fois 51 Flawless uniques collectés. Les droïdes Iconiques ne peuvent pas ' +
+        'être Flawless, puisqu\'ils ne se craftent pas. Droidex propose un interrupteur ✦ par droïde pour marquer ' +
         'ceux déjà débloqués sans compter sur sa mémoire.',
+    },
+  },
+  {
+    q: { en: 'How do I get Galactic droids?', fr: 'Comment obtenir des droïdes Galactiques ?' },
+    a: {
+      en: 'Galactic droids have several sources, all added over the July 2026 updates. A Galactic timer above the ' +
+        'Sandcrawler spawns Galactic blueprints on its own cycle, the same way the Beskar timer does. Galactic ' +
+        'blueprints can also be earned from Fishing, which is how the tier was first introduced. Since the Cantina ' +
+        'Shop update, Astromech Missions include dedicated Galactic missions that reward credits, Beskar droids and ' +
+        'Galactic droids, making them the most reliable source once you can afford them. Finally, a Rainbow or ' +
+        'Beskar droid can be upgraded with Upgrade Chips, and the cost of higher-tier upgrades was significantly ' +
+        'reduced in that same update. Droidex tracks every Galactic copy separately with its own "Galactic x/62" ' +
+        'counter, so you can see at a glance which ones your next rebirth still needs.',
+      fr: 'Les droïdes Galactiques ont plusieurs sources, toutes ajoutées au fil des mises à jour de juillet 2026. ' +
+        'Un timer Galactique au-dessus du Sandcrawler fait apparaître des blueprints Galactiques sur son propre ' +
+        'cycle, comme le fait le timer Beskar. Les blueprints Galactiques s\'obtiennent aussi à la pêche, qui a été ' +
+        'le mode d\'obtention d\'origine du palier. Depuis la mise à jour du Cantina Shop, les missions Astromech ' +
+        'comportent des missions Galactiques dédiées qui récompensent des crédits, des droïdes Beskar et des ' +
+        'droïdes Galactiques — la source la plus fiable une fois qu\'on peut se les offrir. Enfin, un droïde ' +
+        'Arc-en-ciel ou Beskar peut être amélioré avec des Upgrade Chips, dont le coût aux paliers supérieurs a été ' +
+        'fortement réduit dans cette même mise à jour. Droidex suit chaque copie Galactique à part avec son ' +
+        'compteur « Galactique x/62 », pour voir d\'un coup d\'œil ceux qui manquent à la prochaine renaissance.',
     },
   },
   {

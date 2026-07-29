@@ -145,11 +145,19 @@ jobs:
           done
           exit 1
 
-      - name: Open or update the signal issue
+      - name: Open the signal issue of the day
         if: steps.sig.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # UNE ISSUE PAR JOUR DE SIGNAL, jamais un commentaire sur une issue
+          # plus ancienne : le 29/07/2026 on a découvert que les signaux des 25,
+          # 26, 27 et 28/07 (dont la sortie du patch v1.23 et un pic de CCU à
+          # +234 %) s'étaient empilés en commentaires d'une issue ouverte le
+          # 22/07 — aucune notification saillante, patch repéré une semaine plus
+          # tard. Une issue datée par jour reste bruyante mais visible.
+          DAY=$(date -u +%F)
+          TITLE="Signal communautaire du $DAY : patch du jeu possible"
           {
             echo "Des sources ont bougé — le jeu a peut-être été patché."
             echo
@@ -158,10 +166,11 @@ jobs:
             echo
             echo "_Ce signal n'a modifié aucune donnée : la veille tycoon-tools ouvrira sa PR \`bot/gamedata-update\` quand la value list changera. Fermer cette issue une fois le patch identifié (ou écarté)._"
           } > body.md
-          NUM=$(gh issue list --label gamedata-signal --state open --json number --jq '.[0].number')
-          if [ -n "$NUM" ]; then
+          # une relance manuelle le même jour complète l'issue du jour
+          NUM=$(gh issue list --label gamedata-signal --state open --search "$TITLE in:title" \
+                  --json number,title --jq "map(select(.title == \"$TITLE\")) | .[0].number")
+          if [ -n "$NUM" ] && [ "$NUM" != "null" ]; then
             gh issue comment "$NUM" --body-file body.md
           else
-            gh issue create --title "Signal communautaire : patch du jeu possible" \
-              --label gamedata-signal --body-file body.md
+            gh issue create --title "$TITLE" --label gamedata-signal --body-file body.md
           fi

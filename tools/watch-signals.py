@@ -4,6 +4,9 @@ via des sources indépendantes de tycoon-tools (qui reste la seule source de
 données — ce script n'écrit jamais dans data.js).
 
 Sources surveillées :
+- wiki dédié (star-wars-droid-tycoon.fandom.com), page Rebirths : ses exigences
+  sont confrontées aux nôtres — seule source qui dise « nos données sont
+  fausses » plutôt que « quelque chose a bougé »
 - wiki dédié (star-wars-droid-tycoon.fandom.com) : API MediaWiki recentchanges
 - page Droid Tycoon du wiki Fortnite : timestamp de dernière révision
 - droidtycoonguide.com/events/ : empreinte du texte de la page (site statique)
@@ -164,8 +167,137 @@ def src_droidtrakr():
     return token, detail
 
 
+"""Recoupement des exigences de renaissance avec le wiki dédié.
+
+Les autres sources ne comparent que des empreintes : elles disent « ça a
+bougé », jamais « nos données sont fausses ». Le wiki, lui, publie les
+exigences en clair — on peut donc confronter son contenu à site/data.js et ne
+signaler QUE les désaccords réels. Recoupement fait à la main le 29/07/2026 :
+39 exigences sur 40 identiques aux nôtres, ce qui a validé pour la première
+fois les cycles 2-4 (jamais vérifiés en jeu). Le wiki ne documente qu'une
+partie des niveaux (1-7 et 28-30 au 29/07/2026) : les niveaux absents sont
+ignorés, pas comptés comme des écarts.
+"""
+# Graphies du wiki qui diffèrent des nôtres pour un même droïde.
+WIKI_ALIAS = {
+    'monowalker': 'monowlkr',
+    'optistrike': 'optistrk',
+    'utiltech': 'utiltecultitech',
+    'tritrek': 'tritek',
+}
+WIKI_VARIANTS = {'base': 0, 'gold': 1, 'diamond': 2, 'rainbow': 3, 'beskar': 4, 'galactic': 5}
+
+
+def _norm_name(s):
+    return WIKI_ALIAS.get(re.sub(r'[^a-z0-9]', '', s.lower()), re.sub(r'[^a-z0-9]', '', s.lower()))
+
+
+def _fmt(reqs):
+    """« gonk BAS, r9 GLD » — court, et sans caractère que clean() supprimerait."""
+    short = ['BAS', 'GLD', 'DIA', 'RBW', 'BSK', 'GLC']
+    return ', '.join(f'{n} {short[t] if t is not None and t < len(short) else "?"}' for n, t in reqs)
+
+
+def _norm_credits(s):
+    """« 45.00T » (wiki) et « 45T » (nous) désignent le même coût."""
+    m = re.fullmatch(r'([\d.]+)\s*([KMBT])', s.strip())
+    if not m:
+        return s.strip()
+    return f'{float(m.group(1)):g}{m.group(2)}'
+
+
+def _our_rebirths():
+    """Exigences et crédits lus dans site/data.js (format généré, donc stable).
+    Rend {cycle: {niveau: [(nomNormalisé, variante) ×3]}} et {niveau: crédits}."""
+    src = (Path(__file__).resolve().parent.parent / 'site' / 'data.js').read_text()
+    names = {i: _norm_name(n) for i, n in re.findall(r"\{id:'([^']+)',n:'([^']+)'", src)}
+    credits = {}
+    m = re.search(r'const RB_CREDITS = \{(.*?)\};', src, re.S)
+    if m:
+        credits = {int(k): _norm_credits(v) for k, v in re.findall(r"(\d+):'([^']*)'", m.group(1))}
+    rebirths, cycle = {}, None
+    block = re.search(r'const REBIRTHS = \{(.*?)\n\};', src, re.S)
+    for line in (block.group(1) if block else '').split('\n'):
+        head = re.match(r'\s*(\d+): \{', line)
+        if head:
+            cycle = int(head.group(1))
+            rebirths[cycle] = {}
+            continue
+        lvl = re.match(r'\s*(\d+):\[(.*)\],', line)
+        if lvl and cycle:
+            reqs = [(names.get(d, d), int(t)) for d, t in re.findall(r"\['([^']+)',(\d)\]", lvl.group(2))]
+            rebirths[cycle][int(lvl.group(1))] = sorted(reqs)
+    return rebirths, credits
+
+
+def _wiki_rebirths():
+    """Mêmes structures, extraites du wikitext de la page Rebirths."""
+    data = api('https://star-wars-droid-tycoon.fandom.com', action='query', prop='revisions',
+               titles='Rebirths', rvprop='content', rvslots='main')
+    text = next(iter(data['query']['pages'].values()))['revisions'][0]['slots']['main']['*']
+    parts = re.split(r'\n\|-\|\s*\n?Cycle (\d)=', text)
+    cycles = {1: parts[0]}
+    for i in range(1, len(parts) - 1, 2):
+        cycles[int(parts[i])] = parts[i + 1]
+    rebirths, credits = {}, {}
+    for cyc, chunk in cycles.items():
+        rebirths[cyc] = {}
+        for blk in chunk.split('\n|-\n'):
+            head = re.match(r'\|(\d+) > (\d+)\s*\n', blk)
+            if not head:
+                continue
+            lvl, reqs = int(head.group(2)), []
+            for line in blk.split('\n'):
+                req = re.match(r'\*\s*(?:\{\{Variant\|(\w+)\}\})?\s*\[?\[?([^\]\n*|]+)', line)
+                if req:
+                    reqs.append((_norm_name(req.group(2)), WIKI_VARIANTS.get((req.group(1) or 'base').lower())))
+            # 3 exigences par niveau : au-delà, le bloc a absorbé une autre
+            # section de la page (l'historique en fin de tableau, par exemple)
+            if len(reqs) != 3:
+                continue
+            rebirths[cyc][lvl] = sorted(reqs)
+            cred = re.search(r'\n\|([\d.]+\s*[KMBT])\s*$', blk.rstrip())
+            if cred:
+                credits[lvl] = _norm_credits(cred.group(1))
+    return rebirths, credits
+
+
+def src_wiki_rebirths():
+    """Désaccords entre le wiki dédié et nos exigences de renaissance.
+
+    Token stable tant que les deux sources disent la même chose : le wiki peut
+    être réédité tous les jours sans produire de bruit ici. Un signal ne part
+    que si le CONTENU diverge (ou si un désaccord se résorbe)."""
+    ours, our_credits = _our_rebirths()
+    wiki, wiki_credits = _wiki_rebirths()
+    seen, gaps = 0, []
+    for cyc, levels in sorted(wiki.items()):
+        for lvl, reqs in sorted(levels.items()):
+            seen += 1
+            mine = ours.get(cyc, {}).get(lvl)
+            # un niveau documenté chez eux et absent chez nous est LE signal à
+            # ne pas rater : c'est ainsi que sont arrivées les RB29/30
+            if mine is None:
+                gaps.append(f'cycle {cyc} RB{lvl} documenté au wiki, absent de data.js')
+            elif mine != reqs:
+                gaps.append(f'cycle {cyc} RB{lvl} : wiki {_fmt(reqs)} vs data.js {_fmt(mine)}')
+    for lvl, cred in sorted(wiki_credits.items()):
+        if lvl in our_credits and our_credits[lvl] != cred:
+            gaps.append(f'crédits RB{lvl} : wiki {cred} vs data.js {our_credits[lvl]}')
+    if not seen:
+        return None, ''            # page illisible : on ne dit rien plutôt que d'affoler
+    covered = seen - sum(1 for g in gaps if 'absent de data.js' in g)
+    if not gaps:
+        return 'ok', f'{covered} exigences recoupées, aucune divergence'
+    token = hashlib.sha256('\n'.join(gaps).encode()).hexdigest()[:16]
+    detail = (f'{len(gaps)} divergence(s) sur {covered} exigences recoupées :\n> - '
+              + '\n> - '.join(clean(g) for g in gaps[:10]))
+    return token, detail
+
+
 SOURCES = {
     'discord-patch-notes': (src_discord_patch_notes, 'canal miroir #patch-notes de ton serveur Discord'),
+    'wiki-rebirths': (src_wiki_rebirths, 'https://star-wars-droid-tycoon.fandom.com/wiki/Rebirths'),
     'epic-island': (src_epic_island, 'https://api.fortnite.com/ecosystem/v1/islands/7865-8305-9184'),
     'wiki-droid-tycoon': (src_wiki_dedie, 'https://star-wars-droid-tycoon.fandom.com/wiki/Special:RecentChanges'),
     'wiki-fortnite': (src_wiki_fortnite, 'https://fortnite.fandom.com/wiki/Droid_Tycoon?action=history'),
