@@ -105,7 +105,8 @@ const STR = {
       'Lucasfilm Ltd. Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. ' +
       '<a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>.',
     minSuffix: 'min',
-    thDroid: 'Droid', thClass: 'Class', thBeskarCost: 'Beskar cost', thGalacticCost: 'Galactic cost', thPerk: 'Perk',
+    thDroid: 'Droid', thClass: 'Class', thPerk: 'Perk',
+    tblIncome: 'Income per variant', tblCost: 'Cost per variant',
     iconicIncome: '+15%/s income',
     thRebirth: 'Rebirth', thCredits: 'Credits', thRequired: 'Required droids', thUnlock: 'Unlock',
     cycle: 'Cycle',
@@ -136,7 +137,8 @@ const STR = {
       'Lucasfilm Ltd. Droid Tycoon est un mode Fortnite créé par FOAD/Blzn Studios. ' +
       '<a href="https://github.com/n4ckz/droidex" rel="noopener">Code source sur GitHub</a>.',
     minSuffix: 'min.',
-    thDroid: 'Droïde', thClass: 'Classe', thBeskarCost: 'Coût Beskar', thGalacticCost: 'Coût Galactique', thPerk: 'Perk',
+    thDroid: 'Droïde', thClass: 'Classe', thPerk: 'Perk',
+    tblIncome: 'Revenus par variante', tblCost: 'Coût par variante',
     iconicIncome: '+15 %/s de revenus',
     thRebirth: 'Renaissance', thCredits: 'Crédits', thRequired: 'Droïdes requis', thUnlock: 'Débloque',
     cycle: 'Cycle',
@@ -236,13 +238,14 @@ ${bodyHtml}
 
 const VL_TEXT = {
   en: {
-    title: 'Droid Tycoon Value List — Income & Beskar Cost per Droid | Droidex',
-    description: 'Income per second and Galactic upgrade cost for every Star Wars: Droid Tycoon droid, across Basic, Gold, Diamond, Rainbow, Beskar and Galactic variants.',
+    title: 'Droid Tycoon Value List — Income & Cost of Every Variant | Droidex',
+    description: 'Income per second and cost of every Star Wars: Droid Tycoon droid at each variant: Basic, Gold, Diamond, Rainbow, Beskar and Galactic.',
     h1: 'Droid Tycoon value list',
-    intro: `<p class="seo-intro">This value list gives the income per second and the Galactic cost — the top tier — for every ` +
-      `droid in Star Wars: Droid Tycoon, across all six variants: Basic, Gold, Diamond, Rainbow, Beskar and Galactic ` +
-      `(the new tier added in the mid-July 2026 update — Galactic income is now documented for all 62 standard ` +
-      `droids; the remaining "—" cells are perks, which not every droid has). Numbers ` +
+    intro: `<p class="seo-intro">This value list gives, for every ` +
+      `droid in Star Wars: Droid Tycoon, both the income per second and the credit cost at each of the six variants: ` +
+      `Basic, Gold, Diamond, Rainbow, Beskar and Galactic ` +
+      `(the newest tier, added in the mid-July 2026 update). Every rarity has one table for income and one for cost, ` +
+      `so you can see what a Diamond or Beskar copy of a droid actually costs before committing to it. Numbers ` +
       `are cross-checked against community sources (${DATE_ISO}) rather than a single guide, and ` +
       `Droidex's own cycle 1 rebirth requirements have been verified in-game through rebirth 23. Iconic droids have ` +
       `no variants: owning one simply adds a flat +15% income bonus alongside its unique perk. Remember that in ` +
@@ -250,17 +253,17 @@ const VL_TEXT = {
       `droid at Gold minimum, owning it at Diamond or better already counts, so this list also doubles as a quick ` +
       `reference for which variant is "enough".</p>`,
     jsonName: 'Droidex value list — Star Wars: Droid Tycoon',
-    jsonDesc: 'Income per second and Galactic cost for every droid and variant in Star Wars: Droid Tycoon.',
+    jsonDesc: 'Income per second and credit cost of every droid at each variant in Star Wars: Droid Tycoon.',
   },
   fr: {
-    title: 'Droid Tycoon : liste des valeurs — revenus et coût Beskar par droïde | Droidex',
-    description: 'Revenus par seconde et coût d\'amélioration Galactique pour chaque droïde de Star Wars: Droid Tycoon, sur les variantes Basic, Or, Diamant, Arc-en-ciel, Beskar et Galactique.',
+    title: 'Droid Tycoon : liste des valeurs — revenus et coût de chaque variante | Droidex',
+    description: 'Revenus par seconde et coût de chaque droïde de Star Wars: Droid Tycoon dans les six variantes : Basic, Or, Diamant, Arc-en-ciel, Beskar et Galactique.',
     h1: 'Liste des valeurs de Droid Tycoon',
-    intro: `<p class="seo-intro">Cette liste des valeurs donne les revenus par seconde et le coût Galactique — le ` +
-      `palier le plus haut — de chaque droïde de Star Wars: Droid Tycoon, sur les six variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
-      `Beskar et Galactique (le nouveau palier ajouté par la mise à jour de mi-juillet 2026 — les revenus ` +
-      `Galactiques sont désormais documentés pour les 62 droïdes standard ; les « — » restants sont des perks, ` +
-      `que tous les droïdes n'ont pas). Les chiffres sont recoupés entre plusieurs sources communautaires (${DATE_ISO}) plutôt que tirés ` +
+    intro: `<p class="seo-intro">Cette liste des valeurs donne, pour chaque droïde de Star Wars: Droid Tycoon, les ` +
+      `revenus par seconde ET le coût en crédits dans chacune des six variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
+      `Beskar et Galactique (le palier le plus récent, ajouté par la mise à jour de mi-juillet 2026). Chaque rareté ` +
+      `a un tableau de revenus et un tableau de coûts, pour savoir ce que coûte vraiment un exemplaire Diamant ou ` +
+      `Beskar avant de s'y engager. Les chiffres sont recoupés entre plusieurs sources communautaires (${DATE_ISO}) plutôt que tirés ` +
       `d'un guide unique, et les exigences de renaissance du cycle 1 de Droidex ont été vérifiées en jeu jusqu'à ` +
       `la renaissance 23. Les droïdes Iconiques n'ont pas de variantes : en posséder un ajoute simplement +15 % de ` +
       `revenus, en plus de son perk unique. Rappel : dans le panneau de renaissance de Droidex, une variante ` +
@@ -268,7 +271,7 @@ const VL_TEXT = {
       `le posséder en Diamant ou mieux suffit déjà ; cette liste sert donc aussi de référence rapide pour savoir ` +
       `quelle variante est « suffisante ».</p>`,
     jsonName: 'Liste des valeurs Droidex — Star Wars: Droid Tycoon',
-    jsonDesc: 'Revenus par seconde et coût Galactique pour chaque droïde et variante de Star Wars: Droid Tycoon.',
+    jsonDesc: 'Revenus par seconde et coût en crédits de chaque droïde dans chaque variante de Star Wars: Droid Tycoon.',
   },
 };
 
@@ -277,30 +280,45 @@ function buildValueList(lang) {
   const TIERS_L = I18N[lang]._tiers;
   const RAR_L = I18N[lang]._rarities;
 
-  const sections = RARITY_ORDER.map(rarity => {
-    const droids = DROIDS.filter(d => d.r === rarity);
-    const rows = droids.map(d => {
-      if (d.iconic) {
-        return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>` +
-          `<td colspan="6">${L.iconicIncome}</td><td>—</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
-      }
-      const tierCells = d.inc.map(n => `<td>${n == null ? '—' : fmtInc(n) + '/s'}</td>`).join('');
-      return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>${tierCells}` +
-        `<td>${escapeHtml(d.galCost || '—')}</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
-    }).join('\n');
-
-    const tierHeads = TIERS_L.map(t => `<th>${escapeHtml(t)}</th>`).join('');
-    return `  <h2>◈ ${escapeHtml(RAR_L[rarity])}</h2>
+  const tierHeads = TIERS_L.map(t => `<th>${escapeHtml(t)}</th>`).join('');
+  const wrap = (title, heads, rows) => `  <h2>◈ ${title}</h2>
   <div class="seo-table-wrap seo-table-rows">
     <table>
       <thead>
-        <tr><th>${L.thDroid}</th><th>${L.thClass}</th>${tierHeads}<th>${L.thGalacticCost}</th><th>${L.thPerk}</th></tr>
+        <tr>${heads}</tr>
       </thead>
       <tbody>
 ${rows}
       </tbody>
     </table>
   </div>`;
+
+  const sections = RARITY_ORDER.map(rarity => {
+    const droids = DROIDS.filter(d => d.r === rarity);
+    const name = escapeHtml(RAR_L[rarity]);
+
+    /* 1. revenus par variante (les Iconiques n'ont pas de variantes) */
+    const incomeRows = droids.map(d => {
+      const cells = d.iconic
+        ? `<td colspan="6">${L.iconicIncome}</td>`
+        : d.inc.map(n => `<td>${n == null ? '—' : fmtInc(n) + '/s'}</td>`).join('');
+      return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>${cells}` +
+        `<td>${escapeHtml(d.perk || '—')}</td></tr>`;
+    }).join('\n');
+    const incomeTable = wrap(`${name} · ${L.tblIncome}`,
+      `<th>${L.thDroid}</th><th>${L.thClass}</th>${tierHeads}<th>${L.thPerk}</th>`, incomeRows);
+
+    /* 2. coût par variante — les Iconiques ne s'achètent pas au Sandcrawler,
+          ils n'ont donc pas de tableau de coûts */
+    const priced = droids.filter(d => !d.iconic && d.cost);
+    if (!priced.length) return incomeTable;
+    const costRows = priced.map(d =>
+      `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>` +
+      d.cost.map(c => `<td>${c == null ? '—' : escapeHtml(c)}</td>`).join('') + '</tr>').join('\n');
+    const costTable = wrap(`${name} · ${L.tblCost}`,
+      `<th>${L.thDroid}</th><th>${L.thClass}</th>${tierHeads}`, costRows);
+
+    return `${incomeTable}\n\n${costTable}`;
   }).join('\n\n');
 
   const jsonld = {
@@ -313,7 +331,7 @@ ${rows}
     license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
     creator: { '@type': 'Person', name: 'Nackz', url: 'https://github.com/n4ckz' },
     dateModified: DATE_ISO,
-    variableMeasured: ['income per second', 'Galactic cost', 'perk'],
+    variableMeasured: ['income per second', 'cost per variant', 'perk'],
   };
 
   return page({

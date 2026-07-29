@@ -380,20 +380,28 @@ const setTarget = (w, rb) => {
     assert(vl.includes('Strike-Orb') && vl.includes('Beskar'), 'value list : droïdes + libellés longs');
     assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
-    // le coût affiché est celui du palier le plus haut : Galactique, pas Beskar
-    assert(vl.includes('<th>Galactic cost</th>') && !vl.includes('<th>Beskar cost</th>'),
-      'value list : colonne de coût Galactique, sans colonne Beskar');
-    assert(vl.includes('<td>1.41T</td>'), 'value list : coût Galactique du Loadlifter (1.41T)');
-    // même nombre de cellules sur toutes les lignes, iconiques compris
+    // un tableau de revenus ET un tableau de coûts par rareté (5 raretés
+    // standard ; les Iconiques ne s'achètent pas, donc pas de tableau de coûts)
+    assert((vl.match(/Income per variant/g) || []).length === 6, 'value list : 6 tableaux de revenus');
+    assert((vl.match(/Cost per variant/g) || []).length === 5, 'value list : 5 tableaux de coûts (hors Iconiques)');
+    assert(!vl.includes('<th>Beskar cost</th>') && !vl.includes('<th>Galactic cost</th>'),
+      'value list : plus de colonne de coût unique');
+    // Gonk : 4/s en Basic et 96/s en Galactique, coûts 3K → 60K
+    assert(vl.includes('<td>Gonk</td><td>Worker</td><td>4/s</td>') &&
+      vl.includes('<td>Gonk</td><td>Worker</td><td>3K</td><td>12K</td><td>24K</td><td>48K</td><td>48K</td><td>60K</td>'),
+      'value list : revenus et coûts des 6 variantes du Gonk');
+    // toutes les lignes alignées sur leur en-tête, dans les deux tableaux
     {
-      const heads = (vl.match(/<thead>[\s\S]*?<\/thead>/) || [''])[0];
-      const cols = (heads.match(/<th>/g) || []).length;
-      const bad = (vl.match(/<tr><td>[\s\S]*?<\/tr>/g) || []).filter(r => {
-        const span = /colspan="(\d+)"/.exec(r);
-        return (r.match(/<td/g) || []).length + (span ? +span[1] - 1 : 0) !== cols;
+      const tables = vl.match(/<table>[\s\S]*?<\/table>/g) || [];
+      const bad = tables.filter(tb => {
+        const cols = ((tb.match(/<thead>[\s\S]*?<\/thead>/) || [''])[0].match(/<th>/g) || []).length;
+        return (tb.match(/<tr><td>[\s\S]*?<\/tr>/g) || []).some(r => {
+          const span = /colspan="(\d+)"/.exec(r);
+          return (r.match(/<td/g) || []).length + (span ? +span[1] - 1 : 0) !== cols;
+        });
       });
-      assert(cols === 10 && bad.length === 0,
-        `value list : ${cols} colonnes, toutes les lignes alignées (${bad.length} écart(s))`);
+      assert(tables.length === 11 && bad.length === 0,
+        `value list : ${tables.length} tableaux, lignes alignées (${bad.length} écart(s))`);
     }
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');

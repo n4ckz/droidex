@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.13.0 — 2026-07-29
+
+- Value list: every rarity now has **two tables — income per variant and cost per variant**. The cost of a droid at Gold, Diamond, Rainbow, Beskar or Galactic was published nowhere, on any site; players looking up what a Diamond copy costs had no answer.
+- Game data: `site/data.js` gains a `cost` array (one credit cost per variant, same order as `inc`) for the 62 standard droids. Our main source only publishes the Beskar cost, so the rest is cross-checked from the dedicated wiki, value by value: a cost is only published when its ratio to the Beskar cost matches the fixed multiple its rarity commands. The Beskar column always comes from our main source.
+- The 2% tolerance was set from the real spread: 364 of 371 values sit within 0.5% of their rarity's multiple, two at 1.27% (both sources round to three digits), then nothing until 3.2% — where the two sources genuinely disagree (Gold cost of B2-RP and Cyclo-Grav, apparently swapped somewhere upstream). Those two cells show "—" rather than a number we cannot vouch for.
+
 ## 1.12.1 — 2026-07-29
 
 - Value list: the Beskar cost column is gone. Galactic became the top variant tier in mid-July, so the cost that matters is the Galactic one — showing both made the table needlessly wide.

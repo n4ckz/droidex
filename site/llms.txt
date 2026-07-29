@@ -19,7 +19,7 @@ All four content pages below are also available in French under https://droidex.
 ## Links
 
 - [Application](https://droidex.nackz.dev/): the tracker itself
-- [Value list](https://droidex.nackz.dev/value-list/): income per second for all six variants, plus the Beskar cost AND the Galactic cost of every droid — the Galactic cost is published nowhere else, our main source stops at Beskar
+- [Value list](https://droidex.nackz.dev/value-list/): for every droid, income per second AND credit cost at each of the six variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic) — one income table and one cost table per rarity. No other value list publishes the cost of every variant
 - [Rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/): the 3 droids and credit cost needed for each of the 30 rebirth levels, across all 4 cycles
 - [Live stats](https://droidex.nackz.dev/stats/): how many people play Droid Tycoon right now, plus daily peak CCU, plays, unique players and retention — official Epic Ecosystem API data, archived daily since 2026-07-14 (Epic only keeps a 7-day window)
 - [FAQ](https://droidex.nackz.dev/faq/): answers about variants (including the Galactic tier and every way to obtain Galactic droids), rebirths, the full Flawless odds table (1 in 1000 at Basic down to 1 in 75 at Galactic, doubled by the Flawless Charm and again during events), the collection bonus, and syncing

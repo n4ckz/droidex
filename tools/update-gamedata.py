@@ -109,41 +109,45 @@ def parse_values():
     return vals
 
 
-# « Coût Galactique » : seconde source, sous contrôle.
+# « Coût par variante » : seconde source, sous contrôle.
 #
-# tycoon-tools publie les revenus Galactiques mais sa value list s'arrête à la
-# colonne « Beskar Cost » (vérifié le 29/07/2026) — le palier le plus haut du jeu
-# n'a donc pas de coût chez notre source principale. Le wiki dédié le publie pour
-# les 62 droïdes standard : il devient source de données pour CE SEUL champ.
-# Comme sa table est saisie à la main (3 de ses coûts Beskar étaient faux ce
-# jour-là), toute valeur est confrontée au multiple attendu de sa rareté avant
-# d'être publiée.
+# tycoon-tools donne les revenus des six variantes mais un seul coût, celui du
+# Beskar (colonne « Beskar Cost », vérifié le 29/07/2026). Or les joueurs
+# cherchent le prix de CHAQUE palier. Le wiki dédié le publie, un onglet par
+# variante, pour les 62 droïdes standard : il est source de données pour ce
+# seul champ. Ses tables étant saisies à la main (3 de ses coûts Beskar étaient
+# faux ce jour-là), chaque valeur est confrontée au multiple attendu de sa
+# rareté avant d'être publiée.
 WIKI_API = 'https://star-wars-droid-tycoon.fandom.com/api.php'
+WIKI_TABS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic']
 # graphies du wiki qui diffèrent de celles de tycoon-tools
 WIKI_ALIAS = {'MONO-WALKER': 'monowlkr', 'OPTI-STRIKE': 'optistrk',
               'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek'}
 
 
-def parse_galactic_costs():
-    """{id: coût en Galactique} d'après l'onglet Galactic de la page Droiddex."""
+def parse_variant_costs():
+    """{id: [coût Basic … coût Galactique]} d'après la page Droiddex du wiki."""
     qs = urllib.parse.urlencode({'action': 'query', 'prop': 'revisions', 'titles': 'Droiddex',
                                  'rvprop': 'content', 'rvslots': 'main', 'format': 'json'})
     page = json.loads(fetch(f'{WIKI_API}?{qs}'))['query']['pages']
     text = next(iter(page.values()))['revisions'][0]['slots']['main']['*']
-    tabs = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
-    chunks = {tabs[i].strip(): tabs[i + 1] for i in range(1, len(tabs) - 1, 2)}
+    parts = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
+    chunks = {'Base': parts[0]}
+    for i in range(1, len(parts) - 1, 2):
+        chunks[parts[i].strip()] = parts[i + 1]
     costs = {}
-    for m in re.finditer(r'\|\s*\[\[([^\]|]+?)\]\]\s*\|\|\s*\{\{Official:Rarity\|\w+\}\}(.*)',
-                         chunks.get('Galactic', '')):
-        name = m.group(1).strip().upper()
-        did = NAME2ID.get(name) or WIKI_ALIAS.get(name)
-        cells = [c.strip().strip('|').strip() for c in m.group(2).split('||')]
-        if not did or len(cells) < 3:
-            continue
-        # « 1.41t » chez eux, « 1.41T » chez tycoon-tools
-        cost = re.sub(r'([kmbt])$', lambda x: x.group(1).upper(), cells[2].replace(',', '').strip())
-        if re.fullmatch(r'[\d.]+[KMBT]?', cost):
-            costs[did] = cost
+    for idx, tab in enumerate(WIKI_TABS):
+        for m in re.finditer(r'\|\s*\[\[([^\]|]+?)\]\]\s*\|\|\s*\{\{Official:Rarity\|\w+\}\}(.*)',
+                             chunks.get(tab, '')):
+            name = m.group(1).strip().upper()
+            did = NAME2ID.get(name) or WIKI_ALIAS.get(name)
+            cells = [c.strip().strip('|').strip() for c in m.group(2).split('||')]
+            if not did or len(cells) < 3:
+                continue
+            # « 1.41t » chez eux, « 1.41T » chez tycoon-tools
+            cost = re.sub(r'([kmbt])$', lambda x: x.group(1).upper(), cells[2].replace(',', '').strip())
+            if re.fullmatch(r'[\d.]+[KMBT]?', cost):
+                costs.setdefault(did, [None] * len(WIKI_TABS))[idx] = cost
     return costs
 
 
@@ -152,29 +156,50 @@ def _amount(s):
     return float(m.group(1)) * {'': 1, 'K': 1e3, 'M': 1e6, 'B': 1e9, 'T': 1e12}[m.group(2)] if m else None
 
 
-def check_galactic_costs(vals, costs):
-    """Écarte les coquilles du wiki : dans le jeu, le coût Galactique vaut un
-    multiple FIXE du coût Beskar, propre à chaque rareté (×1,25 Commun et Rare,
-    ×2,4 Épique, ×6 Légendaire, ×5,875 Mythique au 29/07/2026, vérifié sur les
-    62 droïdes sans une seule exception). Une valeur qui s'écarte du multiple de
-    sa rareté est une erreur de saisie : mieux vaut ne rien publier qu'un chiffre
-    faux. Si le multiple lui-même change, c'est toute la rareté qui bouge — la
-    médiane suit, et le diff de data.js le montrera."""
+def check_variant_costs(vals, costs):
+    """Écarte les coquilles du wiki. Dans le jeu, le coût d'une variante vaut un
+    multiple FIXE du coût Beskar, propre à chaque couple (rareté, variante) —
+    vérifié le 29/07/2026 sur les 62 droïdes : ×4 en Or, ×8 en Diamant et ×16 en
+    Arc-en-ciel par rapport au Basic, puis des paliers propres à chaque rareté
+    pour le Beskar et le Galactique. Le coût Beskar de tycoon-tools sert d'ancre.
+
+    Seuil à 2 %, choisi sur la distribution réelle des écarts au multiple médian
+    (29/07/2026) : 364 valeurs sur 371 tombent sous 0,5 %, deux à 1,27 % —
+    l'arrondi à trois chiffres des deux sources —, puis plus rien avant 3,2 %.
+    Au-delà, ce ne sont plus des arrondis mais de vraies divergences : Gold de
+    cyclograv et b2rp, dont les coûts semblent intervertis d'une source à
+    l'autre. Mieux vaut une cellule vide qu'un chiffre faux.
+
+    Le coût Beskar n'est jamais pris ici : tycoon-tools, notre source
+    principale, le publie déjà — c'est lui qui fait foi."""
+    beskar = WIKI_TABS.index('Beskar')
     ratios = {}
-    for did, cost in costs.items():
-        gal, bsk = _amount(cost), _amount(vals.get(did, {}).get('beskarCost'))
-        if gal and bsk:
-            ratios.setdefault(vals[did]['rarity'], []).append((did, gal / bsk))
-    kept = {}
-    for rarity, pairs in ratios.items():
+    for did, series in costs.items():
+        anchor = _amount(vals.get(did, {}).get('beskarCost'))
+        if not anchor:
+            continue
+        for idx, cost in enumerate(series):
+            value = _amount(cost)
+            if value and idx != beskar:
+                ratios.setdefault((vals[did]['rarity'], idx), []).append((did, value / anchor))
+    kept, dropped = {}, 0
+    for did in costs:
+        if vals.get(did, {}).get('beskarCost'):
+            kept.setdefault(did, [None] * len(WIKI_TABS))[beskar] = vals[did]['beskarCost']
+    for (rarity, idx), pairs in ratios.items():
         ordered = sorted(r for _, r in pairs)
         median = ordered[len(ordered) // 2]
         for did, ratio in pairs:
-            if abs(ratio - median) / median <= 0.01:
-                kept[did] = costs[did]
+            if abs(ratio - median) / median <= 0.02:
+                kept.setdefault(did, [None] * len(WIKI_TABS))[idx] = costs[did][idx]
             else:
-                print(f'  ⚠ coût Galactique écarté pour {did} : {costs[did]} = ×{ratio:.2f} du '
-                      f'coût Beskar, alors que les {rarity} sont à ×{median:.3f} — coquille du wiki ?')
+                dropped += 1
+                print(f'  ⚠ coût {WIKI_TABS[idx]} écarté pour {did} : {costs[did][idx]} — '
+                      f'{abs(ratio - median) / median * 100:.1f} % au-dessus/dessous du rapport '
+                      f'au coût Beskar des {rarity} (coquille du wiki, ou les deux sources '
+                      f'ne disent pas la même chose)')
+    if dropped:
+        print(f'  {dropped} valeur(s) écartée(s) au total')
     return kept
 
 
@@ -232,8 +257,9 @@ def droid_line(did, vals):
     else:
         parts.append('inc:[' + ','.join(js_num(x) for x in v['inc']) + ']')
         parts.append(f"bskCost:{js_str(v['beskarCost'], did + '.beskarCost')}")
-        if v.get('galacticCost'):
-            parts.append(f"galCost:{js_str(v['galacticCost'], did + '.galacticCost')}")
+        if v.get('costs'):
+            parts.append('cost:[' + ','.join(
+                js_str(c, f'{did}.cost') if c else 'null' for c in v['costs']) + ']')
     if v['perk']:
         parts.append(f"perk:{js_str(v['perk'], did + '.perk')}")
     return ' {' + ','.join(parts) + '},'
@@ -256,10 +282,12 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    - Événements / Iconiques : https://droidtycoonguide.com/events/
 
    inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique] (null = non documenté)
-   bskCost: coût du droïde en Beskar ; galCost: idem en Galactique, le palier
-   le plus haut — absent de tycoon-tools, recoupé sur le wiki dédié (seul champ
-   à venir d'une autre source, et seulement si son rapport au coût Beskar est
-   celui de sa rareté) ; perk: bonus passif (termes du jeu)
+   bskCost: coût du droïde en Beskar (tycoon-tools)
+   cost: coût du droïde dans chacune des 6 variantes, même ordre que inc —
+   tycoon-tools ne publie que celui du Beskar, cette série est donc recoupée sur
+   le wiki dédié (seul champ venu d'une autre source, et seulement si son
+   rapport au coût Beskar est celui de son couple rareté/variante)
+   perk: bonus passif (termes du jeu)
    Les Iconiques rapportent +15%/s (pas de variantes).
    ========================================================================= */
 
@@ -322,15 +350,18 @@ def main():
     # valeurs déjà publiées dans data.js (sinon le cron « corrigerait » chaque
     # panne du wiki en supprimant des données justes).
     try:
-        galactic = check_galactic_costs(vals, parse_galactic_costs())
-        print(f'  {len(galactic)} coûts Galactiques recoupés sur le wiki dédié')
+        costs = check_variant_costs(vals, parse_variant_costs())
+        total = sum(1 for s in costs.values() for c in s if c)
+        print(f'  {total} coûts de variantes recoupés sur le wiki dédié '
+              f'({len(costs)} droïdes × {len(WIKI_TABS)} paliers)')
     except Exception as e:
-        galactic = dict(re.findall(r"\{id:'([^']+)'.*?galCost:'([^']*)'", current))
+        costs = {did: [c or None for c in re.findall(r"'([^']*)'|null", series)]
+                 for did, series in re.findall(r"\{id:'([^']+)'.*?cost:\[([^\]]*)\]", current)}
         print(f'  ⚠ wiki injoignable ({e.__class__.__name__}) — '
-              f'{len(galactic)} coûts Galactiques conservés depuis data.js')
-    for did, cost in galactic.items():
+              f'{len(costs)} séries de coûts conservées depuis data.js')
+    for did, series in costs.items():
         if did in vals:
-            vals[did]['galacticCost'] = cost
+            vals[did]['costs'] = series
 
     # la date de recoupage n'est réécrite que si le contenu change
     m = re.search(r'recoupées le (\d{2}/\d{2}/\d{4})', current)
