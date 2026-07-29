@@ -380,6 +380,12 @@ const setTarget = (w, rb) => {
     assert(vl.includes('Strike-Orb') && vl.includes('Beskar'), 'value list : droïdes + libellés longs');
     assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
+    // le Galactique étant le palier max, son coût suit celui du Beskar
+    assert(vl.includes('<th>Beskar cost</th>') && vl.includes('<th>Galactic cost</th>'),
+      'value list : colonnes de coût Beskar ET Galactique');
+    assert(vl.indexOf('<th>Beskar cost</th>') < vl.indexOf('<th>Galactic cost</th>'),
+      'value list : coût Galactique après le coût Beskar');
+    assert(vl.includes('<td>240B</td><td>1.41T</td>'), 'value list : coûts du Loadlifter (240B → 1.41T)');
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
     assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');

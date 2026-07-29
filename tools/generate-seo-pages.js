@@ -105,7 +105,7 @@ const STR = {
       'Lucasfilm Ltd. Droid Tycoon is a Fortnite mode created by FOAD/Blzn Studios. ' +
       '<a href="https://github.com/n4ckz/droidex" rel="noopener">Source code on GitHub</a>.',
     minSuffix: 'min',
-    thDroid: 'Droid', thClass: 'Class', thBeskarCost: 'Beskar cost', thPerk: 'Perk',
+    thDroid: 'Droid', thClass: 'Class', thBeskarCost: 'Beskar cost', thGalacticCost: 'Galactic cost', thPerk: 'Perk',
     iconicIncome: '+15%/s income',
     thRebirth: 'Rebirth', thCredits: 'Credits', thRequired: 'Required droids', thUnlock: 'Unlock',
     cycle: 'Cycle',
@@ -136,7 +136,7 @@ const STR = {
       'Lucasfilm Ltd. Droid Tycoon est un mode Fortnite créé par FOAD/Blzn Studios. ' +
       '<a href="https://github.com/n4ckz/droidex" rel="noopener">Code source sur GitHub</a>.',
     minSuffix: 'min.',
-    thDroid: 'Droïde', thClass: 'Classe', thBeskarCost: 'Coût Beskar', thPerk: 'Perk',
+    thDroid: 'Droïde', thClass: 'Classe', thBeskarCost: 'Coût Beskar', thGalacticCost: 'Coût Galactique', thPerk: 'Perk',
     iconicIncome: '+15 %/s de revenus',
     thRebirth: 'Renaissance', thCredits: 'Crédits', thRequired: 'Droïdes requis', thUnlock: 'Débloque',
     cycle: 'Cycle',
@@ -237,9 +237,9 @@ ${bodyHtml}
 const VL_TEXT = {
   en: {
     title: 'Droid Tycoon Value List — Income & Beskar Cost per Droid | Droidex',
-    description: 'Income per second and Beskar upgrade cost for every Star Wars: Droid Tycoon droid, across Basic, Gold, Diamond, Rainbow, Beskar and Galactic variants.',
+    description: 'Income per second, Beskar cost and Galactic cost for every Star Wars: Droid Tycoon droid, across Basic, Gold, Diamond, Rainbow, Beskar and Galactic variants.',
     h1: 'Droid Tycoon value list',
-    intro: `<p class="seo-intro">This value list gives the income per second and Beskar upgrade cost for every ` +
+    intro: `<p class="seo-intro">This value list gives the income per second, the Beskar cost and the Galactic cost for every ` +
       `droid in Star Wars: Droid Tycoon, across all six variants: Basic, Gold, Diamond, Rainbow, Beskar and Galactic ` +
       `(the new tier added in the mid-July 2026 update — Galactic income is now documented for all 62 standard ` +
       `droids; the remaining "—" cells are perks, which not every droid has). Numbers ` +
@@ -250,13 +250,13 @@ const VL_TEXT = {
       `droid at Gold minimum, owning it at Diamond or better already counts, so this list also doubles as a quick ` +
       `reference for which variant is "enough".</p>`,
     jsonName: 'Droidex value list — Star Wars: Droid Tycoon',
-    jsonDesc: 'Income per second and Beskar upgrade cost for every droid and variant in Star Wars: Droid Tycoon.',
+    jsonDesc: 'Income per second, Beskar cost and Galactic cost for every droid and variant in Star Wars: Droid Tycoon.',
   },
   fr: {
     title: 'Droid Tycoon : liste des valeurs — revenus et coût Beskar par droïde | Droidex',
-    description: 'Revenus par seconde et coût d\'amélioration Beskar pour chaque droïde de Star Wars: Droid Tycoon, sur les variantes Basic, Or, Diamant, Arc-en-ciel, Beskar et Galactique.',
+    description: 'Revenus par seconde, coût Beskar et coût Galactique pour chaque droïde de Star Wars: Droid Tycoon, sur les variantes Basic, Or, Diamant, Arc-en-ciel, Beskar et Galactique.',
     h1: 'Liste des valeurs de Droid Tycoon',
-    intro: `<p class="seo-intro">Cette liste des valeurs donne les revenus par seconde et le coût d'amélioration ` +
+    intro: `<p class="seo-intro">Cette liste des valeurs donne les revenus par seconde, le coût ` +
       `Beskar de chaque droïde de Star Wars: Droid Tycoon, sur les six variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
       `Beskar et Galactique (le nouveau palier ajouté par la mise à jour de mi-juillet 2026 — les revenus ` +
       `Galactiques sont désormais documentés pour les 62 droïdes standard ; les « — » restants sont des perks, ` +
@@ -268,7 +268,7 @@ const VL_TEXT = {
       `le posséder en Diamant ou mieux suffit déjà ; cette liste sert donc aussi de référence rapide pour savoir ` +
       `quelle variante est « suffisante ».</p>`,
     jsonName: 'Liste des valeurs Droidex — Star Wars: Droid Tycoon',
-    jsonDesc: 'Revenus par seconde et coût d\'amélioration Beskar pour chaque droïde et variante de Star Wars: Droid Tycoon.',
+    jsonDesc: 'Revenus par seconde, coût Beskar et coût Galactique pour chaque droïde et variante de Star Wars: Droid Tycoon.',
   },
 };
 
@@ -282,11 +282,12 @@ function buildValueList(lang) {
     const rows = droids.map(d => {
       if (d.iconic) {
         return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>` +
-          `<td colspan="6">${L.iconicIncome}</td><td>—</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
+          `<td colspan="6">${L.iconicIncome}</td><td>—</td><td>—</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
       }
       const tierCells = d.inc.map(n => `<td>${n == null ? '—' : fmtInc(n) + '/s'}</td>`).join('');
       return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>${tierCells}` +
-        `<td>${escapeHtml(d.bskCost)}</td><td>${escapeHtml(d.perk || '—')}</td></tr>`;
+        `<td>${escapeHtml(d.bskCost)}</td><td>${escapeHtml(d.galCost || '—')}</td>` +
+        `<td>${escapeHtml(d.perk || '—')}</td></tr>`;
     }).join('\n');
 
     const tierHeads = TIERS_L.map(t => `<th>${escapeHtml(t)}</th>`).join('');
@@ -294,7 +295,7 @@ function buildValueList(lang) {
   <div class="seo-table-wrap">
     <table>
       <thead>
-        <tr><th>${L.thDroid}</th><th>${L.thClass}</th>${tierHeads}<th>${L.thBeskarCost}</th><th>${L.thPerk}</th></tr>
+        <tr><th>${L.thDroid}</th><th>${L.thClass}</th>${tierHeads}<th>${L.thBeskarCost}</th><th>${L.thGalacticCost}</th><th>${L.thPerk}</th></tr>
       </thead>
       <tbody>
 ${rows}
@@ -313,7 +314,7 @@ ${rows}
     license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
     creator: { '@type': 'Person', name: 'Nackz', url: 'https://github.com/n4ckz' },
     dateModified: DATE_ISO,
-    variableMeasured: ['income per second', 'Beskar upgrade cost', 'perk'],
+    variableMeasured: ['income per second', 'Beskar cost', 'Galactic cost', 'perk'],
   };
 
   return page({

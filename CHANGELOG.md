@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.12.0 — 2026-07-29
+
+- Value list: new **Galactic cost** column, next to the Beskar cost. Galactic became the top variant tier in mid-July, so "Beskar cost" was no longer the cost of a fully upgraded droid. No other value list publishes this figure.
+- Game data: `site/data.js` gains a `galCost` field for all 62 standard droids. Our main source (tycoon-tools) stops at the Beskar cost, so this single field is cross-checked from the dedicated wiki — and only published when it matches the fixed multiple of the Beskar cost that its rarity commands (×1.25 Common and Rare, ×2.4 Epic, ×6 Legendary, ×5.875 Mythic), since that wiki's tables are hand-written. If the wiki is unreachable, the costs already published are kept rather than wiped.
+
 ## 1.11.0 — 2026-07-29
 
 - FAQ: the Flawless entry now carries the complete odds table, including the Galactic tier (1 in 1000 at Basic down to 1 in 75 at Galactic), the Flawless Charm and event multipliers, the per-droid income bonus and the 51-droid milestone, and the fact that odds depend on the variant rather than the droid's rarity.

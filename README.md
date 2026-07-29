@@ -20,7 +20,7 @@ The game features a Droidex of 200+ collectible droids across 6 variants (Basic,
 - **Requirement badges** on each droid (e.g. "RB9·GLD"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
 - **Super Rebirth button**: applies the in-game reset semantics in one tap — droids in your base drop back to "owned (Droidex)", Iconic droids leave the base (unlock kept), the targeted rebirth returns to 1 and the cycle advances.
 - **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
-- **Value data on every droid**: income per second (Basic → Beskar), Beskar upgrade cost and passive perk — plus a "sort by income" mode to decide what to buy at the Sandcrawler.
+- **Value data on every droid**: income per second (Basic → Galactic), passive perk, and the cost of a droid at Beskar *and* at Galactic. No other list publishes the Galactic cost: our main source stops at Beskar, so it is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
 - **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
 - **Galactic counter**: the Galactic tier (added mid-July 2026) is counted separately from the main /317 total, exactly like the in-game Droidex screen — the header shows your Galactic x/62 alongside the collection bonus, and RB·GLC badges tell you which Galactic droids rebirth 28 needs.
@@ -218,7 +218,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 30 levels, credit costs, per-variant income, Beskar costs and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-29:
+The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 30 levels, credit costs, per-variant income, Beskar and Galactic costs, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-29:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)

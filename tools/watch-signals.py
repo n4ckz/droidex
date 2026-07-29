@@ -167,17 +167,16 @@ def src_droidtrakr():
     return token, detail
 
 
-"""Recoupement des exigences de renaissance avec le wiki dédié.
-
-Les autres sources ne comparent que des empreintes : elles disent « ça a
-bougé », jamais « nos données sont fausses ». Le wiki, lui, publie les
-exigences en clair — on peut donc confronter son contenu à site/data.js et ne
-signaler QUE les désaccords réels. Recoupement fait à la main le 29/07/2026 :
-39 exigences sur 40 identiques aux nôtres, ce qui a validé pour la première
-fois les cycles 2-4 (jamais vérifiés en jeu). Le wiki ne documente qu'une
-partie des niveaux (1-7 et 28-30 au 29/07/2026) : les niveaux absents sont
-ignorés, pas comptés comme des écarts.
-"""
+# Recoupement des exigences de renaissance avec le wiki dédié.
+#
+# Les autres sources ne comparent que des empreintes : elles disent « ça a
+# bougé », jamais « nos données sont fausses ». Le wiki, lui, publie les
+# exigences en clair — on peut donc confronter son contenu à site/data.js et ne
+# signaler QUE les désaccords réels. Recoupement fait à la main le 29/07/2026 :
+# 39 exigences sur 40 identiques aux nôtres, ce qui a validé pour la première
+# fois les cycles 2-4 (jamais vérifiés en jeu). Le wiki ne documente qu'une
+# partie des niveaux (1-7 et 28-30 au 29/07/2026) : les niveaux absents sont
+# ignorés, pas comptés comme des écarts.
 # Graphies du wiki qui diffèrent des nôtres pour un même droïde.
 WIKI_ALIAS = {
     'monowalker': 'monowlkr',
