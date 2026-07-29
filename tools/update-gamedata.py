@@ -203,10 +203,11 @@ const DROIDS = [""")
     L.append('/* Crédits requis par renaissance (identiques pour les 4 cycles) */')
     L.append('const RB_CREDITS = {' + ','.join(f"{k}:{js_str(credits[k], f'credits[{k}]')}" for k in sorted(credits)) + '};')
     L.append('')
-    L.append("""/* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
-   Une variante supérieure valide toujours l'exigence. Après la renaissance {max(rebirths[1])}
+    last_rb = max(rebirths[1])
+    L.append(f"""/* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
+   Une variante supérieure valide toujours l'exigence. Après la renaissance {last_rb}
    (ou dès la 12 en « super-renaissance »), on passe au cycle suivant (4 → 1). */
-const REBIRTHS = {""")
+const REBIRTHS = {{""")
     for cyc in sorted(rebirths):
         L.append(f' {cyc}: {{')
         for rb in sorted(rebirths[cyc]):

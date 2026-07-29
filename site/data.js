@@ -4,7 +4,7 @@
    Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
    main : relancer le script puis relire le diff.
 
-   Sources communautaires (recoupées le 28/07/2026) :
+   Sources communautaires (recoupées le 29/07/2026) :
    - Exigences de renaissance (4 cycles × 30) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
@@ -102,7 +102,7 @@ const DROIDS = [
 const RB_CREDITS = {1:'10K',2:'150K',3:'975K',4:'2.95M',5:'5.35M',6:'9.85M',7:'14.5M',8:'36M',9:'89M',10:'220M',11:'550M',12:'1.36B',13:'3.40B',14:'8.45B',15:'21B',16:'52B',17:'130B',18:'325B',19:'810B',20:'2T',21:'3T',22:'4.5T',23:'6T',24:'9T',25:'13.5T',26:'21T',27:'32T',28:'45T',29:'68T',30:'100T'};
 
 /* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
-   Une variante supérieure valide toujours l'exigence. Après la renaissance {max(rebirths[1])}
+   Une variante supérieure valide toujours l'exigence. Après la renaissance 30
    (ou dès la 12 en « super-renaissance »), on passe au cycle suivant (4 → 1). */
 const REBIRTHS = {
  1: {

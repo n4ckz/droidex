@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.1 — 2026-07-29
+
+- Fixed a broken placeholder in the data generator that leaked an uninterpolated `{max(rebirths[1])}` into the header comment of the generated `site/data.js`.
+- Value list and FAQ pages no longer claim Galactic income values are undocumented: they are now listed for all 62 standard droids, and the pages explain that the remaining "—" cells are perks. Game data re-checked against tycoon-tools (no change).
+
 ## 1.10.0 — 2026-07-28
 
 - Game data refreshed from tycoon-tools: rebirth levels 29 and 30 added to all four cycles (up to 100T credits), including their required droids and variants.

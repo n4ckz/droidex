@@ -241,8 +241,8 @@ const VL_TEXT = {
     h1: 'Droid Tycoon value list',
     intro: `<p class="seo-intro">This value list gives the income per second and Beskar upgrade cost for every ` +
       `droid in Star Wars: Droid Tycoon, across all six variants: Basic, Gold, Diamond, Rainbow, Beskar and Galactic ` +
-      `(the new tier added in the mid-July 2026 update — Galactic incomes are still being documented by the ` +
-      `community, undocumented values show as "—"). Numbers ` +
+      `(the new tier added in the mid-July 2026 update — Galactic income is now documented for all 62 standard ` +
+      `droids; the remaining "—" cells are perks, which not every droid has). Numbers ` +
       `are cross-checked against community sources (${DATE_ISO}) rather than a single guide, and ` +
       `Droidex's own cycle 1 rebirth requirements have been verified in-game through rebirth 23. Iconic droids have ` +
       `no variants: owning one simply adds a flat +15% income bonus alongside its unique perk. Remember that in ` +
@@ -259,8 +259,8 @@ const VL_TEXT = {
     intro: `<p class="seo-intro">Cette liste des valeurs donne les revenus par seconde et le coût d'amélioration ` +
       `Beskar de chaque droïde de Star Wars: Droid Tycoon, sur les six variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
       `Beskar et Galactique (le nouveau palier ajouté par la mise à jour de mi-juillet 2026 — les revenus ` +
-      `Galactiques sont encore en cours de documentation par la communauté, les valeurs inconnues s'affichent ` +
-      `« — »). Les chiffres sont recoupés entre plusieurs sources communautaires (${DATE_ISO}) plutôt que tirés ` +
+      `Galactiques sont désormais documentés pour les 62 droïdes standard ; les « — » restants sont des perks, ` +
+      `que tous les droïdes n'ont pas). Les chiffres sont recoupés entre plusieurs sources communautaires (${DATE_ISO}) plutôt que tirés ` +
       `d'un guide unique, et les exigences de renaissance du cycle 1 de Droidex ont été vérifiées en jeu jusqu'à ` +
       `la renaissance 23. Les droïdes Iconiques n'ont pas de variantes : en posséder un ajoute simplement +15 % de ` +
       `revenus, en plus de son perk unique. Rappel : dans le panneau de renaissance de Droidex, une variante ` +
@@ -592,9 +592,9 @@ const FAQ = [
         'and Droidex mirrors that with a dedicated "Galactic x/62" counter. Rebirth 28 — the first Galactic-gated level in each ' +
         'of the 4 cycles — requires one specific Galactic droid placed in your base (for example a Galactic ' +
         'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
-        'variant, a Galactic copy also satisfies any lower requirement for the same droid. Community sources are ' +
-        'still documenting Galactic income values, and report Galactic droids appearing in-game on an hourly ' +
-        'spawn timer; Droidex tracks each Galactic copy with the same tap-through states (owned, in base) and ' +
+        'variant, a Galactic copy also satisfies any lower requirement for the same droid. Galactic income values ' +
+        'are now documented for all 62 standard droids, and community sources report Galactic droids appearing ' +
+        'in-game on an hourly spawn timer; Droidex tracks each Galactic copy with the same tap-through states (owned, in base) and ' +
         'shows RB·GLC requirement badges so you know exactly which Galactic droids your next rebirth needs.',
       fr: 'Le Galactique est le palier de variante le plus récent, ajouté au-dessus du Beskar par la mise à jour de ' +
         'mi-juillet 2026, portant le total à six variantes par droïde standard. Exactement comme l\'écran Droidex ' +
@@ -603,8 +603,9 @@ const FAQ = [
         '« Galactique x/62 ». La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
         'droïde Galactique précis placé dans la base (par exemple un Proto-Roller Galactique au cycle 1), aux ' +
         'côtés d\'un droïde Arc-en-ciel, d\'un Beskar et de 45T de crédits. Comme toute variante supérieure, une ' +
-        'copie Galactique valide aussi les exigences inférieures du même droïde. La communauté documente encore ' +
-        'les revenus Galactiques et rapporte des apparitions en jeu sur un cycle horaire ; Droidex suit chaque ' +
+        'copie Galactique valide aussi les exigences inférieures du même droïde. Les revenus Galactiques sont ' +
+        'désormais documentés pour les 62 droïdes standard, et la communauté rapporte des apparitions en jeu sur ' +
+        'un cycle horaire ; Droidex suit chaque ' +
         'copie Galactique avec les mêmes états au tap (possédé, en base) et affiche des badges RB·GLC pour savoir ' +
         'exactement quels droïdes Galactiques votre prochaine renaissance demande.',
     },
