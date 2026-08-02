@@ -12,6 +12,9 @@ Sources surveillées :
 - droidtycoonguide.com/events/ : empreinte du texte de la page (site statique)
 - droidtrakr.com : catalogue de leur tracker (data.json + inventaire d'images)
   et leur retranscription des patch notes officiels (PATCH_NOTES_VERSION)
+- backlinks : les articles des deux wikis Fandom qui lient droidex.nackz.dev
+  (pas un signal de patch, mais notre actif SEO le plus précieux — alerte si
+  la modération retire un lien)
 
 État : tools/watch-state.json (commité — le workflow le met à jour).
 Codes de sortie : 0 = rien de neuf (ou première initialisation), 10 = au moins
@@ -46,6 +49,26 @@ def fetch(url):
 def api(base, **params):
     qs = urllib.parse.urlencode({'format': 'json', **params})
     return json.loads(fetch(f'{base}/api.php?{qs}'))
+
+
+def src_wiki_backlinks():
+    """Nos backlinks sur les deux wikis Fandom — les seuls que le site possède
+    (enquête SEO du 02/08/2026 : ils sont notre principal actif d'autorité, et
+    la modération wiki peut les retirer sans prévenir). L'API exturlusage
+    contourne le Cloudflare qui bloque le HTML de Fandom et rend la liste
+    exacte des articles (ns 0) qui lient droidex.nackz.dev. Token stable tant
+    que cette liste ne bouge pas ; signal si un lien disparaît ou apparaît."""
+    found = []
+    for wiki in ('star-wars-droid-tycoon', 'fortnite'):
+        data = api(f'https://{wiki}.fandom.com', action='query', list='exturlusage',
+                   euquery='droidex.nackz.dev', eulimit=50, eunamespace=0)
+        pages = sorted({p['title'] for p in data['query']['exturlusage']})
+        found.append([wiki, pages])
+    token = hashlib.sha256(json.dumps(found).encode()).hexdigest()[:16]
+    detail = ' ; '.join(
+        f"{w} : {', '.join(clean(t) for t in pages) if pages else 'PLUS AUCUN LIEN'}"
+        for w, pages in found)
+    return token, detail
 
 
 def src_wiki_dedie():
@@ -302,6 +325,7 @@ SOURCES = {
     'wiki-fortnite': (src_wiki_fortnite, 'https://fortnite.fandom.com/wiki/Droid_Tycoon?action=history'),
     'guide-events': (src_guide_events, 'https://droidtycoonguide.com/events/'),
     'droidtrakr': (src_droidtrakr, 'https://droidtrakr.com/'),
+    'wiki-backlinks': (src_wiki_backlinks, 'https://star-wars-droid-tycoon.fandom.com/api.php?action=query&list=exturlusage&euquery=droidex.nackz.dev&format=json'),
 }
 
 

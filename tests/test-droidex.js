@@ -406,6 +406,10 @@ const setTarget = (w, rb) => {
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
     assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');
+    // v1.14.0 : titles/meta orientés CTR — GSC du 02/08/2026 : position 2 sur
+    // « rebirth requirements cycle 2/3 » mais 141 impressions → 1 clic (0,7 %)
+    assert(rb.includes('All 30 Levels &amp; Cycles 2-4'), 'rebirths : title ciblé sur les cycles 2-4');
+    assert(rb.includes('Super Rebirth cycles 2, 3 and 4'), 'rebirths : description nommant chaque cycle');
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
     assert(faq.includes('What is the Galactic variant'), 'FAQ : entrée dédiée à la variante Galactic');
@@ -414,6 +418,7 @@ const setTarget = (w, rb) => {
     assert(faq.includes('1 in 125') && faq.includes('1 in 500'), 'FAQ : odds Flawless intermédiaires (Gold, Rainbow)');
     assert(faq.includes('Flawless Charm'), 'FAQ : Flawless Charm (doublement des chances)');
     assert(faq.includes('How do I get Galactic droids'), 'FAQ : entrée sur l\'obtention des Galactiques');
+    assert(faq.includes('Flawless Odds, Galactic Droids'), 'FAQ : title orienté requêtes (Flawless, Galactic)');
     const st = read('stats/index.html');
     assert(st.includes('In game right now') && st.includes('stats.js'), 'stats : tuiles statiques + script d\'hydratation');
     assert(st.includes('"@type": "Dataset"') || st.includes('"@type":"Dataset"'), 'stats : JSON-LD Dataset');
@@ -432,6 +437,14 @@ const setTarget = (w, rb) => {
     assert(faqfr.includes('Comment obtenir des droïdes Galactiques'), 'FAQ FR : entrée sur l\'obtention');
     const stfr = read('fr/stats/index.html');
     assert(stfr.includes('En jeu en ce moment'), 'FR : page stats traduite');
+    const rbfr = read('fr/rebirth-requirements/index.html');
+    assert(rbfr.includes('les 30 niveaux et cycles 2-4'), 'FR : title rebirths ciblé cycles');
+    // v1.14.0 : signaux d'entité — « Droidex » est disputé par des sites tiers,
+    // le sameAs ancre l'entité sur notre GitHub et notre compte X
+    const home = read('index.html');
+    assert(/name="description" content="[^"]*Galactic/.test(home), 'home : meta description à jour (Galactic)');
+    assert(home.includes('"sameAs"') && home.includes('x.com/Nackz_X'), 'home : JSON-LD sameAs (GitHub + X)');
+    assert(rb.includes('"sameAs"') && faq.includes('"sameAs"'), 'pages SEO : sameAs dans le JSON-LD');
     const sm = read('sitemap.xml');
     assert((sm.match(/<loc>/g) || []).length === 9, 'sitemap : 9 URLs (1 + 4 EN + 4 FR)');
     ['value-list','rebirth-requirements','stats','faq'].forEach(p => {

@@ -26,6 +26,14 @@ const vm = require('vm');
 const ROOT = path.join(__dirname, '..');
 const SITE = path.join(ROOT, 'site');
 const SITE_URL = 'https://droidex.nackz.dev';
+// Signal d'entité : « Droidex » est disputé par des sites tiers homonymes —
+// le sameAs ancre l'auteur (et donc le site) sur nos profils publics.
+const CREATOR = {
+  '@type': 'Person',
+  name: 'Nackz',
+  url: 'https://github.com/n4ckz',
+  sameAs: ['https://github.com/n4ckz/droidex', 'https://x.com/Nackz_X'],
+};
 const LANGS = ['en', 'fr'];
 
 /* ---------- 1. Charger les données de jeu dans un bac à sable ---------- */
@@ -329,7 +337,7 @@ ${rows}
     url: `${SITE_URL}/${lang === 'fr' ? 'fr/' : ''}value-list/`,
     inLanguage: lang,
     license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
-    creator: { '@type': 'Person', name: 'Nackz', url: 'https://github.com/n4ckz' },
+    creator: CREATOR,
     dateModified: DATE_ISO,
     variableMeasured: ['income per second', 'cost per variant', 'perk'],
   };
@@ -345,8 +353,8 @@ ${rows}
 
 const RB_TEXT = {
   en: {
-    title: 'Droid Tycoon Rebirth Requirements — All 30 Levels, 4 Cycles | Droidex',
-    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level, from 1 to 30, across all 4 cycles.',
+    title: 'Droid Tycoon Rebirth Requirements — All 30 Levels & Cycles 2-4 | Droidex',
+    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level 1-30 — cycle 1 and the Super Rebirth cycles 2, 3 and 4. The only list covering all four cycles, updated at every patch.',
     h1: 'Droid Tycoon rebirth requirements',
     intro: `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 30 rebirth levels, repeated ` +
       `across 4 cycles in an endless loop. Each level requires three specific droids placed in your base at a ` +
@@ -361,8 +369,8 @@ const RB_TEXT = {
     jsonDesc: 'Required droids, minimum variants and credit cost for all 30 rebirth levels across the 4 cycles in Star Wars: Droid Tycoon.',
   },
   fr: {
-    title: 'Droid Tycoon : exigences de renaissance — les 30 niveaux, 4 cycles | Droidex',
-    description: 'Les 3 droïdes requis, les variantes minimales et le coût en crédits de chaque niveau de renaissance de Star Wars: Droid Tycoon, de 1 à 30, sur les 4 cycles.',
+    title: 'Droid Tycoon : exigences de renaissance — les 30 niveaux et cycles 2-4 | Droidex',
+    description: 'Les 3 droïdes requis, les variantes minimales et le coût en crédits de chaque niveau de renaissance 1-30 de Star Wars: Droid Tycoon — cycle 1 et cycles 2, 3 et 4 de Super-renaissance. La seule liste couvrant les quatre cycles, à jour à chaque patch.',
     h1: 'Exigences de renaissance de Droid Tycoon',
     intro: `<p class="seo-intro">La progression de Star Wars: Droid Tycoon passe par 30 niveaux de renaissance, ` +
       `répétés sur 4 cycles en boucle infinie. Chaque niveau exige trois droïdes précis placés dans votre base à ` +
@@ -417,7 +425,7 @@ ${rows}
     url: `${SITE_URL}/${lang === 'fr' ? 'fr/' : ''}rebirth-requirements/`,
     inLanguage: lang,
     license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
-    creator: { '@type': 'Person', name: 'Nackz', url: 'https://github.com/n4ckz' },
+    creator: CREATOR,
     dateModified: DATE_ISO,
     variableMeasured: ['required droids', 'minimum variant', 'credit cost', 'unlock'],
   };
@@ -518,7 +526,7 @@ ${rows}
     url: `${SITE_URL}/${lang === 'fr' ? 'fr/' : ''}stats/`,
     inLanguage: lang,
     license: 'https://github.com/n4ckz/droidex/blob/main/LICENSE',
-    creator: { '@type': 'Person', name: 'Nackz' },
+    creator: CREATOR,
     temporalCoverage: `2026-07-14/${last}`,
     distribution: [{
       '@type': 'DataDownload',
@@ -741,15 +749,15 @@ const FAQ = [
 
 const FAQ_TEXT = {
   en: {
-    title: 'Droid Tycoon FAQ — Variants, Rebirths, Flawless & Collection Bonus | Droidex',
-    description: 'Frequently asked questions about tracking Star Wars: Droid Tycoon with Droidex: variants, rebirth requirements, Super Rebirth, Flawless odds and the collection bonus.',
+    title: 'Droid Tycoon FAQ — Flawless Odds, Galactic Droids & Super Rebirth | Droidex',
+    description: 'Answers to common Star Wars: Droid Tycoon questions: Flawless odds by variant (1/1000 to 1/75), how to get Galactic droids, what carries over on Super Rebirth, and the collection bonus.',
     h1: 'Droid Tycoon FAQ',
     intro: `<p class="seo-intro">Answers about how Droidex tracks your Star Wars: Droid Tycoon collection, how ` +
       `rebirth requirements and Super Rebirths work, and what Flawless and the collection bonus mean in the game.</p>`,
   },
   fr: {
-    title: 'FAQ Droid Tycoon — variantes, renaissances, Flawless et bonus de collection | Droidex',
-    description: 'Questions fréquentes sur le suivi de collection Star Wars: Droid Tycoon avec Droidex : variantes, exigences de renaissance, Super-renaissance, chances de Flawless et bonus de collection.',
+    title: 'FAQ Droid Tycoon — chances de Flawless, droïdes Galactiques, Super-renaissance | Droidex',
+    description: 'Réponses aux questions courantes sur Star Wars: Droid Tycoon : chances de Flawless par variante (1/1000 à 1/75), obtention des droïdes Galactiques, ce que conserve la Super-renaissance, et le bonus de collection.',
     h1: 'FAQ Droid Tycoon',
     intro: `<p class="seo-intro">Les réponses sur la façon dont Droidex suit votre collection Star Wars: Droid ` +
       `Tycoon, le fonctionnement des exigences de renaissance et des Super-renaissances, et ce que signifient le ` +
@@ -768,6 +776,7 @@ function buildFaq(lang) {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     inLanguage: lang,
+    author: CREATOR,
     mainEntity: FAQ.map(({ q, a }) => ({
       '@type': 'Question',
       name: q[lang],

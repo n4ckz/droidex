@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.14.0 — 2026-08-02
+
+- SEO: rewritten titles and meta descriptions for the rebirth requirements page (now naming cycles 2-4 and the Super Rebirth explicitly — Search Console shows us at position 2 on "rebirth requirements cycle 2/3" queries, yet 141 impressions converted into a single click) and the FAQ (now leading with Flawless odds and Galactic droids). Home page description finally mentions the Galactic variant, the 4 cycles and the 317 variants.
+- SEO: structured data now carries `sameAs` links to the GitHub repository and the X account, on the app and on every content page. Several third-party sites now use the name "Droidex"; this anchors the entity to its original home.
+- Watch: new `wiki-backlinks` signal source — the exact list of wiki articles linking to droidex.nackz.dev, via the MediaWiki `exturlusage` API (which bypasses the Cloudflare challenge in front of Fandom's HTML). Those two links are the site's whole authority; if wiki moderation ever removes one, the daily signal job now raises an issue instead of us finding out weeks later.
+
 ## 1.13.0 — 2026-07-29
 
 - Value list: every rarity now has **two tables — income per variant and cost per variant**. The cost of a droid at Gold, Diamond, Rainbow, Beskar or Galactic was published nowhere, on any site; players looking up what a Diamond copy costs had no answer.
