@@ -607,6 +607,54 @@ const setTarget = (w, rb) => {
       'version écartée stashée dans droidex-rescue (side, state, at)');
   }
 
+  /* ---- 25. Contenu statique de la home + bandeau de langue (v1.15.0) ----
+     Contexte : élagage d'index Google du 28-29/07/2026 (7 URLs sur 9 sorties,
+     « Explorée, actuellement non indexée ») — la home app-shell n'offrait que
+     le noscript comme contenu indexable, et la redirection auto EN→FR sur
+     navigator.language était un signal ambigu (les guidelines Google
+     recommandent de suggérer, pas de rediriger). */
+  console.log('\n[25] Contenu statique home + bandeau de langue');
+  {
+    // le bloc « à propos » est du HTML statique VISIBLE (pas seulement noscript)
+    const home = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
+    const visible = home.replace(/<noscript>[\s\S]*?<\/noscript>/, '');
+    assert(visible.includes('id="about"'), 'home : section #about statique hors noscript');
+    assert(/id="about"[\s\S]*317[\s\S]*Galactic/.test(visible), 'about : chiffres clés indexables (317, Galactic)');
+    assert(/id="about"[\s\S]*href="value-list\/"[\s\S]*href="rebirth-requirements\/"/.test(visible),
+      'about : liens internes vers les pages de contenu');
+    // rendu + bascule FR via l'i18n de l'app
+    const { window: w } = boot();
+    const about = w.document.getElementById('about');
+    assert(about && about.textContent.includes('rebirth'), 'about rendu en anglais par défaut');
+    w.__test.setLang('fr');
+    assert(about.textContent.includes('renaissance'), 'about traduit à la bascule FR');
+    // lang-redirect : plus de redirection auto sur navigator.language —
+    // un bandeau de suggestion, la redirection ne reste que sur choix stocké
+    const lrSrc = fs.readFileSync(path.join(SITE, 'lang-redirect.js'), 'utf8');
+    const page = new JSDOM('<!doctype html><html lang="en"><head>' +
+      '<link rel="alternate" hreflang="fr" href="https://droidex.nackz.dev/fr/value-list/">' +
+      '</head><body></body></html>', { url: 'http://localhost/value-list/', runScripts: 'outside-only' });
+    Object.defineProperty(page.window.navigator, 'language', { get: () => 'fr-FR' });
+    page.window.eval(lrSrc); // toute navigation jsdom jetterait « not implemented »
+    page.window.document.dispatchEvent(new page.window.Event('DOMContentLoaded', { bubbles: true }));
+    const banner = page.window.document.getElementById('langBanner');
+    assert(banner, 'navigateur FR sans choix stocké → bandeau, pas de redirection');
+    const bLink = banner && banner.querySelector('a');
+    assert(bLink && bLink.getAttribute('href') === '/fr/value-list/',
+      'le lien du bandeau pointe vers le chemin FR relatif à l\'hôte');
+    assert(/stored\s*===\s*'fr'/.test(lrSrc) && !/want\s*===\s*'fr'[\s\S]*location\.replace/.test(lrSrc),
+      'la redirection auto ne subsiste que pour le choix explicite stocké');
+    // choix explicite déjà enregistré → pas de bandeau (la redirection, non
+    // simulable en jsdom, est couverte par l'assert de source ci-dessus)
+    const page2 = new JSDOM('<!doctype html><html lang="en"><head></head><body></body></html>',
+      { url: 'http://localhost/value-list/', runScripts: 'outside-only' });
+    Object.defineProperty(page2.window.navigator, 'language', { get: () => 'en-US' });
+    page2.window.eval(lrSrc);
+    page2.window.document.dispatchEvent(new page2.window.Event('DOMContentLoaded', { bubbles: true }));
+    assert(!page2.window.document.getElementById('langBanner'),
+      'navigateur anglophone → aucun bandeau');
+  }
+
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
   process.exit(failures ? 1 : 0);
 })();

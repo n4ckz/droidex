@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.0 — 2026-08-02
+
+- Home: new visible "About Droidex" section — a static, indexable description of the tracker (69 droids, 317 variants, the 6 tiers up to Galactic, the 30 rebirth levels across 4 cycles, Flawless odds) with links to the four content pages, in English and French. Until now the home page was an app shell whose only indexable text lived in the `noscript` block; Google's page-by-page index pruning of late July (7 of our 9 URLs dropped as "Crawled — currently not indexed") made the cost of that thinness plain.
+- Content pages: the automatic English→French redirect based on the browser language is gone. A French-speaking browser without a stored preference now gets a dismissible suggestion banner instead; the automatic redirect only remains for an explicitly saved language choice. Google's guidelines recommend suggesting rather than redirecting on locale, and during an index-pruning episode every ambiguous signal counts.
+
 ## 1.14.0 — 2026-08-02
 
 - SEO: rewritten titles and meta descriptions for the rebirth requirements page (now naming cycles 2-4 and the Super Rebirth explicitly — Search Console shows us at position 2 on "rebirth requirements cycle 2/3" queries, yet 141 impressions converted into a single click) and the FAQ (now leading with Flawless odds and Galactic droids). Home page description finally mentions the Galactic variant, the 4 cycles and the 317 variants.

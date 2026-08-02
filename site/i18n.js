@@ -101,7 +101,20 @@ const I18N = {
       '· <a href="stats/">Live stats</a> ' +
       '· <a href="faq/">FAQ</a> ' +
       '· Without an account, everything stays in your browser. With an optional account, only your email ' +
-      'and your registry are stored on our server, deletable at any time via “Delete my account”.'
+      'and your registry are stored on our server, deletable at any time via “Delete my account”.',
+    aboutTitle: 'About Droidex — Star Wars: Droid Tycoon collection tracker',
+    aboutP1: 'Droidex tracks the full Droidex of Star Wars: Droid Tycoon, the Fortnite mode by ' +
+      'FOAD/Blzn Studios: 69 droids and 317 variants across 6 tiers — Basic, Gold, Diamond, Rainbow, Beskar and ' +
+      'Galactic (counted separately, exactly like in the game). Tap any variant to mark it owned or placed in ' +
+      'your base; a higher variant always satisfies a lower requirement.',
+    aboutP2: 'Progression runs through 30 rebirth levels repeated across 4 cycles, each needing ' +
+      '3 specific droids in your base. Pick your target rebirth and the tracker shows exactly which droids are ' +
+      'still missing, which ones to keep, and which can safely leave your base — plus wishlist stars, Flawless ' +
+      'tracking (odds from 1 in 1000 Basic to 1 in 75 Galactic), the collection bonus and a live player counter. ' +
+      'Free, no ads, open source, English and French.',
+    aboutLinks: 'Dive deeper: <a href="value-list/">value list — income and cost of every ' +
+      'variant</a> · <a href="rebirth-requirements/">rebirth requirements for all 30 levels and 4 cycles</a> ' +
+      '· <a href="faq/">FAQ</a> · <a href="stats/">live player count and daily stats</a>.'
   },
   fr: {
     _tiers: ['Basic','Or','Diamant','Arc-en-ciel','Beskar','Galactique'],
@@ -192,7 +205,21 @@ const I18N = {
       '· <a href="stats/">Stats en direct</a> ' +
       '· <a href="faq/">FAQ</a> ' +
       '· Sans compte, tout reste dans votre navigateur. Avec un compte (optionnel), seuls votre email ' +
-      'et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».'
+      'et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».',
+    aboutTitle: 'À propos de Droidex — tracker de collection Star Wars: Droid Tycoon',
+    aboutP1: 'Droidex suit le Droidex complet de Star Wars: Droid Tycoon, le mode Fortnite de ' +
+      'FOAD/Blzn Studios : 69 droïdes et 317 variantes sur 6 paliers — Basic, Or, Diamant, Arc-en-ciel, Beskar ' +
+      'et Galactique (compté à part, exactement comme dans le jeu). Un tap sur une variante la marque possédée ' +
+      'ou placée en base ; une variante supérieure satisfait toujours une exigence inférieure.',
+    aboutP2: 'La progression passe par 30 niveaux de renaissance répétés sur 4 cycles, chacun exigeant ' +
+      '3 droïdes précis dans votre base. Choisissez votre renaissance cible et le tracker montre exactement ' +
+      'quels droïdes manquent encore, lesquels garder, et lesquels peuvent quitter votre base — plus la ' +
+      'wishlist, le suivi Flawless (chances de 1 sur 1000 en Basic à 1 sur 75 en Galactique), le bonus de ' +
+      'collection et un compteur de joueurs en direct. Gratuit, sans pub, open source, en français et en anglais.',
+    aboutLinks: 'Pour aller plus loin : <a href="fr/value-list/">liste des valeurs — revenus et coût de ' +
+      'chaque variante</a> · <a href="fr/rebirth-requirements/">exigences des 30 niveaux de renaissance sur ' +
+      'les 4 cycles</a> · <a href="fr/faq/">FAQ</a> · <a href="fr/stats/">joueurs en direct et statistiques ' +
+      'quotidiennes</a>.'
   }
 };
 

@@ -175,6 +175,11 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .reset-btn:hover{color:var(--danger)}
 .save-state{font-size:inherit}
 .save-state.err{color:var(--danger)}
+.about{margin-top:26px;padding-top:16px;border-top:1px solid rgba(var(--acc-rgb),.18);font-size:12px;line-height:1.65;color:var(--n-400)}
+.about h2{font-family:var(--font-hud);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--n-300);margin:0 0 8px}
+.about p{margin:0 0 9px}
+.about a{color:var(--n-300);text-decoration:underline}
+.about a:hover{color:var(--accent-300)}
 .legal{margin-top:18px;padding-top:13px;border-top:1px solid rgba(var(--acc-rgb),.18);font-size:10.5px;line-height:1.6;color:var(--n-400)}
 .legal a{color:var(--n-400);text-decoration:underline}
 .legal a:hover{color:var(--accent-300)}
