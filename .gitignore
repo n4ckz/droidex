@@ -8,6 +8,8 @@ droidex-checklist.html
 # contexte de travail Claude Code (local uniquement)
 CLAUDE.md
 CHANTIER-*.md
+# exports Search Console / données perso déposés à la racine pour analyse
+*.xlsx
 # artefacts de test
 tests/node_modules/
 tests/package-lock.json
