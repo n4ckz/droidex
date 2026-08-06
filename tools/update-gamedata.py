@@ -122,13 +122,15 @@ WIKI_API = 'https://star-wars-droid-tycoon.fandom.com/api.php'
 WIKI_TABS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic']
 # graphies du wiki qui diffèrent de celles de tycoon-tools
 WIKI_ALIAS = {'MONO-WALKER': 'monowlkr', 'OPTI-STRIKE': 'optistrk',
-              'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek'}
+              'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek', 'B-U4D': 'bu4d'}
 
 
 def parse_variant_costs():
-    """{id: [coût Basic … coût Galactique]} d'après la page Droiddex du wiki."""
+    """{id: [coût Basic … coût Galactique]} d'après la page Droidex du wiki
+    (« Droiddex » jusqu'au 03/08/2026 — redirects=1 absorbe les renommages)."""
     qs = urllib.parse.urlencode({'action': 'query', 'prop': 'revisions', 'titles': 'Droiddex',
-                                 'rvprop': 'content', 'rvslots': 'main', 'format': 'json'})
+                                 'rvprop': 'content', 'rvslots': 'main', 'format': 'json',
+                                 'redirects': 1})
     page = json.loads(fetch(f'{WIKI_API}?{qs}'))['query']['pages']
     text = next(iter(page.values()))['revisions'][0]['slots']['main']['*']
     parts = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
@@ -148,6 +150,11 @@ def parse_variant_costs():
             cost = re.sub(r'([kmbt])$', lambda x: x.group(1).upper(), cells[2].replace(',', '').strip())
             if re.fullmatch(r'[\d.]+[KMBT]?', cost):
                 costs.setdefault(did, [None] * len(WIKI_TABS))[idx] = cost
+    if not costs:
+        # page restructurée ou vidée : mieux vaut déclencher le repli sur les
+        # coûts déjà publiés que de régénérer un data.js amputé (vécu le
+        # 04/08/2026, renommage Droiddex → Droidex)
+        raise ValueError('0 coût parsé sur la page Droidex du wiki')
     return costs
 
 
@@ -349,14 +356,28 @@ def main():
     # Le wiki injoignable ne doit PAS vider la colonne : on repart alors des
     # valeurs déjà publiées dans data.js (sinon le cron « corrigerait » chaque
     # panne du wiki en supprimant des données justes).
+    previous = {did: [c or None for c in re.findall(r"'([^']*)'|null", series)]
+                for did, series in re.findall(r"\{id:'([^']+)'.*?cost:\[([^\]]*)\]", current)}
     try:
         costs = check_variant_costs(vals, parse_variant_costs())
+        # une valeur déjà publiée (donc validée à l'époque contre le multiple)
+        # ne disparaît pas parce que le wiki l'a remplacée par une coquille ou
+        # retirée : la cellule vide reprend la valeur en place. Une correction
+        # du wiki qui passe le contrôle prime toujours. (Vécu le 06/08/2026 :
+        # bdx Arc-en-ciel réédité 400K → 300K, hors multiple ×16.)
+        restored = 0
+        for did, series in previous.items():
+            for idx, old in enumerate(series):
+                if old and not costs.setdefault(did, [None] * len(WIKI_TABS))[idx]:
+                    costs[did][idx] = old
+                    restored += 1
+        if restored:
+            print(f'  {restored} coût(s) repris de data.js faute de valeur wiki valable')
         total = sum(1 for s in costs.values() for c in s if c)
         print(f'  {total} coûts de variantes recoupés sur le wiki dédié '
               f'({len(costs)} droïdes × {len(WIKI_TABS)} paliers)')
     except Exception as e:
-        costs = {did: [c or None for c in re.findall(r"'([^']*)'|null", series)]
-                 for did, series in re.findall(r"\{id:'([^']+)'.*?cost:\[([^\]]*)\]", current)}
+        costs = previous
         print(f'  ⚠ wiki injoignable ({e.__class__.__name__}) — '
               f'{len(costs)} séries de coûts conservées depuis data.js')
     for did, series in costs.items():

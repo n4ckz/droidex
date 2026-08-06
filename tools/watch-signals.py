@@ -258,6 +258,11 @@ def _wiki_rebirths():
                titles='Rebirths', rvprop='content', rvslots='main')
     text = next(iter(data['query']['pages'].values()))['revisions'][0]['slots']['main']['*']
     parts = re.split(r'\n\|-\|\s*\n?Cycle (\d)=', text)
+    if len(parts) == 1:
+        # depuis le 02/08/2026 la page n'a plus d'onglets « Cycle N= » mais une
+        # table légendée par cycle — « Path N », graisse inconstante (les mêler
+        # tous dans le cycle 1 fabriquait 10 fausses divergences, issue #18)
+        parts = re.split(r"\|\+\s*(?:''')?\s*Path (\d)", text)
     cycles = {1: parts[0]}
     for i in range(1, len(parts) - 1, 2):
         cycles[int(parts[i])] = parts[i + 1]
@@ -265,7 +270,8 @@ def _wiki_rebirths():
     for cyc, chunk in cycles.items():
         rebirths[cyc] = {}
         for blk in chunk.split('\n|-\n'):
-            head = re.match(r'\|(\d+) > (\d+)\s*\n', blk)
+            blk = blk.split('\n|}')[0]
+            head = re.match(r'\|\s*(\d+) > (\d+)\s*\n', blk)
             if not head:
                 continue
             lvl, reqs = int(head.group(2)), []
