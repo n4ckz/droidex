@@ -4,7 +4,7 @@
    Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
    main : relancer le script puis relire le diff.
 
-   Sources communautaires (recoupées le 29/07/2026) :
+   Sources communautaires (recoupées le 06/08/2026) :
    - Exigences de renaissance (4 cycles × 30) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
@@ -35,7 +35,7 @@ const DROIDS = [
  {id:'r3',n:'R3',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72],bskCost:'32K',cost:['2K','8K','16K','32K','32K','40K'],perk:'+1 pickaxe'},
  {id:'r5',n:'R5',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72],bskCost:'32K',cost:['2K','8K','16K','32K','32K','40K'],perk:'+1 pickaxe'},
  {id:'improbe',n:'Imperial Probe',t:'Battle',r:'Common',inc:[6,12,24,48,72,144],bskCost:'80K',cost:['5K','20K','40K','80K','80K','100K'],perk:'+20 max HP'},
- {id:'b1battle',n:'B1 Battle',t:'Battle',r:'Common',inc:[5,10,20,40,60,120],bskCost:'64K',cost:['4K',null,'32K','64K','64K','80K'],perk:'+20 max HP'},
+ {id:'b1battle',n:'B1 Battle',t:'Battle',r:'Common',inc:[5,10,20,40,60,120],bskCost:'64K',cost:['4K','16K','32K','64K','64K','80K'],perk:'+20 max HP'},
  {id:'id10',n:'ID10',t:'Battle',r:'Common',inc:[4,8,16,32,48,96],bskCost:'64K',cost:['4K','16K','32K','64K','64K','80K'],perk:'+20 max HP'},
  {id:'drk1',n:'DRK-1 Probe',t:'Battle',r:'Common',inc:[3,6,12,24,36,72],bskCost:'48K',cost:['3K','12K','24K','48K','48K','60K'],perk:'+20 max HP'},
  /* Rare */

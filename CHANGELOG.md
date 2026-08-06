@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.1 — 2026-08-06
+
+- Value list: B1 Battle's Gold cost (16K) fills the one cell that was missing — the dedicated wiki now publishes it, and it matches the ×4 multiple its rarity commands.
+- Watch: the daily pipeline survived its first source restructuring. The dedicated wiki renamed its Droiddex page and rebuilt its Rebirths page in early August; the cost cross-check now follows page renames (and spelling changes like B-U4D), treats an empty parse as an outage — keeping the published values — and never drops an already-validated cost for a new wiki value that fails the multiple check. The rebirth comparator reads the wiki's new one-table-per-cycle layout, which now documents all 4 cycles: 120 requirements cross-checked daily against `data.js`, up from 10.
+
 ## 1.15.0 — 2026-08-02
 
 - Home: new visible "About Droidex" section — a static, indexable description of the tracker (69 droids, 317 variants, the 6 tiers up to Galactic, the 30 rebirth levels across 4 cycles, Flawless odds) with links to the four content pages, in English and French. Until now the home page was an app shell whose only indexable text lived in the `noscript` block; Google's page-by-page index pruning of late July (7 of our 9 URLs dropped as "Crawled — currently not indexed") made the cost of that thinness plain.
