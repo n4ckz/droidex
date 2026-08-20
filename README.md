@@ -2,7 +2,7 @@
 
 Community collection tracker for **Star Wars: Droid Tycoon**, the Fortnite mode created by FOAD/Blzn Studios (released May 1st, 2026).
 
-The game features a Droidex of 200+ collectible droids across 6 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic) and 30 Rebirth levels across the 4 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
+The game features a Droidex of 200+ collectible droids across 7 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar) and 35 Rebirth levels across the 5 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
 
 > 📱 Designed to be used on your phone, next to the console. Installable as an app (PWA). English by default, French available from the in-app language selector.
 
@@ -20,10 +20,10 @@ The game features a Droidex of 200+ collectible droids across 6 variants (Basic,
 - **Requirement badges** on each droid (e.g. "RB9·GLD"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
 - **Super Rebirth button**: applies the in-game reset semantics in one tap — droids in your base drop back to "owned (Droidex)", Iconic droids leave the base (unlock kept), the targeted rebirth returns to 1 and the cycle advances.
 - **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
-- **Value data on every droid**: income per second and credit cost at each of the six variants, plus the passive perk. No other value list publishes the cost of every variant — our main source only gives the Beskar one, so the rest is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
+- **Value data on every droid**: income per second and credit cost at each of the seven variants, plus the passive perk. No other value list publishes the cost of every variant — our main source only gives the Beskar one, so the rest is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
 - **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
-- **Galactic counter**: the Galactic tier (added mid-July 2026) is counted separately from the main /317 total, exactly like the in-game Droidex screen — the header shows your Galactic x/62 alongside the collection bonus, and RB·GLC badges tell you which Galactic droids rebirth 28 needs.
+- **Stellar counter**: the Galactic (mid-July 2026) and Stellar (August 15, 2026) tiers are counted separately from the main total, exactly like the in-game Droidex screen — the header shows your Stellar x/62 alongside the collection bonus, and RB·GLC / RB·STL badges tell you which droids rebirths 28 and 31+ need.
 - **Live player counter**: "● 12.5K in game" in the header — concurrent players on the island, straight from Epic's official Ecosystem API, refreshed every 5 minutes (hidden gracefully when offline). A full [stats page](https://droidex.nackz.dev/stats/) adds daily peaks, retention and charts.
 - **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
 - **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2, C-3PO): simple owned + in-base toggles, no variants.
@@ -218,7 +218,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 cycles × 30 levels, credit costs, per-variant income and cost, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-07-29:
+The data (70 tracked droids including 8 Iconics, rebirth requirements for the 5 cycles × 35 levels, credit costs, per-variant income and cost, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-08-20:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
@@ -227,7 +227,8 @@ The data (69 tracked droids including 7 Iconics, rebirth requirements for the 4 
 
 **Known uncertainties:**
 
-- Rebirth cycles **2–4** (super-rebirth) come from tycoon-tools and have not yet been verified in game by us.
+- Rebirth cycles **2–5** (super-rebirth) come from tycoon-tools (cross-checked daily against the dedicated wiki) and have not yet been verified in game by us.
+- Stellar income values are only documented for about half the standard droids so far; missing cells show as "—" and fill in at every data refresh.
 - Some classifications changed vs. earlier community sources and now follow the tycoon-tools value list: CB-23 is Iconic, Proto-Roller is Legendary, DRFT-R is an Astromech, DJ R-3X is a Worker.
 - The game is updated frequently. If you spot a discrepancy, open an issue or a PR against `site/data.js`.
 
@@ -249,7 +250,7 @@ This check also runs automatically **every day** (GitHub Actions): when a game p
 
 ### Content pages
 
-Four static, crawlable pages are generated straight from `site/data.js` and `data/metrics/` — no build step, no duplicated data: a [value list](https://droidex.nackz.dev/value-list/), the [rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/) for all 4 cycles, [live player stats](https://droidex.nackz.dev/stats/) (hydrated in the browser from Epic's official API, with a crawlable snapshot baked in), and a [FAQ](https://droidex.nackz.dev/faq/). They're linked from the app footer and from `site/sitemap.xml`.
+Four static, crawlable pages are generated straight from `site/data.js` and `data/metrics/` — no build step, no duplicated data: a [value list](https://droidex.nackz.dev/value-list/), the [rebirth requirements](https://droidex.nackz.dev/rebirth-requirements/) for all 5 cycles, [live player stats](https://droidex.nackz.dev/stats/) (hydrated in the browser from Epic's official API, with a crawlable snapshot baked in), and a [FAQ](https://droidex.nackz.dev/faq/). They're linked from the app footer and from `site/sitemap.xml`.
 
 ```bash
 node tools/generate-seo-pages.js   # regenerates site/value-list, site/rebirth-requirements, site/stats, site/faq, site/sitemap.xml

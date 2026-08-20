@@ -60,10 +60,10 @@ const setTarget = (w, rb) => {
     const { window: w, errors } = boot();
     assert(errors.length === 0, 'aucune erreur JS au chargement' + (errors.length ? ' — ' + errors[0] : ''));
     const cards = w.document.querySelectorAll('.droid');
-    assert(cards.length === 69, '69 droïdes rendus (obtenu : ' + cards.length + ')');
+    assert(cards.length === 70, '70 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '000/317', 'progression "000/317" (obtenu : "' + label + '")');
+    assert(label === '000/318', 'progression "000/318" (obtenu : "' + label + '")');
     const segs = w.document.getElementById('progressSegs');
     assert(segs && segs.children.length === 10, '10 segments de progression rendus');
     assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
@@ -155,7 +155,7 @@ const setTarget = (w, rb) => {
     const seed = JSON.stringify({ owned: { r6: [true, true, false, false, false], bb8: true }, inBase: { r6: true, bb8: true }, targetRB: 9 });
     const { window: w } = boot(seed);
     const s = JSON.parse(JSON.stringify(w.__test.getState()));
-    assert(JSON.stringify(s.owned.r6) === '[1,2,0,0,0,0]', 'r6 [true,true,…] + inBase → [1,2,0,0,0,0] + padding Galactique (obtenu : ' + JSON.stringify(s.owned.r6) + ')');
+    assert(JSON.stringify(s.owned.r6) === '[1,2,0,0,0,0,0]', 'r6 [true,true,…] + inBase → [1,2,0,0,0,0,0] + padding Stellar (obtenu : ' + JSON.stringify(s.owned.r6) + ')');
     assert(s.inBase.r6 === undefined, 'inBase.r6 supprimé après promotion');
     assert(s.owned.bb8 === true && s.inBase.bb8 === true, 'iconique bb8 inchangé (owned + inBase conservés)');
   }
@@ -171,7 +171,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '001/317', 'progression 001/317 (obtenu : "' + label + '")');
+    assert(label === '001/318', 'progression 001/318 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -228,13 +228,15 @@ const setTarget = (w, rb) => {
   }
 
   /* ---- 11. Cycles de renaissance et données étendues ---- */
-  console.log('\n[11] Cycles et 30 niveaux de renaissance');
+  console.log('\n[11] Cycles et 35 niveaux de renaissance');
   {
     const { window: w } = boot(savedJson);
-    assert(w.document.getElementById('rbSelect').options.length === 30, 'sélecteur RB : 30 niveaux');
+    assert(w.document.getElementById('rbSelect').options.length === 35, 'sélecteur RB : 35 niveaux');
     setTarget(w, 30);
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('100T'), 'crédits RB30 : 100T');
-    assert(w.document.getElementById('cycleSelect').options.length === 4, 'sélecteur cycle : 4 cycles');
+    setTarget(w, 35);
+    assert(w.document.getElementById('rbCreditsBig').textContent.includes('778T'), 'crédits RB35 : 778T');
+    assert(w.document.getElementById('cycleSelect').options.length === 5, 'sélecteur cycle : 5 cycles');
     // RB24 cycle 1 : BESKAR BB9, BESKAR CYCLO-GRAV, BASE MO-TRAK · 9T
     const sel = w.document.getElementById('rbSelect');
     sel.value = '24'; sel.dispatchEvent(new w.Event('change', { bubbles: true }));
@@ -311,8 +313,8 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(seed);
     w.document.getElementById('superRebirthBtn').click();
     const st = w.__test.getState();
-    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0,1]', 'variantes en base → possédé, Galactique compris (Strike-Orb)');
-    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0,0]', 'variantes en base → possédé (Mouse, paddée à 6)');
+    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0,1,0]', 'variantes en base → possédé, Galactique compris (Strike-Orb)');
+    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0,0,0]', 'variantes en base → possédé (Mouse, paddée à 7)');
     assert(st.owned.bb8 === true, 'iconique : possédé (Droidex) conservé');
     assert(!st.inBase.bb8, 'iconique : plus en base');
     assert(st.flawless.mouse === true, 'flawless conservé');
@@ -320,12 +322,12 @@ const setTarget = (w, rb) => {
     assert(st.targetRB === 1 && w.document.getElementById('rbSelect').value === '1', 'renaissance visée revenue à 1');
     assert(st.targetCycle === 2 && w.document.getElementById('cycleSelect').value === '2', 'cycle visé passé à 2');
     const saved = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
-    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0,1]', 'transition persistée dans localStorage');
+    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0,1,0]', 'transition persistée dans localStorage');
     const cyc = w.document.getElementById('cycleSelect');
-    cyc.value = '4';
+    cyc.value = '5';
     cyc.dispatchEvent(new w.Event('change', { bubbles: true }));
     w.document.getElementById('superRebirthBtn').click();
-    assert(w.__test.getState().targetCycle === 1, 'cycle 4 boucle vers 1');
+    assert(w.__test.getState().targetCycle === 1, 'cycle 5 boucle vers 1');
     const btn = w.document.getElementById('superRebirthBtn');
     assert(btn.textContent === 'SUPER RB', 'libellé EN du bouton (obtenu : "' + btn.textContent + '")');
   }
@@ -349,12 +351,12 @@ const setTarget = (w, rb) => {
     assert(side && side.querySelectorAll('.chip').length === 8, '8 filtres dans la sidebar');
     assert(chips && chips.querySelectorAll('.chip').length === 8, '8 chips mobiles');
     const all = side.querySelector('[data-filter="all"] .chip-count');
-    assert(all && all.textContent === '69', 'compteur TOUS = 69 (obtenu : ' + (all && all.textContent) + ')');
+    assert(all && all.textContent === '70', 'compteur TOUS = 70 (obtenu : ' + (all && all.textContent) + ')');
     const worker = side.querySelector('[data-filter="Worker"] .chip-count');
     const astro = side.querySelector('[data-filter="Astromech"] .chip-count');
     const battle = side.querySelector('[data-filter="Battle"] .chip-count');
-    assert(parseInt(worker.textContent,10)+parseInt(astro.textContent,10)+parseInt(battle.textContent,10) === 69,
-      'compteurs par classe sommant à 69');
+    assert(parseInt(worker.textContent,10)+parseInt(astro.textContent,10)+parseInt(battle.textContent,10) === 70,
+      'compteurs par classe sommant à 70');
     // clic sur un filtre côté sidebar → filtre actif des deux côtés
     side.querySelector('[data-filter="Worker"]').click();
     assert(side.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif sidebar');
@@ -380,6 +382,7 @@ const setTarget = (w, rb) => {
     assert(vl.includes('Strike-Orb') && vl.includes('Beskar'), 'value list : droïdes + libellés longs');
     assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
+    assert(vl.includes('<th>Stellar</th>'), 'value list : colonne Stellar');
     // un tableau de revenus ET un tableau de coûts par rareté (5 raretés
     // standard ; les Iconiques ne s'achètent pas, donc pas de tableau de coûts)
     assert((vl.match(/Income per variant/g) || []).length === 6, 'value list : 6 tableaux de revenus');
@@ -408,8 +411,8 @@ const setTarget = (w, rb) => {
     assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');
     // v1.14.0 : titles/meta orientés CTR — GSC du 02/08/2026 : position 2 sur
     // « rebirth requirements cycle 2/3 » mais 141 impressions → 1 clic (0,7 %)
-    assert(rb.includes('All 30 Levels &amp; Cycles 2-4'), 'rebirths : title ciblé sur les cycles 2-4');
-    assert(rb.includes('Super Rebirth cycles 2, 3 and 4'), 'rebirths : description nommant chaque cycle');
+    assert(rb.includes('All 35 Levels &amp; Cycles 2-5'), 'rebirths : title ciblé sur les cycles 2-5');
+    assert(rb.includes('Super Rebirth cycles 2 to 5'), 'rebirths : description nommant les cycles 2 à 5');
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
     assert(faq.includes('What is the Galactic variant'), 'FAQ : entrée dédiée à la variante Galactic');
@@ -418,6 +421,7 @@ const setTarget = (w, rb) => {
     assert(faq.includes('1 in 125') && faq.includes('1 in 500'), 'FAQ : odds Flawless intermédiaires (Gold, Rainbow)');
     assert(faq.includes('Flawless Charm'), 'FAQ : Flawless Charm (doublement des chances)');
     assert(faq.includes('How do I get Galactic droids'), 'FAQ : entrée sur l\'obtention des Galactiques');
+    assert(faq.includes('What is the Stellar variant'), 'FAQ : entrée dédiée à la variante Stellar');
     assert(faq.includes('Flawless Odds, Galactic Droids'), 'FAQ : title orienté requêtes (Flawless, Galactic)');
     const st = read('stats/index.html');
     assert(st.includes('In game right now') && st.includes('stats.js'), 'stats : tuiles statiques + script d\'hydratation');
@@ -438,7 +442,7 @@ const setTarget = (w, rb) => {
     const stfr = read('fr/stats/index.html');
     assert(stfr.includes('En jeu en ce moment'), 'FR : page stats traduite');
     const rbfr = read('fr/rebirth-requirements/index.html');
-    assert(rbfr.includes('les 30 niveaux et cycles 2-4'), 'FR : title rebirths ciblé cycles');
+    assert(rbfr.includes('les 35 niveaux et cycles 2-5'), 'FR : title rebirths ciblé cycles');
     // v1.14.0 : signaux d'entité — « Droidex » est disputé par des sites tiers,
     // le sameAs ancre l'entité sur notre GitHub et notre compte X
     const home = read('index.html');
@@ -500,17 +504,18 @@ const setTarget = (w, rb) => {
     assert(w.document.getElementById('hintPanel').hidden === true, '30 droïdes distincts au chargement → aide cachée');
   }
 
-  /* ---- 21. Variante Galactique (6ᵉ palier) + RB28 ---- */
-  console.log('\n[21] Variante Galactique et RB28');
+  /* ---- 21. Variantes Galactique (6ᵉ) / Stellar (7ᵉ palier) + RB28/RB31 ---- */
+  console.log('\n[21] Variantes Galactique/Stellar et RB28/RB31');
   {
     const { window: w } = boot();
-    // 6 pastilles par carte, la 6ᵉ = GLC
+    // 7 pastilles par carte : GLC puis STL
     const tiers = findCard(w, 'R6').querySelectorAll('.tier');
-    assert(tiers.length === 6, '6 pastilles de variante par carte (obtenu : ' + tiers.length + ')');
+    assert(tiers.length === 7, '7 pastilles de variante par carte (obtenu : ' + tiers.length + ')');
     assert(tiers[5].dataset.t === '5' && tiers[5].textContent.includes('GLC'), '6ᵉ pastille libellée GLC');
-    // compteur galactique à vide
-    const gc = w.document.getElementById('galacticCount');
-    assert(gc && gc.textContent.includes('0/62'), 'compteur galactique "0/62" (obtenu : "' + (gc && gc.textContent) + '")');
+    assert(tiers[6].dataset.t === '6' && tiers[6].textContent.includes('STL'), '7ᵉ pastille libellée STL');
+    // compteur Stellar à vide (il remplace le compteur Galactique depuis la v1.16.0)
+    const gc = w.document.getElementById('stellarCount');
+    assert(gc && gc.textContent.includes('0/62'), 'compteur Stellar "0/62" (obtenu : "' + (gc && gc.textContent) + '")');
     // Proto-Roller Galactique en base → badge RB28 vert, compteur principal inchangé
     findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 0 → 1
     findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 1 → 2 en base
@@ -520,11 +525,22 @@ const setTarget = (w, rb) => {
     assert(badge && badge.textContent === '✓ RB28·GLC', 'badge "✓ RB28·GLC" (obtenu : "' + (badge && badge.textContent) + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'), 'badge RB28 vert non barré');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('45T'), 'crédits RB28 : 45T');
-    assert(w.document.getElementById('progressLabel').textContent === '000/317',
-      'Galactique possédé : compteur principal toujours 000/317');
-    assert(w.document.getElementById('galacticCount').textContent.includes('1/62'), 'compteur galactique passé à 1/62');
+    assert(w.document.getElementById('progressLabel').textContent === '000/318',
+      'Galactique possédé : compteur principal toujours 000/318');
+    assert(w.document.getElementById('stellarCount').textContent.includes('0/62'),
+      'le Galactique ne touche pas le compteur Stellar');
     assert(w.document.getElementById('collectionBonus').textContent.includes('+1%'),
       'droïde possédé en Galactique seul → compte comme distinct (+1%)');
+    // SEN-TRI Stellar en base → badge RB31 vert, compteur Stellar à 1/62
+    findCard(w, 'SEN-TRI').querySelector('.tier[data-t="6"]').click();  // 0 → 1
+    findCard(w, 'SEN-TRI').querySelector('.tier[data-t="6"]').click();  // 1 → 2 en base
+    setTarget(w, 31);
+    const badge31 = [...findCard(w, 'SEN-TRI').querySelectorAll('.req-badge')].find(b => b.textContent.includes('RB31'));
+    assert(badge31 && badge31.textContent === '✓ RB31·STL', 'badge "✓ RB31·STL" (obtenu : "' + (badge31 && badge31.textContent) + '")');
+    assert(w.document.getElementById('rbCreditsBig').textContent.includes('150T'), 'crédits RB31 : 150T');
+    assert(w.document.getElementById('stellarCount').textContent.includes('1/62'), 'compteur Stellar passé à 1/62');
+    assert(w.document.getElementById('progressLabel').textContent === '000/318',
+      'Stellar possédé : compteur principal inchangé');
   }
   {
     // le Galactique satisfait une exigence inférieure (règle variante supérieure)
@@ -619,7 +635,7 @@ const setTarget = (w, rb) => {
     const home = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
     const visible = home.replace(/<noscript>[\s\S]*?<\/noscript>/, '');
     assert(visible.includes('id="about"'), 'home : section #about statique hors noscript');
-    assert(/id="about"[\s\S]*317[\s\S]*Galactic/.test(visible), 'about : chiffres clés indexables (317, Galactic)');
+    assert(/id="about"[\s\S]*442[\s\S]*Stellar/.test(visible), 'about : chiffres clés indexables (442, Stellar)');
     assert(/id="about"[\s\S]*href="value-list\/"[\s\S]*href="rebirth-requirements\/"/.test(visible),
       'about : liens internes vers les pages de contenu');
     // rendu + bascule FR via l'i18n de l'app
