@@ -265,7 +265,7 @@ const VL_TEXT = {
   },
   fr: {
     title: 'Droid Tycoon : liste des valeurs — revenus et coût de chaque variante | Droidex',
-    description: 'Revenus par seconde et coût de chaque droïde de Star Wars: Droid Tycoon dans les sept variantes : Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique et Stellaire.',
+    description: 'Revenus/s et coût de chaque droïde de Droid Tycoon dans les sept variantes : Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellaire.',
     h1: 'Liste des valeurs de Droid Tycoon',
     intro: `<p class="seo-intro">Cette liste des valeurs donne, pour chaque droïde de Star Wars: Droid Tycoon, les ` +
       `revenus par seconde ET le coût en crédits dans chacune des sept variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
@@ -354,7 +354,7 @@ ${rows}
 const RB_TEXT = {
   en: {
     title: 'Droid Tycoon Rebirth Requirements — All 35 Levels & Cycles 2-5 | Droidex',
-    description: 'The 3 required droids, minimum variants and credit cost for every Star Wars: Droid Tycoon rebirth level 1-35 — cycle 1 and the Super Rebirth cycles 2 to 5. The only list covering all five cycles, updated at every patch.',
+    description: 'Required droids and credit cost for every Droid Tycoon rebirth level 1-35 — cycle 1 and the Super Rebirth cycles 2 to 5. The only list covering all five cycles.',
     h1: 'Droid Tycoon rebirth requirements',
     intro: `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 35 rebirth levels, repeated ` +
       `across 5 cycles in an endless loop. Each level requires three specific droids placed in your base at a ` +
@@ -371,7 +371,7 @@ const RB_TEXT = {
   },
   fr: {
     title: 'Droid Tycoon : exigences de renaissance — les 35 niveaux et cycles 2-5 | Droidex',
-    description: 'Les 3 droïdes requis, les variantes minimales et le coût en crédits de chaque niveau de renaissance 1-35 de Star Wars: Droid Tycoon — cycle 1 et cycles 2 à 5 de Super-renaissance. La seule liste couvrant les cinq cycles, à jour à chaque patch.',
+    description: 'Droïdes requis et coût de chaque renaissance 1-35 de Droid Tycoon — cycle 1 et cycles 2 à 5 de Super-renaissance. La seule liste couvrant les cinq cycles.',
     h1: 'Exigences de renaissance de Droid Tycoon',
     intro: `<p class="seo-intro">La progression de Star Wars: Droid Tycoon passe par 35 niveaux de renaissance, ` +
       `répétés sur 5 cycles en boucle infinie. Chaque niveau exige trois droïdes précis placés dans votre base à ` +
@@ -457,7 +457,7 @@ const ST_TEXT = {
   },
   fr: {
     title: 'Droid Tycoon : joueurs en direct et statistiques quotidiennes | Droidex',
-    description: 'Combien de personnes jouent à Star Wars: Droid Tycoon en ce moment, plus le pic CCU quotidien, les parties, les joueurs uniques et la rétention — données officielles Epic, archivées chaque jour.',
+    description: 'Combien de joueurs sur Star Wars: Droid Tycoon en ce moment, pic CCU quotidien, parties, joueurs uniques et rétention — données Epic archivées chaque jour.',
     h1: 'Statistiques des joueurs de Droid Tycoon',
     intro: `<p class="seo-intro">Nombre de joueurs en direct et statistiques quotidiennes de Star Wars: Droid ` +
       `Tycoon, le mode créatif Fortnite de FOAD/Blzn Studios — pic de joueurs simultanés (CCU), parties, joueurs ` +
@@ -777,14 +777,14 @@ const FAQ = [
 const FAQ_TEXT = {
   en: {
     title: 'Droid Tycoon FAQ — Flawless Odds, Galactic Droids & Super Rebirth | Droidex',
-    description: 'Answers to common Star Wars: Droid Tycoon questions: Flawless odds by variant (1/1000 to 1/75), how to get Galactic droids, what carries over on Super Rebirth, and the collection bonus.',
+    description: 'Droid Tycoon FAQ: Flawless odds by variant (1/1000 to 1/75), how to get Galactic and Stellar droids, what a Super Rebirth keeps, and the collection bonus.',
     h1: 'Droid Tycoon FAQ',
     intro: `<p class="seo-intro">Answers about how Droidex tracks your Star Wars: Droid Tycoon collection, how ` +
       `rebirth requirements and Super Rebirths work, and what Flawless and the collection bonus mean in the game.</p>`,
   },
   fr: {
     title: 'FAQ Droid Tycoon — chances de Flawless, droïdes Galactiques, Super-renaissance | Droidex',
-    description: 'Réponses aux questions courantes sur Star Wars: Droid Tycoon : chances de Flawless par variante (1/1000 à 1/75), obtention des droïdes Galactiques, ce que conserve la Super-renaissance, et le bonus de collection.',
+    description: 'FAQ Droid Tycoon : chances de Flawless par variante (1/1000 à 1/75), obtenir les droïdes Galactiques et Stellaires, ce que garde la Super-renaissance.',
     h1: 'FAQ Droid Tycoon',
     intro: `<p class="seo-intro">Les réponses sur la façon dont Droidex suit votre collection Star Wars: Droid ` +
       `Tycoon, le fonctionnement des exigences de renaissance et des Super-renaissances, et ce que signifient le ` +

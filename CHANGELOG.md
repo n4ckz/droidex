@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.3 — 2026-08-20
+
+- SEO hygiene: every meta description trimmed to 160 characters or less (seven of the nine pages exceeded the length search engines actually display — flagged by Bing's URL inspection), keywords front-loaded, English and French.
+
 ## 1.16.2 — 2026-08-20
 
 - The collection bonus counter now shows the total alongside the count — "61/70 distinct · bonus +61%" — so the remaining distinct droids are visible at a glance, like on every other counter.
