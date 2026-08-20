@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.2 — 2026-08-20
+
+- The collection bonus counter now shows the total alongside the count — "61/70 distinct · bonus +61%" — so the remaining distinct droids are visible at a glance, like on every other counter.
+
 ## 1.16.1 — 2026-08-20
 
 - Unified main counter: the in-game Droidex screen now counts all seven variants in one total (x/442, verified in game on the Stellar build) — the tracker follows suit, so Galactic and Stellar copies now count toward the main progress instead of a separate counter.

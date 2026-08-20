@@ -270,7 +270,7 @@ function renderProgress(){
   document.getElementById('progressLabel').textContent=String(done).padStart(3,'0')+'/'+total;
   document.getElementById('flawlessCount').textContent=t('flawlessCount', fl, flTotal, (fl/100).toFixed(2));
   const n=distinctOwned();
-  document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
+  document.getElementById('collectionBonus').textContent=t('collectionBonus', n, DROIDS.length, n);
   renderLiveCcu();  /* relibellé aussi à la bascule de langue (renderAll) */
 }
 
