@@ -23,7 +23,7 @@ The game features a Droidex of 200+ collectible droids across 7 variants (Basic,
 - **Value data on every droid**: income per second and credit cost at each of the seven variants, plus the passive perk. No other value list publishes the cost of every variant — our main source only gives the Beskar one, so the rest is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
 - **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
-- **Stellar counter**: the Galactic (mid-July 2026) and Stellar (August 15, 2026) tiers are counted separately from the main total, exactly like the in-game Droidex screen — the header shows your Stellar x/62 alongside the collection bonus, and RB·GLC / RB·STL badges tell you which droids rebirths 28 and 31+ need.
+- **Game-faithful counters**: one unified x/442 total across all seven variants, exactly like the in-game Droidex screen, plus the Flawless ✦ x/62 counter with its income multiplier — and RB·GLC / RB·STL badges tell you which droids rebirths 28 and 31+ need.
 - **Live player counter**: "● 12.5K in game" in the header — concurrent players on the island, straight from Epic's official Ecosystem API, refreshed every 5 minutes (hidden gracefully when offline). A full [stats page](https://droidex.nackz.dev/stats/) adds daily peaks, retention and charts.
 - **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
 - **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2, C-3PO): simple owned + in-base toggles, no variants.

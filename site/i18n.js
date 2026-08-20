@@ -29,7 +29,7 @@ const I18N = {
     rbShort: 'RB',
     unlocks: 'Unlock: {0}',
     collectionBonus: '{0} distinct · bonus +{1}%',
-    stellarCount: '✧ Stellar {0}/{1}',
+    flawlessCount: '✦ {0}/{1} (×{2})',
     liveCcu: '● {0} in game',
     filterWish: 'Wish ★',
     sortRarity: 'Rarity',
@@ -105,7 +105,8 @@ const I18N = {
     aboutTitle: 'About Droidex — Star Wars: Droid Tycoon collection tracker',
     aboutP1: 'Droidex tracks the full Droidex of Star Wars: Droid Tycoon, the Fortnite mode by ' +
       'FOAD/Blzn Studios: 70 droids and 442 variants across 7 tiers — Basic, Gold, Diamond, Rainbow, Beskar, ' +
-      'Galactic and Stellar (the last two counted separately, exactly like in the game). Tap any variant to mark ' +
+      'Galactic and Stellar — in one unified x/442 counter, exactly like the in-game Droidex screen, plus the ' +
+      'Flawless x/62 counter. Tap any variant to mark ' +
       'it owned or placed in your base; a higher variant always satisfies a lower requirement.',
     aboutP2: 'Progression runs through 35 rebirth levels repeated across 5 cycles, each needing ' +
       '3 specific droids in your base. Pick your target rebirth and the tracker shows exactly which droids are ' +
@@ -133,7 +134,7 @@ const I18N = {
     rbShort: 'RB',
     unlocks: 'Débloque : {0}',
     collectionBonus: '{0} distincts · bonus +{1}%',
-    stellarCount: '✧ Stellaire {0}/{1}',
+    flawlessCount: '✦ {0}/{1} (×{2})',
     liveCcu: '● {0} en jeu',
     filterWish: 'Wish ★',
     sortRarity: 'Rareté',
@@ -209,7 +210,8 @@ const I18N = {
     aboutTitle: 'À propos de Droidex — tracker de collection Star Wars: Droid Tycoon',
     aboutP1: 'Droidex suit le Droidex complet de Star Wars: Droid Tycoon, le mode Fortnite de ' +
       'FOAD/Blzn Studios : 70 droïdes et 442 variantes sur 7 paliers — Basic, Or, Diamant, Arc-en-ciel, Beskar, ' +
-      'Galactique et Stellaire (les deux derniers comptés à part, exactement comme dans le jeu). Un tap sur une ' +
+      'Galactique et Stellaire — dans un compteur x/442 unifié, exactement comme l\'écran Droidex du jeu, plus le ' +
+      'compteur Flawless x/62. Un tap sur une ' +
       'variante la marque possédée ou placée en base ; une variante supérieure satisfait toujours une exigence inférieure.',
     aboutP2: 'La progression passe par 35 niveaux de renaissance répétés sur 5 cycles, chacun exigeant ' +
       '3 droïdes précis dans votre base. Choisissez votre renaissance cible et le tracker montre exactement ' +

@@ -615,8 +615,8 @@ const FAQ = [
     q: { en: 'What is the Galactic variant and how does it work?', fr: 'Qu\'est-ce que la variante Galactique et comment fonctionne-t-elle ?' },
     a: {
       en: 'Galactic is the sixth variant tier, added above Beskar in the mid-July 2026 game update (the Stellar ' +
-        'tier sits above it since the August 15, 2026 update). Exactly like the in-game Droidex screen, the Galactic tier is ' +
-        'not counted in the main variant total: it has its own separate counter over the 62 standard droids. ' +
+        'tier sits above it since the August 15, 2026 update). Since the Stellar update the in-game Droidex counts ' +
+        'all seven variants in one unified total of 442, and Droidex mirrors that. ' +
         'Rebirth 28 — the first Galactic-gated level in each ' +
         'cycle — requires one specific Galactic droid placed in your base (for example a Galactic ' +
         'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
@@ -625,9 +625,9 @@ const FAQ = [
         'in-game on an hourly spawn timer; Droidex tracks each Galactic copy with the same tap-through states (owned, in base) and ' +
         'shows RB·GLC requirement badges so you know exactly which Galactic droids your next rebirth needs.',
       fr: 'Le Galactique est le sixième palier de variante, ajouté au-dessus du Beskar par la mise à jour de ' +
-        'mi-juillet 2026 (le palier Stellaire le surplombe depuis la mise à jour du 15 août 2026). Exactement comme l\'écran Droidex ' +
-        'du jeu, le palier Galactique n\'entre pas dans le total principal de variantes : il a son propre ' +
-        'compteur sur les 62 droïdes standard. La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
+        'mi-juillet 2026 (le palier Stellaire le surplombe depuis la mise à jour du 15 août 2026). Depuis la mise à ' +
+        'jour Stellar, l\'écran Droidex du jeu compte les sept variantes dans un total unifié de 442, et Droidex ' +
+        'fait de même. La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
         'droïde Galactique précis placé dans la base (par exemple un Proto-Roller Galactique au cycle 1), aux ' +
         'côtés d\'un droïde Arc-en-ciel, d\'un Beskar et de 45T de crédits. Comme toute variante supérieure, une ' +
         'copie Galactique valide aussi les exigences inférieures du même droïde. Les revenus Galactiques sont ' +
@@ -645,9 +645,9 @@ const FAQ = [
         'the in-game Droidex; dedicated Stellar Astromech missions costing 6T credits and the Stellar Surge from ' +
         'the Cantina Shop are further sources. The same update added rebirth levels 31 to 35 and a fifth rebirth ' +
         'cycle: rebirth 31 is the first level to require Stellar-tier droids in your base, with credit costs ' +
-        'climbing from 150T at rebirth 31 to 778T at rebirth 35. Like the Galactic tier, Stellar is counted apart ' +
-        'from the main variant total — Droidex mirrors that with a dedicated "Stellar x/62" counter and RB·STL ' +
-        'requirement badges, and a Stellar copy satisfies any lower variant requirement for the same droid. ' +
+        'climbing from 150T at rebirth 31 to 778T at rebirth 35. The in-game Droidex counts Stellar copies in its ' +
+        'unified 442-variant total, and Droidex does the same, with RB·STL ' +
+        'requirement badges; a Stellar copy satisfies any lower variant requirement for the same droid. ' +
         'Stellar income values are documented for about half the standard droids so far and are completed at ' +
         'every data refresh.',
       fr: 'Le Stellaire est le septième et plus récent palier de variante, ajouté au-dessus du Galactique par la ' +
@@ -656,8 +656,8 @@ const FAQ = [
         'dédiées à 6T de crédits et le Stellar Surge du Cantina Shop sont d\'autres sources. La même mise à jour ' +
         'a ajouté les niveaux de renaissance 31 à 35 et un cinquième cycle : la renaissance 31 est le premier ' +
         'niveau à exiger des droïdes Stellaires dans la base, avec des coûts qui grimpent de 150T (renaissance 31) ' +
-        'à 778T (renaissance 35). Comme le Galactique, le Stellaire est compté à part du total principal — ' +
-        'Droidex l\'affiche avec un compteur dédié « Stellaire x/62 » et des badges d\'exigence RB·STL, et une ' +
+        'à 778T (renaissance 35). L\'écran Droidex du jeu compte les copies Stellaires dans son total unifié de ' +
+        '442 variantes, et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
         'copie Stellaire valide toute exigence de variante inférieure du même droïde. Les revenus Stellaires sont ' +
         'documentés pour environ la moitié des droïdes standard et se complètent à chaque rafraîchissement des ' +
         'données.',

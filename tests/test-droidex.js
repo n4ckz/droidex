@@ -63,7 +63,7 @@ const setTarget = (w, rb) => {
     assert(cards.length === 70, '70 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '000/318', 'progression "000/318" (obtenu : "' + label + '")');
+    assert(label === '000/442', 'progression "000/442" (obtenu : "' + label + '")');
     const segs = w.document.getElementById('progressSegs');
     assert(segs && segs.children.length === 10, '10 segments de progression rendus');
     assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
@@ -171,7 +171,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '001/318', 'progression 001/318 (obtenu : "' + label + '")');
+    assert(label === '001/442', 'progression 001/442 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -513,10 +513,10 @@ const setTarget = (w, rb) => {
     assert(tiers.length === 7, '7 pastilles de variante par carte (obtenu : ' + tiers.length + ')');
     assert(tiers[5].dataset.t === '5' && tiers[5].textContent.includes('GLC'), '6ᵉ pastille libellée GLC');
     assert(tiers[6].dataset.t === '6' && tiers[6].textContent.includes('STL'), '7ᵉ pastille libellée STL');
-    // compteur Stellar à vide (il remplace le compteur Galactique depuis la v1.16.0)
-    const gc = w.document.getElementById('stellarCount');
-    assert(gc && gc.textContent.includes('0/62'), 'compteur Stellar "0/62" (obtenu : "' + (gc && gc.textContent) + '")');
-    // Proto-Roller Galactique en base → badge RB28 vert, compteur principal inchangé
+    // compteur Flawless à vide (fidèle à l'écran du jeu : « ✦ x/62 (×0.0x) »)
+    const fc = w.document.getElementById('flawlessCount');
+    assert(fc && fc.textContent === '✦ 0/62 (×0.00)', 'compteur Flawless "✦ 0/62 (×0.00)" (obtenu : "' + (fc && fc.textContent) + '")');
+    // Proto-Roller Galactique en base → badge RB28 vert, compteur principal unifié incrémenté
     findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 0 → 1
     findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 1 → 2 en base
     setTarget(w, 28);
@@ -525,22 +525,23 @@ const setTarget = (w, rb) => {
     assert(badge && badge.textContent === '✓ RB28·GLC', 'badge "✓ RB28·GLC" (obtenu : "' + (badge && badge.textContent) + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'), 'badge RB28 vert non barré');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('45T'), 'crédits RB28 : 45T');
-    assert(w.document.getElementById('progressLabel').textContent === '000/318',
-      'Galactique possédé : compteur principal toujours 000/318');
-    assert(w.document.getElementById('stellarCount').textContent.includes('0/62'),
-      'le Galactique ne touche pas le compteur Stellar');
+    assert(w.document.getElementById('progressLabel').textContent === '001/442',
+      'Galactique possédé : compteur unifié passé à 001/442 (écran du jeu : total 442)');
     assert(w.document.getElementById('collectionBonus').textContent.includes('+1%'),
       'droïde possédé en Galactique seul → compte comme distinct (+1%)');
-    // SEN-TRI Stellar en base → badge RB31 vert, compteur Stellar à 1/62
+    // SEN-TRI Stellar en base → badge RB31 vert, compteur unifié à 002/442
     findCard(w, 'SEN-TRI').querySelector('.tier[data-t="6"]').click();  // 0 → 1
     findCard(w, 'SEN-TRI').querySelector('.tier[data-t="6"]').click();  // 1 → 2 en base
     setTarget(w, 31);
     const badge31 = [...findCard(w, 'SEN-TRI').querySelectorAll('.req-badge')].find(b => b.textContent.includes('RB31'));
     assert(badge31 && badge31.textContent === '✓ RB31·STL', 'badge "✓ RB31·STL" (obtenu : "' + (badge31 && badge31.textContent) + '")');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('150T'), 'crédits RB31 : 150T');
-    assert(w.document.getElementById('stellarCount').textContent.includes('1/62'), 'compteur Stellar passé à 1/62');
-    assert(w.document.getElementById('progressLabel').textContent === '000/318',
-      'Stellar possédé : compteur principal inchangé');
+    assert(w.document.getElementById('progressLabel').textContent === '002/442',
+      'Stellar possédé : compteur unifié passé à 002/442');
+    // toggle ✦ sur SEN-TRI → compteur Flawless et multiplicateur du jeu
+    findCard(w, 'SEN-TRI').querySelector('.icon-btn.flaw').click();
+    assert(w.document.getElementById('flawlessCount').textContent === '✦ 1/62 (×0.01)',
+      'compteur Flawless "✦ 1/62 (×0.01)" (obtenu : "' + w.document.getElementById('flawlessCount').textContent + '")');
   }
   {
     // le Galactique satisfait une exigence inférieure (règle variante supérieure)

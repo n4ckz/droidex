@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.16.1 — 2026-08-20
+
+- Unified main counter: the in-game Droidex screen now counts all seven variants in one total (x/442, verified in game on the Stellar build) — the tracker follows suit, so Galactic and Stellar copies now count toward the main progress instead of a separate counter.
+- The header's secondary counter becomes the Flawless counter — "✦ x/62 (×0.0x)" with its income multiplier — mirroring the second counter the game itself displays on the Droidex screen.
+- Content pages, About, noscript, llms.txt and README aligned with the unified counting.
+
 ## 1.16.0 — 2026-08-20
 
 - Stellar variant (game update of August 15, 2026, patch v1.26): every standard droid gains a 7th tier above Galactic — new tap-through column with its own lamp color, `STL` requirement badges, and a "Stellar x/62" counter replacing the Galactic one in the header. Existing registries are migrated automatically (7-slot padding).

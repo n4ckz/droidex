@@ -253,21 +253,22 @@ function renderRBPanel(){
 }
 
 function renderProgress(){
-  let total=0,done=0,stl=0,stlTotal=0;
+  let total=0,done=0,fl=0,flTotal=0;
   DROIDS.forEach(d=>{
     if(d.iconic){total+=1;if(state.owned[d.id]===true)done+=1;}
     else{
+      /* total unifié depuis la MàJ Stellar (écran du jeu 20/08/2026 : 229/442,
+         les 7 variantes comptent) ; second compteur du jeu = Flawless x/62 */
       const o=ownedTiers(d.id);
-      /* le jeu n'inclut ni le Galactique ni le Stellar dans le total Droidex */
-      total+=5;done+=o.slice(0,5).filter(v=>v>=1).length;
-      stlTotal+=1;if(o[6]>=1)stl+=1;
+      total+=7;done+=o.filter(v=>v>=1).length;
+      flTotal+=1;if(state.flawless[d.id])fl+=1;
     }
   });
   const segs=document.getElementById('progressSegs');
   const lit=total?Math.round(done/total*10):0;
   [...segs.children].forEach((s,i)=>s.classList.toggle('on',i<lit));
   document.getElementById('progressLabel').textContent=String(done).padStart(3,'0')+'/'+total;
-  document.getElementById('stellarCount').textContent=t('stellarCount', stl, stlTotal);
+  document.getElementById('flawlessCount').textContent=t('flawlessCount', fl, flTotal, (fl/100).toFixed(2));
   const n=distinctOwned();
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
   renderLiveCcu();  /* relibellé aussi à la bascule de langue (renderAll) */
