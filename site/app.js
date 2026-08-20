@@ -1,7 +1,7 @@
 /* ================= STATE ================= */
 const STORAGE_KEY = 'droidex-tracker-v1';
 let state = { owned:{}, inBase:{}, targetRB:1, targetCycle:1, flawless:{}, wish:{} };
-// owned[id] = [int x5] ou true pour iconic ; inBase[id] = bool ; flawless/wish[id] = bool
+// owned[id] = [int x7] ou true pour iconic ; inBase[id] = bool ; flawless/wish[id] = bool
 let filter = 'all';
 let query = '';
 let sortMode = 'rarity';
@@ -27,17 +27,17 @@ function reqsFor(d){
 
 function ownedTiers(id){
   const v = state.owned[id];
-  return Array.isArray(v) ? v : [0,0,0,0,0,0];
+  return Array.isArray(v) ? v : [0,0,0,0,0,0,0];
 }
 /* états par variante : 0 = pas eu, 1 = possédé (Droidex), 2 = en base */
 function meetsReq(id, tier){
   const o = ownedTiers(id);
-  for(let i=tier;i<6;i++) if(o[i]>=1) return true;
+  for(let i=tier;i<o.length;i++) if(o[i]>=1) return true;
   return false;
 }
 function inBaseReq(id, tier){
   const o = ownedTiers(id);
-  for(let i=tier;i<6;i++) if(o[i]===2) return true;
+  for(let i=tier;i<o.length;i++) if(o[i]===2) return true;
   return false;
 }
 function hasAnyInBase(id){
@@ -82,8 +82,8 @@ function normalizeParsedState(parsed){
     const v = (parsed.owned || {})[id];
     if(Array.isArray(v) && !iconicIds.has(id)){
       const arr = v.map(x=>x===true?1:(typeof x==='number'?x:0));
-      /* v1.5.0 : padding à 6 entrées (variante Galactique) */
-      while(arr.length<6) arr.push(0);
+      /* v1.5.0 : padding à 6 entrées (Galactique) ; v1.16.0 : à 7 (Stellar) */
+      while(arr.length<7) arr.push(0);
       /* ancien toggle global "en base" -> promotion de la meilleure variante possédée */
       if(out.inBase[id]===true){
         for(let i=arr.length-1;i>=0;i--){ if(arr[i]>=1){ arr[i]=2; break; } }
@@ -209,7 +209,8 @@ function renderRBPanel(){
 
   const cyc = document.getElementById('cycleSelect');
   if(!cyc.options.length){
-    for(let i=1;i<=4;i++){
+    const maxCycle = Math.max(...Object.keys(REBIRTHS).map(Number));
+    for(let i=1;i<=maxCycle;i++){
       const o=document.createElement('option');
       o.value=i;
       cyc.appendChild(o);
@@ -252,21 +253,21 @@ function renderRBPanel(){
 }
 
 function renderProgress(){
-  let total=0,done=0,gal=0,galTotal=0;
+  let total=0,done=0,stl=0,stlTotal=0;
   DROIDS.forEach(d=>{
     if(d.iconic){total+=1;if(state.owned[d.id]===true)done+=1;}
     else{
       const o=ownedTiers(d.id);
-      /* le jeu n'inclut pas le Galactique dans le total Droidex (317) */
+      /* le jeu n'inclut ni le Galactique ni le Stellar dans le total Droidex */
       total+=5;done+=o.slice(0,5).filter(v=>v>=1).length;
-      galTotal+=1;if(o[5]>=1)gal+=1;
+      stlTotal+=1;if(o[6]>=1)stl+=1;
     }
   });
   const segs=document.getElementById('progressSegs');
   const lit=total?Math.round(done/total*10):0;
   [...segs.children].forEach((s,i)=>s.classList.toggle('on',i<lit));
   document.getElementById('progressLabel').textContent=String(done).padStart(3,'0')+'/'+total;
-  document.getElementById('galacticCount').textContent=t('galacticCount', gal, galTotal);
+  document.getElementById('stellarCount').textContent=t('stellarCount', stl, stlTotal);
   const n=distinctOwned();
   document.getElementById('collectionBonus').textContent=t('collectionBonus', n, n);
   renderLiveCcu();  /* relibellé aussi à la bascule de langue (renderAll) */
@@ -566,7 +567,8 @@ function applySuperRebirth(){
     }
   });
   state.targetRB=1;
-  state.targetCycle=(state.targetCycle%4)+1;
+  const maxCycle=Math.max(...Object.keys(REBIRTHS).map(Number));
+  state.targetCycle=(state.targetCycle%maxCycle)+1;
 }
 document.getElementById('superRebirthBtn').addEventListener('click',()=>{
   if(!confirm(t('superRebirthConfirm'))) return;

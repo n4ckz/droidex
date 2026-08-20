@@ -36,13 +36,13 @@ NAME2ID = {
  'SEN-TRI':'sentri','B2 HEAVY':'b2heavy','LNG-SHOT':'lngshot','B2 SUPER':'b2super',
  'OPTI-POD':'optipod','R2':'r2','TRAK-R':'trakr','R6':'r6','HAUL-R':'haulr','LO':'lo',
  'UTIL-TEC':'utiltec','ORB-WALKER':'orbwalker','BB':'bb','GROUNDMECH':'groundmech',
- 'B1 SECURITY':'b1sec','HOV-R':'hovr','BU-4D':'bu4d','R9':'r9','R4':'r4',
+ 'B1 SECURITY':'b1sec','HOV-R':'hovr','BU-4D':'bu4d','B-U4D':'bu4d','R9':'r9','R4':'r4',
  'SENATE HOVERCAM':'senate','ARG':'arg','A-LT':'alt','ROLL-R':'rollr','VECT-ARM':'vectarm',
  'BAL-CORE':'balcore','NAV-EX':'navex','2BB':'2bb','BDX EXPLORER':'bdx',
  'IMPERIAL PROBE':'improbe','B1 BATTLE':'b1battle','GONK':'gonk','R8':'r8','ID10':'id10',
  'CB':'cb','R3':'r3','R5':'r5','DRK-1 PROBE':'drk1','MOUSE':'mouse','PIT':'pit',
  'BB8':'bb8','BB-8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
- 'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po','C-3P0':'c3po',
+ 'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po','C-3P0':'c3po','CHOPPER':'chopper','C1-10P':'chopper',
 }
 # noms d'affichage droidex (conservés tels quels dans l'interface)
 DISPLAY = {
@@ -58,9 +58,10 @@ DISPLAY = {
  'b2rp':'B2-RP','cyclograv':'Cyclo-Grav','optistrk':'Opti-STRK','snowmouse':'Snow Mouse','ric':'RIC',
  'ric1200':'RIC-1200','lep':'LEP','loadlifter':'Loadlifter','motrak':'MO-TRAK','tritek':'TRI-TEK',
  'cyclens':'CYCLENS','drftr':'DRFT-R','kx':'KX','ig':'IG','bb8':'BB-8','misterbones':'Mister Bones',
- 'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO',
+ 'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO','chopper':'Chopper',
 }
-TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4, 'GALACTIC': 5}
+TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4, 'GALACTIC': 5,
+              'STELLAR': 6}
 RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Iconic']
 TYPE_ORDER = {'Worker': 0, 'Astromech': 1, 'Battle': 2}
 
@@ -103,10 +104,27 @@ def parse_values():
         vals[NAME2ID[c[0]]] = {
             'rarity': c[1].capitalize(), 'type': c[2].capitalize(),
             'perk': None if c[3] in ('—', '') else c[3],
-            'inc': [parse_income(x) for x in c[4:10]],
-            'beskarCost': None if c[10] in ('—', '') else c[10],
+            'inc': check_income(NAME2ID[c[0]], [parse_income(x) for x in c[4:11]]),
+            'beskarCost': None if c[11] in ('—', '') else c[11],
         }
     return vals
+
+
+def check_income(did, inc):
+    """Les revenus croissent strictement d'une variante à la suivante : une
+    valeur sous celle du palier précédent est une coquille de la source
+    (vécu le 20/08/2026 : « 1/s » pour le Stellar de R9, au lieu de ~1.7K).
+    Mieux vaut une cellule vide qu'un chiffre faux."""
+    last = None
+    for i, v in enumerate(inc):
+        if v is not None and last is not None and v <= last:
+            print(f'  ⚠ revenu écarté pour {did} (variante {i}) : {v}/s — '
+                  f'inférieur au palier précédent ({last}/s), coquille probable de tycoon-tools')
+            inc[i] = None
+            continue
+        if v is not None:
+            last = v
+    return inc
 
 
 # « Coût par variante » : seconde source, sous contrôle.
@@ -119,14 +137,14 @@ def parse_values():
 # faux ce jour-là), chaque valeur est confrontée au multiple attendu de sa
 # rareté avant d'être publiée.
 WIKI_API = 'https://star-wars-droid-tycoon.fandom.com/api.php'
-WIKI_TABS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic']
+WIKI_TABS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic', 'Stellar']
 # graphies du wiki qui diffèrent de celles de tycoon-tools
 WIKI_ALIAS = {'MONO-WALKER': 'monowlkr', 'OPTI-STRIKE': 'optistrk',
               'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek', 'B-U4D': 'bu4d'}
 
 
 def parse_variant_costs():
-    """{id: [coût Basic … coût Galactique]} d'après la page Droidex du wiki
+    """{id: [coût Basic … coût Stellar]} d'après la page Droidex du wiki
     (« Droiddex » jusqu'au 03/08/2026 — redirects=1 absorbe les renommages)."""
     qs = urllib.parse.urlencode({'action': 'query', 'prop': 'revisions', 'titles': 'Droiddex',
                                  'rvprop': 'content', 'rvslots': 'main', 'format': 'json',
@@ -245,7 +263,7 @@ def js_num(v):
 
 # Les chaînes venant du site distant finissent dans du JavaScript exécuté par
 # tous les visiteurs : liste blanche stricte, tout caractère inattendu arrête net.
-SAFE_STR = re.compile(r"^[A-Za-z0-9 ×%+./-]+$")
+SAFE_STR = re.compile(r"^[A-Za-z0-9 ×%+.&/-]+$")  # & : « Crit Chance & Damage » (Chopper) — sans danger hors balise
 
 
 def js_str(s, origin):
@@ -281,16 +299,16 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    main : relancer le script puis relire le diff.
 
    Sources communautaires (recoupées le {checked_date}) :
-   - Exigences de renaissance (4 cycles × {len(rebirths[1])}) et value list :
+   - Exigences de renaissance ({len(rebirths)} cycles × {len(rebirths[1])}) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
    - Droidex : https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/
    - Wiki : https://star-wars-droid-tycoon.fandom.com/wiki/
    - Événements / Iconiques : https://droidtycoonguide.com/events/
 
-   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique] (null = non documenté)
+   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellar] (null = non documenté)
    bskCost: coût du droïde en Beskar (tycoon-tools)
-   cost: coût du droïde dans chacune des 6 variantes, même ordre que inc —
+   cost: coût du droïde dans chacune des 7 variantes, même ordre que inc —
    tycoon-tools ne publie que celui du Beskar, cette série est donc recoupée sur
    le wiki dédié (seul champ venu d'une autre source, et seulement si son
    rapport au coût Beskar est celui de son couple rareté/variante)
@@ -299,7 +317,7 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    ========================================================================= */
 
 /* Les libellés de variantes et de raretés (dépendants de la langue) sont dans i18n.js.
-   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic. */
+   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic, 6=Stellar. */
 
 const DROIDS = [""")
     for rar in RARITY_ORDER:
@@ -310,13 +328,13 @@ const DROIDS = [""")
         L.extend(droid_line(d, vals) for d in ids)
     L.append('];')
     L.append('')
-    L.append('/* Crédits requis par renaissance (identiques pour les 4 cycles) */')
+    L.append(f'/* Crédits requis par renaissance (identiques pour les {len(rebirths)} cycles) */')
     L.append('const RB_CREDITS = {' + ','.join(f"{k}:{js_str(credits[k], f'credits[{k}]')}" for k in sorted(credits)) + '};')
     L.append('')
     last_rb = max(rebirths[1])
     L.append(f"""/* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
    Une variante supérieure valide toujours l'exigence. Après la renaissance {last_rb}
-   (ou dès la 12 en « super-renaissance »), on passe au cycle suivant (4 → 1). */
+   (ou dès la 12 en « super-renaissance »), on passe au cycle suivant ({len(rebirths)} → 1). */
 const REBIRTHS = {{""")
     for cyc in sorted(rebirths):
         L.append(f' {cyc}: {{')
@@ -343,7 +361,7 @@ def main():
     # que la source est en retard. setdefault → la source primera dès qu'elle
     # le référencera (perk relevé en jeu par Julien le 18/07/2026).
     vals.setdefault('c3po', {'rarity': 'Iconic', 'type': 'Worker',
-                             'perk': '+25% workers', 'inc': [None] * 6, 'beskarCost': None})
+                             'perk': '+25% workers', 'inc': [None] * 7, 'beskarCost': None})
     # tycoon-tools liste désormais C-3P0 mais sans perk : le relevé en jeu
     # (+25% workers, 18/07/2026) prime tant que la source ne le documente pas.
     if not vals['c3po'].get('perk'):
@@ -356,7 +374,9 @@ def main():
     # Le wiki injoignable ne doit PAS vider la colonne : on repart alors des
     # valeurs déjà publiées dans data.js (sinon le cron « corrigerait » chaque
     # panne du wiki en supprimant des données justes).
-    previous = {did: [c or None for c in re.findall(r"'([^']*)'|null", series)]
+    # (padding : un data.js d'avant le palier Stellar n'a que 6 coûts par série)
+    previous = {did: ([c or None for c in re.findall(r"'([^']*)'|null", series)] +
+                      [None] * len(WIKI_TABS))[:len(WIKI_TABS)]
                 for did, series in re.findall(r"\{id:'([^']+)'.*?cost:\[([^\]]*)\]", current)}
     try:
         costs = check_variant_costs(vals, parse_variant_costs())

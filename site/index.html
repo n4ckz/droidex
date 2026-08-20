@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Droidex — Star Wars: Droid Tycoon Collection Tracker (Fortnite)</title>
-<meta name="description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): track all 317 droid variants from Basic to Beskar and Galactic, plan the 30 rebirth levels across the 4 cycles, with wishlist and Flawless tracking — no ads, English & French.">
+<meta name="description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): track all 442 droid variants from Basic to Galactic and Stellar, plan the 35 rebirth levels across the 5 cycles, with wishlist and Flawless tracking — no ads, English & French.">
 <link rel="canonical" href="https://droidex.nackz.dev/">
 <meta property="og:title" content="Droidex — Star Wars: Droid Tycoon Collection Tracker (Fortnite)">
-<meta property="og:description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants up to Galactic, rebirths across 4 cycles, and which droids to keep in your base.">
+<meta property="og:description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants up to Stellar, rebirths across 5 cycles, and which droids to keep in your base.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://droidex.nackz.dev/">
 <meta property="og:site_name" content="Droidex">
@@ -21,7 +21,7 @@
 <meta property="og:image:height" content="1200">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Droidex — Star Wars: Droid Tycoon Collection Tracker (Fortnite)">
-<meta name="twitter:description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants up to Galactic, rebirths across 4 cycles, and which droids to keep in your base.">
+<meta name="twitter:description" content="Collection tracker for Star Wars: Droid Tycoon (Fortnite): variants up to Stellar, rebirths across 5 cycles, and which droids to keep in your base.">
 <meta name="twitter:image" content="https://droidex.nackz.dev/og/og-1200x630.png">
 <meta name="theme-color" content="#101120">
 <script type="application/ld+json">
@@ -32,7 +32,7 @@
   "alternateName": ["Droidex", "Droid Tycoon Tracker"],
   "url": "https://droidex.nackz.dev/",
   "sameAs": ["https://github.com/n4ckz/droidex", "https://x.com/Nackz_X"],
-  "description": "Free collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids across 6 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic), plan the 30 rebirth levels across the 4 cycles and know which droids to keep physically in your base.",
+  "description": "Free collection tracker for Star Wars: Droid Tycoon (Fortnite): track your droids across 7 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar), plan the 35 rebirth levels across the 5 cycles and know which droids to keep physically in your base.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Any",
   "browserRequirements": "Requires JavaScript",
@@ -64,7 +64,7 @@
       <span class="progress-label" id="progressLabel">—</span>
     </div>
     <span class="collection-bonus" id="collectionBonus"></span>
-    <span class="collection-bonus galactic-count" id="galacticCount"></span>
+    <span class="collection-bonus stellar-count" id="stellarCount"></span>
     <span class="collection-bonus live-ccu" id="liveCcu" hidden></span>
     <select id="langSelect" class="lang-select" aria-label="Language">
       <option value="en">EN</option>
@@ -127,14 +127,14 @@
     <div id="loading" data-i18n="loading">LOADING REGISTRY…</div>
     <noscript>
       <p>Droidex is a free collection tracker for Star Wars: Droid Tycoon, the Fortnite creative mode by
-      FOAD/Blzn Studios. It tracks all 69 droids across 317 variants: most droids come in 6 variants (Basic,
-      Gold, Diamond, Rainbow, Beskar, Galactic — the Galactic tier is counted separately from the 317, exactly
-      like the in-game Droidex screen, with its own x/62 counter), while a handful of Iconic droids only track
-      ownership. Each variant has
+      FOAD/Blzn Studios. It tracks all 70 droids across 442 variants: most droids come in 7 variants (Basic,
+      Gold, Diamond, Rainbow, Beskar, Galactic, Stellar — the Galactic and Stellar tiers are counted separately,
+      exactly like the in-game Droidex screen, with a dedicated x/62 counter), while a handful of Iconic droids
+      only track ownership. Each variant has
       3 states: never owned, owned in your Droidex, and physically placed in your base. A higher variant always
       satisfies a lower requirement, so owning a Diamond droid also counts for a Gold requirement, and you never
       need to hunt down a lesser copy once you already have a better one.</p>
-      <p>Progression runs through 30 rebirth levels, repeated across 4 cycles in a loop, each requiring 3
+      <p>Progression runs through 35 rebirth levels, repeated across 5 cycles in a loop, each requiring 3
       specific droids in your base plus a credit cost climbing into the trillions. From rebirth 12 onward, a
       super rebirth lets you skip ahead once requirements are met. The game gives no way to check what you
       already own while standing at the Sandcrawler shop, so Droidex fills that gap by showing exactly which
@@ -164,16 +164,16 @@
     <section class="about" id="about">
       <h2 data-i18n="aboutTitle">About Droidex — Star Wars: Droid Tycoon collection tracker</h2>
       <p data-i18n="aboutP1">Droidex tracks the full Droidex of Star Wars: Droid Tycoon, the Fortnite mode by
-      FOAD/Blzn Studios: 69 droids and 317 variants across 6 tiers — Basic, Gold, Diamond, Rainbow, Beskar and
-      Galactic (counted separately, exactly like in the game). Tap any variant to mark it owned or placed in
-      your base; a higher variant always satisfies a lower requirement.</p>
-      <p data-i18n="aboutP2">Progression runs through 30 rebirth levels repeated across 4 cycles, each needing
+      FOAD/Blzn Studios: 70 droids and 442 variants across 7 tiers — Basic, Gold, Diamond, Rainbow, Beskar,
+      Galactic and Stellar (the last two counted separately, exactly like in the game). Tap any variant to mark
+      it owned or placed in your base; a higher variant always satisfies a lower requirement.</p>
+      <p data-i18n="aboutP2">Progression runs through 35 rebirth levels repeated across 5 cycles, each needing
       3 specific droids in your base. Pick your target rebirth and the tracker shows exactly which droids are
       still missing, which ones to keep, and which can safely leave your base — plus wishlist stars, Flawless
       tracking (odds from 1 in 1000 Basic to 1 in 75 Galactic), the collection bonus and a live player counter.
       Free, no ads, open source, English and French.</p>
       <p data-i18n-html="aboutLinks">Dive deeper: <a href="value-list/">value list — income and cost of every
-      variant</a> · <a href="rebirth-requirements/">rebirth requirements for all 30 levels and 4 cycles</a>
+      variant</a> · <a href="rebirth-requirements/">rebirth requirements for all 35 levels and 5 cycles</a>
       · <a href="faq/">FAQ</a> · <a href="stats/">live player count and daily stats</a>.</p>
     </section>
 

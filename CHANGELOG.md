@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.16.0 — 2026-08-20
+
+- Stellar variant (game update of August 15, 2026, patch v1.26): every standard droid gains a 7th tier above Galactic — new tap-through column with its own lamp color, `STL` requirement badges, and a "Stellar x/62" counter replacing the Galactic one in the header. Existing registries are migrated automatically (7-slot padding).
+- Rebirths 31-35 and a fifth cycle: the rebirth selector now goes to 35 (credit costs 150T to 778T), the cycle selector to 5, and the Super Rebirth button loops 5 → 1. Rebirth 31 is the first level to require Stellar-tier droids. Requirements across all five cycles were rebalanced by the patch and re-imported in full.
+- New Iconic droid: Chopper (C1-10P, Astromech, "+50% Crit Chance & Damage"), the 8th Iconic — the main counter becomes /318.
+- Value list: seventh income and cost columns (Stellar), costs cross-checked against the dedicated wiki under the same fixed-multiple guard; a new income sanity check discards source typos (a variant income can never be lower than the tier below it).
+- Content pages, FAQ (new Stellar entry), About block and llms.txt updated to 70 droids, 442 variants, 7 tiers, 35 levels × 5 cycles, in English and French.
+- Data watch: the daily check had been red since August 7 (a source-side rename to "B-U4D"); aliases added, pipeline green again.
+
 ## 1.15.1 — 2026-08-06
 
 - Value list: B1 Battle's Gold cost (16K) fills the one cell that was missing — the dedicated wiki now publishes it, and it matches the ×4 multiple its rarity commands.
