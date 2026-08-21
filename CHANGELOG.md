@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.5 — 2026-08-21
+
+- Game data: Stellar income values completed for 61 of the 62 standard droids — tycoon-tools filled in the missing tiers overnight (30 documented at the Stellar release, 61 now). The last gap, R9, is a source-side typo ("1/s") held back by the income sanity check until it is fixed upstream.
+
 ## 1.16.4 — 2026-08-21
 
 - Internal linking: every content page gains an in-content "going further" block with descriptive anchors to its sibling pages and to the tracker — editorial links rather than template chrome, worded differently on each page, in English and French. Template links (logo, nav, CTA) are heavily discounted by search engines; in-content descriptive anchors are the ones that transfer relevance.

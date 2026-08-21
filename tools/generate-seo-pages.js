@@ -689,7 +689,7 @@ const FAQ = [
         'climbing from 150T at rebirth 31 to 778T at rebirth 35. The in-game Droidex counts Stellar copies in its ' +
         'unified 442-variant total, and Droidex does the same, with RB·STL ' +
         'requirement badges; a Stellar copy satisfies any lower variant requirement for the same droid. ' +
-        'Stellar income values are documented for about half the standard droids so far and are completed at ' +
+        'Stellar income values are documented for nearly every standard droid and are completed at ' +
         'every data refresh.',
       fr: 'Le Stellaire est le septième et plus récent palier de variante, ajouté au-dessus du Galactique par la ' +
         'mise à jour Stellar du 15 août 2026 (patch v1.26). Les droïdes Stellaires apparaissent au Sandcrawler ' +
@@ -700,7 +700,7 @@ const FAQ = [
         'à 778T (renaissance 35). L\'écran Droidex du jeu compte les copies Stellaires dans son total unifié de ' +
         '442 variantes, et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
         'copie Stellaire valide toute exigence de variante inférieure du même droïde. Les revenus Stellaires sont ' +
-        'documentés pour environ la moitié des droïdes standard et se complètent à chaque rafraîchissement des ' +
+        'documentés pour la quasi-totalité des droïdes standard et se complètent à chaque rafraîchissement des ' +
         'données.',
     },
   },
