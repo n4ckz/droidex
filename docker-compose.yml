@@ -12,6 +12,10 @@ services:
     image: droidex-tracker:latest
     container_name: droidex
     restart: unless-stopped
+    volumes:
+      # journal d'accès persistant (les logs stdout meurent avec le conteneur)
+      # rotation côté hôte : deploy/logrotate-droidex → /etc/logrotate.d/droidex
+      - ./logs:/var/log/droidex
     networks:
       - proxy
     labels:
