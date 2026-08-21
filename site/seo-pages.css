@@ -128,3 +128,7 @@
    devient deux fois plus haute que les autres. Le conteneur défile déjà
    horizontalement, donc rien n'est perdu. */
 .seo-page .seo-table-rows td{white-space:nowrap}
+
+/* Bloc « pour aller plus loin » : maillage interne éditorial (v1.16.4) */
+.seo-see-also{margin:28px 0 8px;padding:14px 18px;border-left:2px solid var(--accent,#9184d9);background:rgba(145,132,217,.06)}
+.seo-see-also p{margin:0;color:var(--n-300,#aab);font-size:.92rem;line-height:1.6}

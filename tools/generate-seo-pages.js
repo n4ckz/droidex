@@ -166,6 +166,46 @@ const STR = {
   },
 };
 
+/* Maillage interne éditorial : liens DANS le contenu avec des ancres qui
+   décrivent leur cible (les liens de gabarit — logo, menu, CTA — sont
+   dévalués par les moteurs). Formulé différemment sur chaque page pour
+   rester du contenu, pas du chrome. Ajouté le 21/08/2026 : les deux pages
+   FR encore indexées par Google sont nos seules portes vers les 7 élaguées. */
+const SEE_ALSO = {
+  'value-list': {
+    en: (rel) => `To put these numbers to use, check the <a href="../rebirth-requirements/">rebirth requirements for all 35 levels and 5 cycles</a> — ` +
+      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 442 droid variants</a>. ` +
+      `Flawless odds per variant are detailed in the <a href="../faq/">Droid Tycoon FAQ</a>.`,
+    fr: (rel) => `Pour exploiter ces chiffres, consultez les <a href="../rebirth-requirements/">exigences des 35 niveaux de renaissance sur les 5 cycles</a> — ` +
+      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 442 variantes de droïdes</a>. ` +
+      `Les chances de Flawless par variante sont détaillées dans la <a href="../faq/">FAQ Droid Tycoon</a>.`,
+  },
+  'rebirth-requirements': {
+    en: (rel) => `Before buying a required droid, look up its price in the <a href="../value-list/">value list — income and cost of every variant, Basic to Stellar</a>, ` +
+      `and follow your own progress toward each level in <a href="${rel}">Droidex, the free Droid Tycoon collection tracker</a>. ` +
+      `What a Super Rebirth keeps or resets is covered in the <a href="../faq/">FAQ</a>.`,
+    fr: (rel) => `Avant d'acheter un droïde requis, vérifiez son prix dans la <a href="../value-list/">liste des valeurs — revenus et coût de chaque variante, de Basic à Stellaire</a>, ` +
+      `et suivez votre propre progression vers chaque niveau dans <a href="${rel}">Droidex, le tracker de collection Droid Tycoon gratuit</a>. ` +
+      `Ce qu'une Super-renaissance conserve ou réinitialise est détaillé dans la <a href="../faq/">FAQ</a>.`,
+  },
+  stats: {
+    en: (rel) => `These numbers accompany <a href="${rel}">Droidex, the free Star Wars: Droid Tycoon collection tracker</a> — ` +
+      `see also the <a href="../value-list/">value list with the income and cost of all seven droid variants</a> ` +
+      `and the <a href="../rebirth-requirements/">rebirth requirements for all 35 levels</a>.`,
+    fr: (rel) => `Ces statistiques accompagnent <a href="${rel}">Droidex, le tracker de collection Star Wars: Droid Tycoon gratuit</a> — ` +
+      `voir aussi la <a href="../value-list/">liste des valeurs : revenus et coût des sept variantes de droïdes</a> ` +
+      `et les <a href="../rebirth-requirements/">exigences des 35 niveaux de renaissance</a>.`,
+  },
+  faq: {
+    en: (rel) => `Going further: the <a href="../rebirth-requirements/">full rebirth requirements for levels 1-35 across the 5 cycles</a>, ` +
+      `the <a href="../value-list/">value list — income and cost of every droid variant</a>, ` +
+      `and <a href="${rel}">the Droidex tracker itself — free, no account needed</a>.`,
+    fr: (rel) => `Pour aller plus loin : les <a href="../rebirth-requirements/">exigences complètes des renaissances 1-35 sur les 5 cycles</a>, ` +
+      `la <a href="../value-list/">liste des valeurs — revenus et coût de chaque variante</a>, ` +
+      `et <a href="${rel}">le tracker Droidex lui-même — gratuit, sans compte obligatoire</a>.`,
+  },
+};
+
 /* Gabarit commun aux pages de contenu (les deux langues). */
 function page({ lang, slug, title, description, jsonld, h1, bodyHtml, extraHead = '', ogImage = 'og/og-1200x630.png' }) {
   const L = STR[lang];
@@ -232,6 +272,7 @@ ${extraHead}</head>
 <main class="seo-main">
 <h1>${h1}</h1>
 ${bodyHtml}
+<aside class="seo-see-also"><p>${SEE_ALSO[slug][lang](rel)}</p></aside>
 </main>
 <footer class="seo-footer">
   <p class="seo-legal">${L.legal}</p>

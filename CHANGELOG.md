@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.4 — 2026-08-21
+
+- Internal linking: every content page gains an in-content "going further" block with descriptive anchors to its sibling pages and to the tracker — editorial links rather than template chrome, worded differently on each page, in English and French. Template links (logo, nav, CTA) are heavily discounted by search engines; in-content descriptive anchors are the ones that transfer relevance.
+
 ## 1.16.3 — 2026-08-20
 
 - SEO hygiene: every meta description trimmed to 160 characters or less (seven of the nine pages exceeded the length search engines actually display — flagged by Bing's URL inspection), keywords front-loaded, English and French.

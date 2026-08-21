@@ -383,6 +383,9 @@ const setTarget = (w, rb) => {
     assert((vl.match(/<tr>/g) || []).length >= 60, 'value list : ≥ 60 lignes de tableau');
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
     assert(vl.includes('<th>Stellar</th>'), 'value list : colonne Stellar');
+    // maillage interne éditorial (v1.16.4) : liens descriptifs dans le contenu
+    assert(vl.includes('seo-see-also') && vl.includes('rebirth requirements for all 35 levels and 5 cycles'),
+      'value list : bloc « pour aller plus loin » avec ancres descriptives');
     // un tableau de revenus ET un tableau de coûts par rareté (5 raretés
     // standard ; les Iconiques ne s'achètent pas, donc pas de tableau de coûts)
     assert((vl.match(/Income per variant/g) || []).length === 6, 'value list : 6 tableaux de revenus');
