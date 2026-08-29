@@ -5,15 +5,20 @@ Takes a consistent snapshot of pb_data/data.db via Python's sqlite3 backup
 API (safe while PocketBase is running, WAL included) into backups/, and
 keeps 14 days of history. Stdlib only — no dependency to install.
 
-Adjust the two paths below to your install, then schedule it daily
-(systemd timer or cron) — see README "Backups" section.
+The install directory is taken from the DROIDEX_DIR environment variable,
+or defaults to the parent of the deploy/ folder this script lives in (i.e.
+the repository clone). Schedule it daily (systemd timer or cron) — see the
+README "Backups" section.
 """
 import datetime
+import os
 import pathlib
 import sqlite3
 
-SRC = "/opt/sites/droidex/pb_data/data.db"
-DST_DIR = pathlib.Path("/opt/sites/droidex/backups")
+BASE = pathlib.Path(os.environ.get("DROIDEX_DIR")
+                    or pathlib.Path(__file__).resolve().parent.parent)
+SRC = BASE / "pb_data" / "data.db"
+DST_DIR = BASE / "backups"
 KEEP_DAYS = 14
 
 DST_DIR.mkdir(parents=True, exist_ok=True)

@@ -16,3 +16,5 @@ tests/package-lock.json
 tools/__pycache__/
 __pycache__/
 logs/
+# instantanés quotidiens de la base (deploy/backup-pb.py)
+backups/

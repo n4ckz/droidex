@@ -1,6 +1,7 @@
 # Rotation du journal d'accès persistant de Droidex (~1 Mo/jour brut,
 # ~15-20 Mo/an une fois compressé). À installer sur l'hôte :
 #   sudo cp deploy/logrotate-droidex /etc/logrotate.d/droidex
+# puis adapter le chemin ci-dessous au dossier d'installation (ici /opt/sites/droidex).
 # copytruncate : pas besoin d'envoyer un signal à nginx dans le conteneur.
 /opt/sites/droidex/logs/access.log {
     daily

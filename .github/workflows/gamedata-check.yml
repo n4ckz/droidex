@@ -75,7 +75,7 @@ jobs:
             - [ ] SEO pages regenerated (value list / rebirths / FAQ / sitemap)
             - [ ] Bump `APP_VERSION` in `site/version.js`
             - [ ] Add a `CHANGELOG.md` entry
-            - [ ] After merge: `cd /opt/sites/droidex && git pull && docker compose up -d --build droidex`
+            - [ ] After merge: redeploy (`git pull && docker compose up -d --build droidex` in the install directory)
 
   # L'Ecosystem API d'Epic ne garde que 7 jours glissants : on recopie chaque
   # jour les métriques officielles de l'île dans data/metrics/ (histoire

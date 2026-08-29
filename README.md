@@ -77,7 +77,7 @@ docker compose exec pocketbase /pb/pocketbase superuser upsert YOUR@EMAIL.com YO
 
 Both containers expose an HTTP healthcheck, visible via `docker ps`. PocketBase data lives in `./pb_data`.
 
-**Backups**: [`deploy/backup-pb.py`](deploy/backup-pb.py) takes a consistent daily snapshot of the database (Python stdlib only, safe while PocketBase runs) with 14-day rotation. Schedule it on the host, e.g. with a systemd timer:
+**Backups**: [`deploy/backup-pb.py`](deploy/backup-pb.py) takes a consistent daily snapshot of the database (Python stdlib only, safe while PocketBase runs) with 14-day rotation into `backups/` next to `pb_data/` (install directory = `DROIDEX_DIR`, or the clone by default). Schedule it on the host, e.g. with a systemd timer:
 
 ```ini
 # /etc/systemd/system/droidex-backup.service
@@ -85,6 +85,8 @@ Both containers expose an HTTP healthcheck, visible via `docker ps`. PocketBase 
 Description=Droidex PocketBase daily backup
 [Service]
 Type=oneshot
+# install directory (defaults to the clone containing deploy/backup-pb.py)
+Environment=DROIDEX_DIR=/opt/sites/droidex
 ExecStart=/usr/bin/python3 /opt/sites/droidex/deploy/backup-pb.py
 
 # /etc/systemd/system/droidex-backup.timer
