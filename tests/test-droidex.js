@@ -393,8 +393,9 @@ const setTarget = (w, rb) => {
     assert(!vl.includes('<th>Beskar cost</th>') && !vl.includes('<th>Galactic cost</th>'),
       'value list : plus de colonne de coût unique');
     // Gonk : 4/s en Basic et 96/s en Galactique, coûts 3K → 60K
+    // (Arc-en-ciel = 36K depuis que le wiki documente des coûts Rainbow distincts — 0,75× Beskar)
     assert(vl.includes('<td>Gonk</td><td>Worker</td><td>4/s</td>') &&
-      vl.includes('<td>Gonk</td><td>Worker</td><td>3K</td><td>12K</td><td>24K</td><td>48K</td><td>48K</td><td>60K</td>'),
+      vl.includes('<td>Gonk</td><td>Worker</td><td>3K</td><td>12K</td><td>24K</td><td>36K</td><td>48K</td><td>60K</td>'),
       'value list : revenus et coûts des 6 variantes du Gonk');
     // toutes les lignes alignées sur leur en-tête, dans les deux tableaux
     {

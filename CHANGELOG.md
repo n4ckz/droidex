@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.6 — 2026-09-01
+
+- Game data: distinct Rainbow variant costs for all 62 standard droids — the dedicated wiki previously mirrored the Beskar cost in the Rainbow column and now documents the real values (a consistent 0.75× Beskar across every rarity, accepted by the fixed-multiple guard). Value list pages updated accordingly.
+- Fixed the daily data-watch pipeline, blocked since August 27 by a test expectation pinned to the old Rainbow cost row.
+
 ## 1.16.5 — 2026-08-21
 
 - Game data: Stellar income values completed for 61 of the 62 standard droids — tycoon-tools filled in the missing tiers overnight (30 documented at the Stellar release, 61 now). The last gap, R9, is a source-side typo ("1/s") held back by the income sanity check until it is fixed upstream.
