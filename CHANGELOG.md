@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.0 — 2026-09-01
+
+- Droid Fusion update (game patch v1.27, August 22): the 17 fusion-exclusive droids — WHL-EX, ZRO-TEC, BTL-R, N-UL, SCRP-R, ARM-CORE, OPT-AR, RO-TOR, FUS-3, QIK-BIT, ORB-XL, RIV-3T, LUG-G, LOW-MO, AXI-POD, SRV-O, X-ONK — join the tracker with income, per-variant costs and the exact three-droid fusion recipe shown on each card (⚗). Their stats come from the dedicated wiki (they are absent from our main data source) under the same fixed-multiple and monotonic-income guards, with a fallback to the last published values if the wiki is unreachable.
+- D-O, the 9th Iconic droid (D-O event, game patch v1.28, August 29): owned/in-base toggles like the other Iconics, perk "Half Fusion Time".
+- The unified counter follows the game: x/562 across all seven variants (79 droids with variants + 9 Iconics); the Flawless counter now spans the 79 variant droids. Content pages, About, noscript, llms.txt and README updated, and a new FAQ entry explains fusion recipes, variant inheritance and the D-O event.
+
 ## 1.16.6 — 2026-09-01
 
 - Game data: distinct Rainbow variant costs for all 62 standard droids — the dedicated wiki previously mirrored the Beskar cost in the Rainbow column and now documents the real values (a consistent 0.75× Beskar across every rarity, accepted by the fixed-multiple guard). Value list pages updated accordingly.

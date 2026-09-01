@@ -147,6 +147,7 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .value-line{display:flex;align-items:center;gap:6px;font-family:var(--font-hud);font-size:10.5px;color:var(--n-300);letter-spacing:.04em;text-transform:uppercase}
 .value-line .ico-cred{width:13px;height:13px;flex:none;background:url('icons/game/credits.webp') center/contain no-repeat}
 .value-line .dim{color:var(--n-400)}
+.fusion-line{color:var(--tier-6,#6EA8FF)}
 .tiers{display:flex;border:1px solid rgba(var(--acc-rgb),.25);margin-top:auto}
 .tier{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px;cursor:pointer;border:none;border-right:1px solid rgba(var(--acc-rgb),.18);background:transparent;font-family:var(--font-hud);font-size:9px;letter-spacing:.08em;transition:background .3s ease,box-shadow .3s ease}
 .tier:last-child{border-right:none}

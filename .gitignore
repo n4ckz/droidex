@@ -18,3 +18,4 @@ __pycache__/
 logs/
 # instantanés quotidiens de la base (deploy/backup-pb.py)
 backups/
+EXPORT GSC/

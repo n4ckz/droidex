@@ -174,10 +174,10 @@ const STR = {
 const SEE_ALSO = {
   'value-list': {
     en: (rel) => `To put these numbers to use, check the <a href="../rebirth-requirements/">rebirth requirements for all 35 levels and 5 cycles</a> — ` +
-      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 442 droid variants</a>. ` +
+      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 562 droid variants</a>. ` +
       `Flawless odds per variant are detailed in the <a href="../faq/">Droid Tycoon FAQ</a>.`,
     fr: (rel) => `Pour exploiter ces chiffres, consultez les <a href="../rebirth-requirements/">exigences des 35 niveaux de renaissance sur les 5 cycles</a> — ` +
-      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 442 variantes de droïdes</a>. ` +
+      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 562 variantes de droïdes</a>. ` +
       `Les chances de Flawless par variante sont détaillées dans la <a href="../faq/">FAQ Droid Tycoon</a>.`,
   },
   'rebirth-requirements': {
@@ -300,7 +300,9 @@ const VL_TEXT = {
       `no variants: owning one simply adds a flat +15% income bonus alongside its unique perk. Remember that in ` +
       `Droidex's rebirth panel, a higher variant always satisfies a lower requirement — if a rebirth asks for a ` +
       `droid at Gold minimum, owning it at Diamond or better already counts, so this list also doubles as a quick ` +
-      `reference for which variant is "enough".</p>`,
+      `reference for which variant is "enough". Droids marked ⚗ are fusion-exclusive (Droid Fusion update of ` +
+      `August 22, 2026): they cannot be bought at the Sandcrawler and are only obtained by fusing three specific ` +
+      `crafted droids at the Fusion lab — Droidex shows each recipe on the droid's card in the tracker.</p>`,
     jsonName: 'Droidex value list — Star Wars: Droid Tycoon',
     jsonDesc: 'Income per second and credit cost of every droid at each variant in Star Wars: Droid Tycoon.',
   },
@@ -318,7 +320,9 @@ const VL_TEXT = {
       `revenus, en plus de son perk unique. Rappel : dans le panneau de renaissance de Droidex, une variante ` +
       `supérieure valide toujours une exigence inférieure — si une renaissance demande un droïde « Or minimum », ` +
       `le posséder en Diamant ou mieux suffit déjà ; cette liste sert donc aussi de référence rapide pour savoir ` +
-      `quelle variante est « suffisante ».</p>`,
+      `quelle variante est « suffisante ». Les droïdes marqués ⚗ sont exclusifs à la fusion (mise à jour Droid ` +
+      `Fusion du 22 août 2026) : introuvables au Sandcrawler, ils s'obtiennent uniquement en fusionnant trois ` +
+      `droïdes précis au labo de fusion — Droidex affiche chaque recette sur la carte du droïde dans le tracker.</p>`,
     jsonName: 'Liste des valeurs Droidex — Star Wars: Droid Tycoon',
     jsonDesc: 'Revenus par seconde et coût en crédits de chaque droïde dans chaque variante de Star Wars: Droid Tycoon.',
   },
@@ -351,7 +355,7 @@ ${rows}
       const cells = d.iconic
         ? `<td colspan="${TIERS_L.length}">${L.iconicIncome}</td>`
         : d.inc.map(n => `<td>${n == null ? '—' : fmtInc(n) + '/s'}</td>`).join('');
-      return `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>${cells}` +
+      return `      <tr><td>${escapeHtml(d.n)}${d.fusion ? ' ⚗' : ''}</td><td>${escapeHtml(d.t)}</td>${cells}` +
         `<td>${escapeHtml(d.perk || '—')}</td></tr>`;
     }).join('\n');
     const incomeTable = wrap(`${name} · ${L.tblIncome}`,
@@ -362,7 +366,7 @@ ${rows}
     const priced = droids.filter(d => !d.iconic && d.cost);
     if (!priced.length) return incomeTable;
     const costRows = priced.map(d =>
-      `      <tr><td>${escapeHtml(d.n)}</td><td>${escapeHtml(d.t)}</td>` +
+      `      <tr><td>${escapeHtml(d.n)}${d.fusion ? ' ⚗' : ''}</td><td>${escapeHtml(d.t)}</td>` +
       d.cost.map(c => `<td>${c == null ? '—' : escapeHtml(c)}</td>`).join('') + '</tr>').join('\n');
     const costTable = wrap(`${name} · ${L.tblCost}`,
       `<th>${L.thDroid}</th><th>${L.thClass}</th>${tierHeads}`, costRows);
@@ -657,7 +661,7 @@ const FAQ = [
     a: {
       en: 'Galactic is the sixth variant tier, added above Beskar in the mid-July 2026 game update (the Stellar ' +
         'tier sits above it since the August 15, 2026 update). Since the Stellar update the in-game Droidex counts ' +
-        'all seven variants in one unified total of 442, and Droidex mirrors that. ' +
+        'all seven variants in one unified total, 562 with the fusion droids and D-O, and Droidex mirrors that. ' +
         'Rebirth 28 — the first Galactic-gated level in each ' +
         'cycle — requires one specific Galactic droid placed in your base (for example a Galactic ' +
         'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
@@ -667,7 +671,7 @@ const FAQ = [
         'shows RB·GLC requirement badges so you know exactly which Galactic droids your next rebirth needs.',
       fr: 'Le Galactique est le sixième palier de variante, ajouté au-dessus du Beskar par la mise à jour de ' +
         'mi-juillet 2026 (le palier Stellaire le surplombe depuis la mise à jour du 15 août 2026). Depuis la mise à ' +
-        'jour Stellar, l\'écran Droidex du jeu compte les sept variantes dans un total unifié de 442, et Droidex ' +
+        'jour Stellar, l\'écran Droidex du jeu compte les sept variantes dans un total unifié — 562 avec les droïdes fusion et D-O — et Droidex ' +
         'fait de même. La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
         'droïde Galactique précis placé dans la base (par exemple un Proto-Roller Galactique au cycle 1), aux ' +
         'côtés d\'un droïde Arc-en-ciel, d\'un Beskar et de 45T de crédits. Comme toute variante supérieure, une ' +
@@ -687,7 +691,7 @@ const FAQ = [
         'the Cantina Shop are further sources. The same update added rebirth levels 31 to 35 and a fifth rebirth ' +
         'cycle: rebirth 31 is the first level to require Stellar-tier droids in your base, with credit costs ' +
         'climbing from 150T at rebirth 31 to 778T at rebirth 35. The in-game Droidex counts Stellar copies in its ' +
-        'unified 442-variant total, and Droidex does the same, with RB·STL ' +
+        'unified variant total (562 with the fusion droids and D-O), and Droidex does the same, with RB·STL ' +
         'requirement badges; a Stellar copy satisfies any lower variant requirement for the same droid. ' +
         'Stellar income values are documented for nearly every standard droid and are completed at ' +
         'every data refresh.',
@@ -698,10 +702,41 @@ const FAQ = [
         'a ajouté les niveaux de renaissance 31 à 35 et un cinquième cycle : la renaissance 31 est le premier ' +
         'niveau à exiger des droïdes Stellaires dans la base, avec des coûts qui grimpent de 150T (renaissance 31) ' +
         'à 778T (renaissance 35). L\'écran Droidex du jeu compte les copies Stellaires dans son total unifié de ' +
-        '442 variantes, et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
+        'variantes (562 avec les droïdes fusion et D-O), et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
         'copie Stellaire valide toute exigence de variante inférieure du même droïde. Les revenus Stellaires sont ' +
         'documentés pour la quasi-totalité des droïdes standard et se complètent à chaque rafraîchissement des ' +
         'données.',
+    },
+  },
+  {
+    q: { en: 'What is Droid Fusion and how do I get fusion droids like WHL-EX or X-ONK?',
+         fr: 'Qu\'est-ce que la fusion de droïdes et comment obtenir les droïdes fusion comme WHL-EX ou X-ONK ?' },
+    a: {
+      en: 'Droid Fusion is a mechanic added by game patch v1.27 on August 22, 2026, unlocked from rebirth 3. ' +
+        'At the Fusion lab in your base you combine three crafted droids; the exact recipe determines the ' +
+        'result — two Mouse plus one ARG make a WHL-EX, for example — and the fused droid keeps the lowest ' +
+        'variant used (two Gold and one Stellar give a Gold copy). Seventeen droids can only be obtained this ' +
+        'way: WHL-EX, ZRO-TEC and BTL-R (Rare), N-UL, SCRP-R, ARM-CORE and OPT-AR (Epic), RO-TOR, FUS-3, ' +
+        'QIK-BIT and ORB-XL (Legendary), plus RIV-3T, LUG-G, LOW-MO, AXI-POD, SRV-O and X-ONK (Mythic). All ' +
+        'seventeen count in the in-game Droidex — the unified total is now 562 variants — and Droidex tracks ' +
+        'each one like any other droid, with its income, costs and the exact three-droid recipe shown on its ' +
+        'card. Fusing three identical droids upgrades the variant instead (three Basic Mouse give one Gold ' +
+        'Mouse), and three random droids of the same rarity yield a random droid of the rarity above. The D-O ' +
+        'event of August 29, 2026 (patch v1.28) also added D-O, the ninth Iconic droid, whose perk halves ' +
+        'fusion time.',
+      fr: 'La fusion de droïdes est une mécanique ajoutée par le patch v1.27 du 22 août 2026, débloquée dès la ' +
+        'renaissance 3. Au labo de fusion de votre base, vous combinez trois droïdes fabriqués ; la recette ' +
+        'exacte détermine le résultat — deux Mouse plus un ARG donnent un WHL-EX, par exemple — et le droïde ' +
+        'obtenu garde la variante la plus basse utilisée (deux Or et un Stellaire donnent une copie Or). ' +
+        'Dix-sept droïdes ne s\'obtiennent que par fusion : WHL-EX, ZRO-TEC et BTL-R (Rares), N-UL, SCRP-R, ' +
+        'ARM-CORE et OPT-AR (Épiques), RO-TOR, FUS-3, QIK-BIT et ORB-XL (Légendaires), plus RIV-3T, LUG-G, ' +
+        'LOW-MO, AXI-POD, SRV-O et X-ONK (Mythiques). Les dix-sept comptent dans le Droidex du jeu — le total ' +
+        'unifié passe à 562 variantes — et Droidex suit chacun comme n\'importe quel droïde, avec ses revenus, ' +
+        'ses coûts et la recette exacte des trois droïdes affichée sur sa carte. Fusionner trois droïdes ' +
+        'identiques monte la variante d\'un cran (trois Mouse Basic donnent un Mouse Or), et trois droïdes ' +
+        'quelconques d\'une même rareté donnent un droïde aléatoire de la rareté supérieure. L\'événement D-O ' +
+        'du 29 août 2026 (patch v1.28) a aussi ajouté D-O, neuvième droïde Iconique, dont le perk divise le ' +
+        'temps de fusion par deux.',
     },
   },
   {

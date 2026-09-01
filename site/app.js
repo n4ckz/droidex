@@ -417,7 +417,14 @@ function renderDroid(d){
     value='<div class="value-line"><span class="ico-cred" aria-hidden="true"></span>+15%/s'+(d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';
   }
 
-  card.innerHTML=top+badges+value;
+  /* recette de fusion (v1.27) : noms statiques de data.js, jamais de saisie */
+  let fusionLine='';
+  if(d.fus){
+    const names=d.fus.map(id=>DROID_BY_ID[id]?DROID_BY_ID[id].n:id).join(' + ');
+    fusionLine='<div class="value-line fusion-line" title="'+t('fusionHint')+'">⚗ '+names+'</div>';
+  }
+
+  card.innerHTML=top+badges+value+fusionLine;
 
   /* toggles wishlist ☆ et flawless ✦ */
   const actions=card.querySelector('.card-actions');

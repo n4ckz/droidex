@@ -43,6 +43,13 @@ NAME2ID = {
  'CB':'cb','R3':'r3','R5':'r5','DRK-1 PROBE':'drk1','MOUSE':'mouse','PIT':'pit',
  'BB8':'bb8','BB-8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
  'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po','C-3P0':'c3po','CHOPPER':'chopper','C1-10P':'chopper',
+ 'D-O':'do',
+ # Droïdes fusion (patch v1.27 « Droid Fusion » du 22/08/2026) — absents de
+ # tycoon-tools, lus sur le wiki dédié (voir parse_fusion_stats)
+ 'WHL-EX':'whlex','ZRO-TEC':'zrotec','BTL-R':'btlr','N-UL':'nul','SCRP-R':'scrpr',
+ 'ARM-CORE':'armcore','OPT-AR':'optar','RO-TOR':'rotor','FUS-3':'fus3','QIK-BIT':'qikbit',
+ 'ORB-XL':'orbxl','RIV-3T':'riv3t','LUG-G':'lugg','LOW-MO':'lowmo','AXI-POD':'axipod',
+ 'SRV-O':'srvo','X-ONK':'xonk',
 }
 # noms d'affichage droidex (conservés tels quels dans l'interface)
 DISPLAY = {
@@ -58,7 +65,35 @@ DISPLAY = {
  'b2rp':'B2-RP','cyclograv':'Cyclo-Grav','optistrk':'Opti-STRK','snowmouse':'Snow Mouse','ric':'RIC',
  'ric1200':'RIC-1200','lep':'LEP','loadlifter':'Loadlifter','motrak':'MO-TRAK','tritek':'TRI-TEK',
  'cyclens':'CYCLENS','drftr':'DRFT-R','kx':'KX','ig':'IG','bb8':'BB-8','misterbones':'Mister Bones',
- 'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO','chopper':'Chopper',
+ 'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO','chopper':'Chopper','do':'D-O',
+ 'whlex':'WHL-EX','zrotec':'ZRO-TEC','btlr':'BTL-R','nul':'N-UL','scrpr':'SCRP-R',
+ 'armcore':'ARM-CORE','optar':'OPT-AR','rotor':'RO-TOR','fus3':'FUS-3','qikbit':'QIK-BIT',
+ 'orbxl':'ORB-XL','riv3t':'RIV-3T','lugg':'LUG-G','lowmo':'LOW-MO','axipod':'AXI-POD',
+ 'srvo':'SRV-O','xonk':'X-ONK',
+}
+# Recettes de fusion (3 droïdes consommés → 1 droïde fusion, même variante que
+# la moins élevée des trois). Données de jeu stables, relevées sur la page
+# « Droid Fusion » du wiki dédié le 01/09/2026 — statiques comme les ids : une
+# recette ne change qu'avec un patch, et le wiki ne les republie pas en table
+# facilement parsable pour un cron.
+FUSION_RECIPES = {
+ 'whlex':  ['mouse', 'mouse', 'arg'],
+ 'zrotec': ['id10', 'id10', '2bb'],
+ 'btlr':   ['b1battle', 'r9', 'bdx'],
+ 'nul':    ['gunrunner', 'bb', 'b1heavy'],
+ 'scrpr':  ['gonk', 'r6', 'groundmech'],
+ 'armcore':['arg', 'arg', 'b2heavy'],
+ 'optar':  ['r2', 'r2', 'b2super'],
+ 'rotor':  ['pit', 'b1battle', 'bb9'],
+ 'fus3':   ['bu4d', 'bu4d', 'r7'],
+ 'qikbit': ['groundmech', 'groundmech', 'bb9'],
+ 'orbxl':  ['cb', 'gunrunner', 'b2rp'],
+ 'riv3t':  ['ric', 'ig', 'kx'],
+ 'lugg':   ['id10', 'r5', 'loadlifter'],
+ 'lowmo':  ['alt', 'alt', 'loadlifter'],
+ 'axipod': ['bdx', 'r7', 'ric'],
+ 'srvo':   ['b1heavy', 'b1heavy', 'ric1200'],
+ 'xonk':   ['gonk', 'kx', 'kx'],
 }
 TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4, 'GALACTIC': 5,
               'STELLAR': 6}
@@ -143,14 +178,18 @@ WIKI_ALIAS = {'MONO-WALKER': 'monowlkr', 'OPTI-STRIKE': 'optistrk',
               'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek', 'B-U4D': 'bu4d'}
 
 
-def parse_variant_costs():
-    """{id: [coût Basic … coût Stellar]} d'après la page Droidex du wiki
-    (« Droiddex » jusqu'au 03/08/2026 — redirects=1 absorbe les renommages)."""
+def fetch_wiki_droidex():
+    """Wikitext de la page Droidex du wiki dédié (« Droiddex » jusqu'au
+    03/08/2026 — redirects=1 absorbe les renommages)."""
     qs = urllib.parse.urlencode({'action': 'query', 'prop': 'revisions', 'titles': 'Droiddex',
                                  'rvprop': 'content', 'rvslots': 'main', 'format': 'json',
                                  'redirects': 1})
     page = json.loads(fetch(f'{WIKI_API}?{qs}'))['query']['pages']
-    text = next(iter(page.values()))['revisions'][0]['slots']['main']['*']
+    return next(iter(page.values()))['revisions'][0]['slots']['main']['*']
+
+
+def parse_variant_costs(text):
+    """{id: [coût Basic … coût Stellar]} d'après la page Droidex du wiki."""
     parts = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
     chunks = {'Base': parts[0]}
     for i in range(1, len(parts) - 1, 2):
@@ -181,6 +220,56 @@ def _amount(s):
     return float(m.group(1)) * {'': 1, 'K': 1e3, 'M': 1e6, 'B': 1e9, 'T': 1e12}[m.group(2)] if m else None
 
 
+def parse_fusion_stats(text):
+    """Stats des droïdes fusion (v1.27) d'après la même page Droidex du wiki :
+    ils sont absents de tycoon-tools (70 droïdes au 01/09/2026), le wiki est
+    donc leur SEULE source — rareté, classe, perk, revenus et coûts par
+    variante. Leurs lignes portent une astérisque après le nom ([[WHL-EX]]*),
+    que le parseur de coûts standard ne matche pas. Retourne (vals, costs) au
+    format des structures principales ; les revenus passent par check_income
+    et les coûts par check_variant_costs comme le reste."""
+    parts = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
+    chunks = {'Base': parts[0]}
+    for i in range(1, len(parts) - 1, 2):
+        chunks[parts[i].strip()] = parts[i + 1]
+    fus_vals, fus_costs = {}, {}
+    for idx, tab in enumerate(WIKI_TABS):
+        for m in re.finditer(r'\|\s*\[\[([^\]|]+?)(?:\|[^\]]*)?\]\]\*\s*\|\|(.*)',
+                             chunks.get(tab, '')):
+            did = NAME2ID.get(m.group(1).strip().upper())
+            if did not in FUSION_RECIPES:
+                continue
+            cells = [c.strip().lstrip('|').strip() for c in m.group(2).split('||')]
+            if len(cells) < 6:
+                continue
+            if did not in fus_vals:
+                rar = re.search(r'Rarity\|(\w+)', cells[0])
+                typ = re.search(r'File:\s*(Worker|Astromech|Battle)', cells[1])
+                if not rar or not typ:
+                    continue
+                fus_vals[did] = {'rarity': rar.group(1).capitalize(),
+                                 'type': typ.group(1).capitalize(),
+                                 'perk': None, 'inc': [None] * len(WIKI_TABS),
+                                 'beskarCost': None}
+                fus_costs[did] = [None] * len(WIKI_TABS)
+            v = fus_vals[did]
+            if idx == 0 and cells[5] not in ('', '-', '—', 'N/A'):
+                v['perk'] = cells[5]
+            mi = re.fullmatch(r'([\d.]+)\s*([kmbt]?)/s', cells[3].lower())
+            if mi:
+                iv = float(mi.group(1)) * {'': 1, 'k': 1e3, 'm': 1e6, 'b': 1e9, 't': 1e12}[mi.group(2)]
+                v['inc'][idx] = int(iv) if iv == int(iv) else iv
+            cost = re.sub(r'([kmbt])$', lambda x: x.group(1).upper(),
+                          cells[2].replace(',', '').strip())
+            if re.fullmatch(r'[\d.]+[KMBT]?', cost):
+                fus_costs[did][idx] = cost
+                if tab == 'Beskar':
+                    v['beskarCost'] = cost
+    for did, v in fus_vals.items():
+        v['inc'] = check_income(did, v['inc'])
+    return fus_vals, fus_costs
+
+
 def check_variant_costs(vals, costs):
     """Écarte les coquilles du wiki. Dans le jeu, le coût d'une variante vaut un
     multiple FIXE du coût Beskar, propre à chaque couple (rareté, variante) —
@@ -196,8 +285,20 @@ def check_variant_costs(vals, costs):
     l'autre. Mieux vaut une cellule vide qu'un chiffre faux.
 
     Le coût Beskar n'est jamais pris ici : tycoon-tools, notre source
-    principale, le publie déjà — c'est lui qui fait foi."""
+    principale, le publie déjà — c'est lui qui fait foi. Exception : pour les
+    droïdes FUSION, absents de tycoon-tools, l'ancre Beskar vient du wiki
+    lui-même (posée dans vals par parse_fusion_stats).
+
+    Les courbes de coût des droïdes fusion suivent les mêmes multiples que les
+    standard de leur rareté (vérifié le 01/09/2026 : Base, Or, Diamant,
+    Galactique et Stellar identiques) SAUF l'Arc-en-ciel (×16 du Basic en
+    Épique fusion contre ×12 en standard, ×0,04 du Beskar en Légendaire contre
+    ×0,03…) : cette variante-là est contrôlée dans une cohorte fusion séparée,
+    tout le reste est mis en commun — ce qui permet aux médianes standard
+    d'écarter les coquilles du wiki même quand des clones de stats fusion la
+    partagent (vécu au premier parsing : « 47B » sur trois Épiques jumeaux)."""
     beskar = WIKI_TABS.index('Beskar')
+    rainbow = WIKI_TABS.index('Rainbow')
     ratios = {}
     for did, series in costs.items():
         anchor = _amount(vals.get(did, {}).get('beskarCost'))
@@ -206,12 +307,13 @@ def check_variant_costs(vals, costs):
         for idx, cost in enumerate(series):
             value = _amount(cost)
             if value and idx != beskar:
-                ratios.setdefault((vals[did]['rarity'], idx), []).append((did, value / anchor))
+                grp = (vals[did]['rarity'], idx, idx == rainbow and did in FUSION_RECIPES)
+                ratios.setdefault(grp, []).append((did, value / anchor))
     kept, dropped = {}, 0
     for did in costs:
         if vals.get(did, {}).get('beskarCost'):
             kept.setdefault(did, [None] * len(WIKI_TABS))[beskar] = vals[did]['beskarCost']
-    for (rarity, idx), pairs in ratios.items():
+    for (rarity, idx, _fus), pairs in ratios.items():
         ordered = sorted(r for _, r in pairs)
         median = ordered[len(ordered) // 2]
         for did, ratio in pairs:
@@ -226,6 +328,23 @@ def check_variant_costs(vals, costs):
     if dropped:
         print(f'  {dropped} valeur(s) écartée(s) au total')
     return kept
+
+
+def parse_previous_fusion(current):
+    """Relit dans le data.js en place les droïdes fusion déjà publiés. Repli
+    quand le wiki (leur seule source) est injoignable ou troué : une valeur
+    publiée, validée à l'époque, ne disparaît pas parce que la source a un
+    trou — même doctrine que pour les coûts de variantes."""
+    out = {}
+    for m in re.finditer(r"\{id:'([^']+)',n:'[^']*',t:'([^']*)',r:'([^']*)',"
+                         r"inc:\[([^\]]*)\](?:,bskCost:'([^']*)')?(?:,cost:\[[^\]]*\])?,"
+                         r"fusion:true,fus:\[[^\]]*\](?:,perk:'([^']*)')?\},", current):
+        did, typ, rar, inc, bsk, perk = m.groups()
+        out[did] = {'rarity': rar, 'type': typ, 'perk': perk,
+                    'inc': ([None if x == 'null' else (float(x) if '.' in x else int(x))
+                             for x in inc.split(',')] + [None] * len(WIKI_TABS))[:len(WIKI_TABS)],
+                    'beskarCost': bsk}
+    return out
 
 
 def parse_rebirths():
@@ -281,10 +400,14 @@ def droid_line(did, vals):
         parts.append('iconic:true')
     else:
         parts.append('inc:[' + ','.join(js_num(x) for x in v['inc']) + ']')
-        parts.append(f"bskCost:{js_str(v['beskarCost'], did + '.beskarCost')}")
+        if v['beskarCost']:
+            parts.append(f"bskCost:{js_str(v['beskarCost'], did + '.beskarCost')}")
         if v.get('costs'):
             parts.append('cost:[' + ','.join(
                 js_str(c, f'{did}.cost') if c else 'null' for c in v['costs']) + ']')
+    if did in FUSION_RECIPES:
+        parts.append('fusion:true')
+        parts.append('fus:[' + ','.join(f"'{i}'" for i in FUSION_RECIPES[did]) + ']')
     if v['perk']:
         parts.append(f"perk:{js_str(v['perk'], did + '.perk')}")
     return ' {' + ','.join(parts) + '},'
@@ -313,6 +436,9 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    le wiki dédié (seul champ venu d'une autre source, et seulement si son
    rapport au coût Beskar est celui de son couple rareté/variante)
    perk: bonus passif (termes du jeu)
+   fusion/fus: droïde obtenable uniquement par Droid Fusion (patch v1.27 du
+   22/08/2026) — fus liste les 3 ids consommés par la recette ; toutes les
+   stats de ces droïdes viennent du wiki dédié (absents de tycoon-tools)
    Les Iconiques rapportent +15%/s (pas de variantes).
    ========================================================================= */
 
@@ -321,7 +447,10 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
 
 const DROIDS = [""")
     for rar in RARITY_ORDER:
-        ids = [d for d in DISPLAY if vals[d]['rarity'] == rar]
+        # un id de DISPLAY peut manquer de vals (droïde fusion dont ni le wiki
+        # ni le data.js précédent n'ont fourni les stats) : on le saute plutôt
+        # que de planter le cron
+        ids = [d for d in DISPLAY if d in vals and vals[d]['rarity'] == rar]
         ids.sort(key=lambda d: (TYPE_ORDER[vals[d]['type']],
                                 -(vals[d]['inc'][0] or 0) if vals[d]['inc'] else 0, DISPLAY[d]))
         L.append(f' /* {rar} */')
@@ -366,8 +495,13 @@ def main():
     # (+25% workers, 18/07/2026) prime tant que la source ne le documente pas.
     if not vals['c3po'].get('perk'):
         vals['c3po']['perk'] = '+25% workers'
+    # D-O, 9e Iconique (événement D-O, patch v1.28 du 29/08/2026) : absent de
+    # tycoon-tools, perk relevé sur le wiki dédié — même doctrine que C-3PO,
+    # la source primera dès qu'elle le référencera.
+    vals.setdefault('do', {'rarity': 'Iconic', 'type': 'Worker',
+                           'perk': 'Half Fusion Time', 'inc': [None] * 7, 'beskarCost': None})
     rebirths, unlocks, credits = parse_rebirths()
-    print(f'  {len(vals)} droïdes · {len(rebirths)} cycles × {len(rebirths[1])} renaissances')
+    print(f'  {len(vals)} droïdes (tycoon-tools + iconiques) · {len(rebirths)} cycles × {len(rebirths[1])} renaissances')
 
     current = OUT.read_text() if OUT.exists() else ''
     # Coût du palier Galactique : absent de tycoon-tools, lu sur le wiki dédié.
@@ -378,8 +512,25 @@ def main():
     previous = {did: ([c or None for c in re.findall(r"'([^']*)'|null", series)] +
                       [None] * len(WIKI_TABS))[:len(WIKI_TABS)]
                 for did, series in re.findall(r"\{id:'([^']+)'.*?cost:\[([^\]]*)\]", current)}
+    prev_fus = parse_previous_fusion(current)
     try:
-        costs = check_variant_costs(vals, parse_variant_costs())
+        wikitext = fetch_wiki_droidex()
+        all_costs = parse_variant_costs(wikitext)
+        fus_vals, fus_costs = parse_fusion_stats(wikitext)
+        # trous du wiki comblés par les valeurs fusion déjà publiées
+        for did, old in prev_fus.items():
+            v = fus_vals.setdefault(did, old)
+            v['inc'] = [cur if cur is not None else prev
+                        for cur, prev in zip(v['inc'], old['inc'])]
+            v['perk'] = v['perk'] or old['perk']
+            v['beskarCost'] = v['beskarCost'] or old['beskarCost']
+        missing = sorted(set(FUSION_RECIPES) - set(fus_vals))
+        if missing:
+            print(f'  ⚠ droïde(s) fusion sans stats (wiki muet, jamais publiés) : {", ".join(missing)}')
+        print(f'  {len(fus_vals)} droïdes fusion lus sur le wiki dédié (leur seule source)')
+        vals.update(fus_vals)
+        all_costs.update(fus_costs)
+        costs = check_variant_costs(vals, all_costs)
         # une valeur déjà publiée (donc validée à l'époque contre le multiple)
         # ne disparaît pas parce que le wiki l'a remplacée par une coquille ou
         # retirée : la cellule vide reprend la valeur en place. Une correction
@@ -398,8 +549,11 @@ def main():
               f'({len(costs)} droïdes × {len(WIKI_TABS)} paliers)')
     except Exception as e:
         costs = previous
+        for did, old in prev_fus.items():
+            vals.setdefault(did, old)
         print(f'  ⚠ wiki injoignable ({e.__class__.__name__}) — '
-              f'{len(costs)} séries de coûts conservées depuis data.js')
+              f'{len(costs)} séries de coûts et {len(prev_fus)} droïdes fusion '
+              f'conservés depuis data.js')
     for did, series in costs.items():
         if did in vals:
             vals[did]['costs'] = series
