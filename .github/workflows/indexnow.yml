@@ -1,0 +1,22 @@
+# Ping IndexNow (Bing/Yandex/Naver/Seznam) à chaque changement du site
+# publié sur main — releases comme PR bot mergées. Google n'utilise pas
+# IndexNow : ce workflow ne concerne que l'écosystème Bing.
+name: IndexNow ping
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**']
+  workflow_dispatch:
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: true
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Submit sitemap URLs to IndexNow
+        run: python3 tools/indexnow-ping.py
