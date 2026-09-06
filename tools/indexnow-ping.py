@@ -28,6 +28,19 @@ def main():
     urls = re.findall(r'<loc>([^<]+)</loc>', SITEMAP.read_text())
     if not urls:
         sys.exit('✗ aucune URL dans site/sitemap.xml')
+    # Garde-fou : ne JAMAIS pinger si la clé n'est pas servie en prod — vécu le
+    # 02/09/2026 : premier ping parti 69 s avant le déploiement du fichier,
+    # bingbot a validé sur un 404 et a tenu la clé pour invalide pendant 4 jours.
+    if '--check' not in sys.argv:
+        key_url = f'https://{HOST}/{KEY}.txt'
+        try:
+            req = urllib.request.Request(key_url, headers={'User-Agent': 'droidex-indexnow/1.0'})
+            with urllib.request.urlopen(req, timeout=15) as r:
+                served = r.read().decode('utf-8', 'replace').strip()
+        except Exception as e:
+            sys.exit(f'✗ clé injoignable ({key_url}) : {e} — pinger seulement APRÈS le déploiement.')
+        if served != KEY:
+            sys.exit(f'✗ {key_url} ne sert pas la clé attendue — pinger seulement APRÈS le déploiement.')
     payload = {
         'host': HOST,
         'key': KEY,
