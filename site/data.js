@@ -4,7 +4,7 @@
    Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
    main : relancer le script puis relire le diff.
 
-   Sources communautaires (recoupées le 01/09/2026) :
+   Sources communautaires (recoupées le 13/09/2026) :
    - Exigences de renaissance (5 cycles × 35) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
@@ -50,7 +50,7 @@ const DROIDS = [
  {id:'balcore',n:'Bal-Core',t:'Worker',r:'Rare',inc:[23,46,92,184,276,552,736],bskCost:'688K',cost:['43K','172K','344K','516K','688K','860K',null],perk:'1.2 craft speed'},
  {id:'bdx',n:'BDX Explorer',t:'Worker',r:'Rare',inc:[15,30,60,120,180,360,480],bskCost:'400K',cost:['25K','100K','200K','300K','400K','500K','600K'],perk:'1.2 craft speed'},
  {id:'zrotec',n:'ZRO-TEC',t:'Astromech',r:'Rare',inc:[72,144,288,576,864,1730,2300],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M'],fusion:true,fus:['id10','id10','2bb'],perk:'+2 Pickaxe Level'},
- {id:'r9',n:'R9',t:'Astromech',r:'Rare',inc:[54,108,216,432,648,1300,null],bskCost:'1.92M',cost:['120K','480K','960K','1.44M','1.92M','2.4M','2.88M'],perk:'+6 pickaxe'},
+ {id:'r9',n:'R9',t:'Astromech',r:'Rare',inc:[54,108,216,432,648,1300,1700],bskCost:'1.92M',cost:['120K','480K','960K','1.44M','1.92M','2.4M','2.88M'],perk:'+6 pickaxe'},
  {id:'r4',n:'R4',t:'Astromech',r:'Rare',inc:[50,100,200,400,600,1200,1600],bskCost:'1.76M',cost:['110K','440K','880K','1.32M','1.76M','2.2M','2.64M'],perk:'+6 pickaxe'},
  {id:'alt',n:'A-LT',t:'Astromech',r:'Rare',inc:[36,72,144,288,432,864,1100],bskCost:'1.18M',cost:['74K','296K','592K','885K','1.18M','1.48M','1.78M'],perk:'+6 pickaxe'},
  {id:'2bb',n:'2BB',t:'Astromech',r:'Rare',inc:[17,34,68,136,204,408,544],bskCost:'480K',cost:['30K','120K','240K','360K','480K','600K','720K'],perk:'+6 pickaxe'},
@@ -115,7 +115,7 @@ const DROIDS = [
  {id:'ig',n:'IG',t:'Battle',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T'],perk:'+260 max HP'},
  /* Iconic */
  {id:'c3po',n:'C-3PO',t:'Worker',r:'Iconic',iconic:true,perk:'100% Droid Sell Value'},
- {id:'do',n:'D-O',t:'Worker',r:'Iconic',iconic:true,perk:'Half Fusion Time'},
+ {id:'do',n:'D-O',t:'Worker',r:'Iconic',iconic:true,perk:'50% Fusion Time'},
  {id:'djr3x',n:'DJ R-3X',t:'Worker',r:'Iconic',iconic:true,perk:'×2 World Quest Rewards'},
  {id:'bb8',n:'BB-8',t:'Astromech',r:'Iconic',iconic:true,perk:'100% Upgrade Chips'},
  {id:'cb23',n:'CB-23',t:'Astromech',r:'Iconic',iconic:true,perk:'Secret Astromech Mission'},
@@ -320,6 +320,6 @@ const REBIRTHS = {
 };
 
 /* Emplacements débloqués (cycle 1 uniquement) */
-const RB_UNLOCKS = {1:'Worker Slot',2:'Astromech Slot',3:'Battle Slot',4:'Worker Slot',5:'Astromech Slot',6:'Battle Slot',7:'Worker Slot',8:'Astromech Slot',9:'Battle Slot',10:'Worker Slot',11:'Astromech Slot',12:'Worker Slot',13:'Astromech Slot',14:'Worker Slot',15:'Astromech Slot',16:'Worker Slot',17:'Lounge Slot',18:'Lounge Slot',19:'Lounge Slot',20:'Lounge Slot'};
+const RB_UNLOCKS = {1:'Worker Slot',2:'Astromech Slot',3:'Battle Slot',4:'Worker Slot',5:'Astromech Slot',6:'Battle Slot',7:'Worker Slot',8:'Astromech Slot',9:'Battle Slot',10:'Worker Slot',11:'Astromech Slot',12:'Worker Slot',13:'Astromech Slot',14:'Worker Slot',15:'Astromech Slot',16:'Worker Slot',17:'Lounge',18:'Lounge Slot',19:'Lounge Slot',20:'Lounge Slot',21:'Battle Slot'};
 
 const RARITY_ORDER = ['Common','Rare','Epic','Legendary','Mythic','Iconic'];

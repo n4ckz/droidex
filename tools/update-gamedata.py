@@ -43,7 +43,7 @@ NAME2ID = {
  'CB':'cb','R3':'r3','R5':'r5','DRK-1 PROBE':'drk1','MOUSE':'mouse','PIT':'pit',
  'BB8':'bb8','BB-8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
  'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po','C-3P0':'c3po','CHOPPER':'chopper','C1-10P':'chopper',
- 'D-O':'do',
+ 'D-O':'do','D-0':'do',
  # Droïdes fusion (patch v1.27 « Droid Fusion » du 22/08/2026) — absents de
  # tycoon-tools, lus sur le wiki dédié (voir parse_fusion_stats)
  'WHL-EX':'whlex','ZRO-TEC':'zrotec','BTL-R':'btlr','N-UL':'nul','SCRP-R':'scrpr',
@@ -121,10 +121,12 @@ def parse_income(s):
     s = s.strip()
     if s in ('—', '', '-') or '%' in s:
         return None
-    m = re.match(r'([\d.]+)(K?)/s', s)
+    m = re.match(r'([\d.]+)([KMB]?)/s', s)
     if not m:
         raise ValueError(f'revenu illisible : {s!r}')
-    v = float(m.group(1)) * (1000 if m.group(2) == 'K' else 1)
+    # Suffixes de la source : K (13/07), M apparu le 05/09/2026 (Stellar
+    # d'un Iconique à 1.05M/s), B par anticipation.
+    v = float(m.group(1)) * {'': 1, 'K': 1_000, 'M': 1_000_000, 'B': 1_000_000_000}[m.group(2)]
     return int(v) if v == int(v) else v
 
 

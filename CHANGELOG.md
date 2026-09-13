@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.17.1 — 2026-09-13
+
+- Game data: R9's Stellar income is now documented by the main source (the last missing Stellar value), D-O's companion perk follows the main source wording ("50% Fusion Time"), and rebirth 21 gains its unlock note (Battle Slot).
+- Fixed the daily data-watch pipeline, blocked since September 5: the source now prints incomes in millions ("1.05M/s") and lists D-O under the spelling "D-0", both of which the generator refused.
+
 ## 1.17.0 — 2026-09-01
 
 - Droid Fusion update (game patch v1.27, August 22): the 17 fusion-exclusive droids — WHL-EX, ZRO-TEC, BTL-R, N-UL, SCRP-R, ARM-CORE, OPT-AR, RO-TOR, FUS-3, QIK-BIT, ORB-XL, RIV-3T, LUG-G, LOW-MO, AXI-POD, SRV-O, X-ONK — join the tracker with income, per-variant costs and the exact three-droid fusion recipe shown on each card (⚗). Their stats come from the dedicated wiki (they are absent from our main data source) under the same fixed-multiple and monotonic-income guards, with a fallback to the last published values if the wiki is unreachable.
