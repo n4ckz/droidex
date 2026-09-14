@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.18.0 — 2026-09-14
+
+- Anonymous audience measurement: every public page (tracker, content pages in English and French) now loads a self-hosted Umami script — cookieless, no personal data (IP hashed with a daily salt), so no consent banner. The FAQ, the home page text, llms.txt and the README describe it; the Content-Security-Policy allows the Umami origin. Self-hosters can remove the tag or point it to their own instance (see README).
+
 ## 1.17.1 — 2026-09-13
 
 - Game data: R9's Stellar income is now documented by the main source (the last missing Stellar value), D-O's companion perk follows the main source wording ("50% Fusion Time"), and rebirth 21 gains its unlock note (Battle Slot).

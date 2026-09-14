@@ -28,7 +28,7 @@ The game features a Droidex of 200+ collectible droids across 7 variants (Basic,
 - **Live player counter**: "● 12.5K in game" in the header — concurrent players on the island, straight from Epic's official Ecosystem API, refreshed every 5 minutes (hidden gracefully when offline). A full [stats page](https://droidex.nackz.dev/stats/) adds daily peaks, retention and charts.
 - **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
 - **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2, C-3PO, Chopper, D-O): simple owned + in-base toggles, no variants.
-- **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no tracking, no mandatory signup.
+- **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no cookies, no mandatory signup.
 - **JSON export/import** as a fallback, or to stay 100 % offline.
 - **Two languages**: English (default) and French, switchable from the header dropdown.
 
@@ -127,7 +127,7 @@ That's it: the site's "Sign in with Google" button now works. The `saves` collec
 
 ### Self-hosting and SEO files
 
-`site/index.html` (canonical URL, Open Graph, JSON-LD), `site/robots.txt`, `site/sitemap.xml` and `site/llms.txt` reference the official instance `https://droidex.nackz.dev`. If you host your own public instance, replace those URLs with your domain.
+`site/index.html` (canonical URL, Open Graph, JSON-LD), `site/robots.txt`, `site/sitemap.xml` and `site/llms.txt` reference the official instance `https://droidex.nackz.dev`. If you host your own public instance, replace those URLs with your domain. The Umami analytics tag (`umami.nackz.dev`, in `site/index.html` and in the page template of `tools/generate-seo-pages.js`) points to the official instance too: remove it or point it to your own Umami, and adjust the `Content-Security-Policy` in `deploy/security-headers.conf` accordingly.
 
 ### Without Traefik / without sync
 
@@ -217,7 +217,7 @@ Since v1.9.0, divergence between a device and the account is resolved **automati
 
 ### Personal data (GDPR)
 
-Accounts are optional. When one is created, PocketBase stores the Google email, the profile name and the collection registry — nothing else, no tracking. The "Delete my account" button removes the account **and** its backup (cascade deletion), with no admin intervention. If you host a public instance, remember to adapt the contact info in the footer.
+Accounts are optional. When one is created, PocketBase stores the Google email, the profile name and the collection registry — nothing else. Audience is measured with a self-hosted [Umami](https://umami.is/) instance: no cookies, no personal data (IP hashed with a daily salt), so no consent banner is required. To exclude your own visits, run `localStorage.setItem('umami.disabled', '1')` once in the browser console. The "Delete my account" button removes the account **and** its backup (cascade deletion), with no admin intervention. If you host a public instance, remember to adapt the contact info in the footer.
 
 ## Game data and known limitations
 

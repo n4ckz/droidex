@@ -256,6 +256,7 @@ function page({ lang, slug, title, description, jsonld, h1, bodyHtml, extraHead 
 ${JSON.stringify(jsonld, null, 2)}
 </script>
 <script src="${rel}lang-redirect.js" defer></script>
+<script defer src="https://umami.nackz.dev/script.js" data-website-id="8d4cdf0e-f8c2-440d-8c94-50f6068bb634"></script>
 ${extraHead}</head>
 <body class="seo-page">
 <header class="seo-header">
@@ -821,12 +822,16 @@ const FAQ = [
   {
     q: { en: 'Is Droidex free? Does it need an account?', fr: 'Droidex est-il gratuit ? Faut-il un compte ?' },
     a: {
-      en: 'Droidex is completely free, has no ads and no tracking. It works fully without an account: your registry ' +
+      en: 'Droidex is completely free and has no ads. Audience is measured anonymously, without cookies, on a ' +
+        'self-hosted Umami instance (no personal data, IP hashed with a daily salt), so no consent banner is needed. ' +
+        'It works fully without an account: your registry ' +
         'is saved locally in your browser and never leaves your device. Creating an optional account via Google ' +
         'sign-in lets you sync that same registry across multiple devices; in that case only your email address and ' +
         "your registry data are stored on the server, and both can be deleted at any time from the app with the " +
         "\"Delete my account\" button.",
-      fr: 'Droidex est entièrement gratuit, sans publicité ni tracking. Il fonctionne sans compte : le registre est ' +
+      fr: 'Droidex est entièrement gratuit et sans publicité. La fréquentation fait l\'objet d\'une mesure d\'audience anonyme, ' +
+        'sans cookie, sur une instance Umami auto-hébergée (aucune donnée personnelle, IP hachée). ' +
+        'Il fonctionne sans compte : le registre est ' +
         'sauvegardé localement dans le navigateur et ne quitte jamais l\'appareil. Un compte optionnel via ' +
         '« Se connecter avec Google » permet de synchroniser le registre entre appareils ; dans ce cas, seuls ' +
         'l\'adresse email et le registre sont stockés sur le serveur, et les deux sont supprimables à tout moment ' +

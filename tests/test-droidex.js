@@ -453,6 +453,24 @@ const setTarget = (w, rb) => {
     assert(/name="description" content="[^"]*Galactic/.test(home), 'home : meta description à jour (Galactic)');
     assert(home.includes('"sameAs"') && home.includes('x.com/Nackz_X'), 'home : JSON-LD sameAs (GitHub + X)');
     assert(rb.includes('"sameAs"') && faq.includes('"sameAs"'), 'pages SEO : sameAs dans le JSON-LD');
+    // v1.18.0 : mesure d'audience anonyme (Umami auto-hébergé, sans cookie) —
+    // la balise doit être dans le <head> de TOUTES les pages publiques, et
+    // la CSP doit laisser passer le script et ses envois
+    const UMAMI = '<script defer src="https://umami.nackz.dev/script.js" data-website-id="8d4cdf0e-f8c2-440d-8c94-50f6068bb634"></script>';
+    ['index.html', 'value-list/index.html', 'rebirth-requirements/index.html', 'faq/index.html', 'stats/index.html',
+      'fr/value-list/index.html', 'fr/rebirth-requirements/index.html', 'fr/faq/index.html', 'fr/stats/index.html']
+      .forEach(f => {
+        const pg = read(f);
+        const head = pg.slice(0, pg.indexOf('</head>'));
+        assert(head.includes(UMAMI), 'umami : balise dans le <head> de ' + f);
+      });
+    const csp = fs.readFileSync(path.join(SITE, '..', 'deploy', 'security-headers.conf'), 'utf8');
+    assert(/script-src[^;]*https:\/\/umami\.nackz\.dev/.test(csp) && /connect-src[^;]*https:\/\/umami\.nackz\.dev/.test(csp),
+      'umami : CSP script-src + connect-src');
+    assert(faq.includes('measured anonymously, without cookies') && faqfr.includes('mesure d\'audience anonyme'),
+      'FAQ EN+FR : la mesure d\'audience anonyme est déclarée');
+    assert(!faq.includes('no tracking') && !home.includes('no tracking'),
+      'plus de promesse « no tracking » (inexacte depuis Umami)');
     const sm = read('sitemap.xml');
     assert((sm.match(/<loc>/g) || []).length === 9, 'sitemap : 9 URLs (1 + 4 EN + 4 FR)');
     ['value-list','rebirth-requirements','stats','faq'].forEach(p => {
