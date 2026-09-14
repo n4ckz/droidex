@@ -454,19 +454,25 @@ const setTarget = (w, rb) => {
     assert(home.includes('"sameAs"') && home.includes('x.com/Nackz_X'), 'home : JSON-LD sameAs (GitHub + X)');
     assert(rb.includes('"sameAs"') && faq.includes('"sameAs"'), 'pages SEO : sameAs dans le JSON-LD');
     // v1.18.0 : mesure d'audience anonyme (Umami auto-hébergé, sans cookie) —
-    // la balise doit être dans le <head> de TOUTES les pages publiques, et
-    // la CSP doit laisser passer le script et ses envois
-    const UMAMI = '<script defer src="https://umami.nackz.dev/script.js" data-website-id="8d4cdf0e-f8c2-440d-8c94-50f6068bb634"></script>';
+    // la balise doit être dans le <head> de TOUTES les pages publiques.
+    // v1.18.1 : servie en PREMIÈRE PARTIE (chemin relatif u/script.js proxifié
+    // par nginx), donc la CSP reste 'self' strict et ne cite plus umami.nackz.dev
+    const UMAMI = /<script defer src="(\.\.\/)*u\/script\.js" data-website-id="8d4cdf0e-f8c2-440d-8c94-50f6068bb634"><\/script>/;
     ['index.html', 'value-list/index.html', 'rebirth-requirements/index.html', 'faq/index.html', 'stats/index.html',
       'fr/value-list/index.html', 'fr/rebirth-requirements/index.html', 'fr/faq/index.html', 'fr/stats/index.html']
       .forEach(f => {
         const pg = read(f);
         const head = pg.slice(0, pg.indexOf('</head>'));
-        assert(head.includes(UMAMI), 'umami : balise dans le <head> de ' + f);
+        assert(UMAMI.test(head), 'umami : balise première partie dans le <head> de ' + f);
       });
     const csp = fs.readFileSync(path.join(SITE, '..', 'deploy', 'security-headers.conf'), 'utf8');
-    assert(/script-src[^;]*https:\/\/umami\.nackz\.dev/.test(csp) && /connect-src[^;]*https:\/\/umami\.nackz\.dev/.test(csp),
-      'umami : CSP script-src + connect-src');
+    assert(!csp.includes('umami.nackz.dev') && csp.includes("script-src 'self';"),
+      'umami : CSP strictement self (proxy première partie)');
+    const ngx = fs.readFileSync(path.join(SITE, '..', 'deploy', 'nginx.conf'), 'utf8');
+    assert(/location \/u\/ \{[\s\S]*proxy_pass \$umami;/.test(ngx) && ngx.includes('${UMAMI_UPSTREAM}'),
+      'nginx : location /u/ proxifiée vers ${UMAMI_UPSTREAM}');
+    assert(fs.readFileSync(path.join(SITE, '..', 'Dockerfile'), 'utf8').includes('templates/default.conf.template'),
+      'Dockerfile : nginx.conf installé comme gabarit (substitution de UMAMI_UPSTREAM)');
     assert(faq.includes('measured anonymously, without cookies') && faqfr.includes('mesure d\'audience anonyme'),
       'FAQ EN+FR : la mesure d\'audience anonyme est déclarée');
     assert(!faq.includes('no tracking') && !home.includes('no tracking'),

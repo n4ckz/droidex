@@ -3,6 +3,9 @@
 #   DROIDEX_DOMAIN=droidex.mondomaine.fr   (site ; l'API est servie sur api.<domaine>)
 #   TRAEFIK_NETWORK=proxy                  (nom du réseau externe de Traefik)
 #   TRAEFIK_CERTRESOLVER=letsencrypt       (nom du résolveur de certificats)
+#   UMAMI_UPSTREAM=http://umami:3000       (optionnel : conteneur Umami joignable
+#                                           depuis le réseau proxy, pour la mesure
+#                                           d'audience proxifiée sous /u/)
 # Le DNS du domaine ET de api.<domaine> doit pointer vers le VPS.
 # Pour un test local sans Traefik : docker compose -f docker-compose.local.yml up -d
 
@@ -16,6 +19,8 @@ services:
       # journal d'accès persistant (les logs stdout meurent avec le conteneur)
       # rotation côté hôte : deploy/logrotate-droidex → /etc/logrotate.d/droidex
       - ./logs:/var/log/droidex
+    environment:
+      - UMAMI_UPSTREAM=${UMAMI_UPSTREAM:-http://umami:3000}
     networks:
       - proxy
     labels:

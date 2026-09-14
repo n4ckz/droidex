@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.18.1 — 2026-09-14
+
+- Audience measurement served first-party: the Umami script and its beacon now go through the site's own domain (`/u/`, proxied by nginx to the Umami container, target configurable with `UMAMI_UPSTREAM`), so ad blockers no longer discard those visits and the Content-Security-Policy is back to strict `'self'` with no third-party request. Without an Umami upstream (local compose, self-hosting without analytics) the path answers 502 and nothing else is affected.
+
 ## 1.18.0 — 2026-09-14
 
 - Anonymous audience measurement: every public page (tracker, content pages in English and French) now loads a self-hosted Umami script — cookieless, no personal data (IP hashed with a daily salt), so no consent banner. The FAQ, the home page text, llms.txt and the README describe it; the Content-Security-Policy allows the Umami origin. Self-hosters can remove the tag or point it to their own instance (see README).

@@ -256,7 +256,7 @@ function page({ lang, slug, title, description, jsonld, h1, bodyHtml, extraHead 
 ${JSON.stringify(jsonld, null, 2)}
 </script>
 <script src="${rel}lang-redirect.js" defer></script>
-<script defer src="https://umami.nackz.dev/script.js" data-website-id="8d4cdf0e-f8c2-440d-8c94-50f6068bb634"></script>
+<script defer src="${rel}u/script.js" data-website-id="8d4cdf0e-f8c2-440d-8c94-50f6068bb634"></script>
 ${extraHead}</head>
 <body class="seo-page">
 <header class="seo-header">

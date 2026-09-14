@@ -127,7 +127,7 @@ That's it: the site's "Sign in with Google" button now works. The `saves` collec
 
 ### Self-hosting and SEO files
 
-`site/index.html` (canonical URL, Open Graph, JSON-LD), `site/robots.txt`, `site/sitemap.xml` and `site/llms.txt` reference the official instance `https://droidex.nackz.dev`. If you host your own public instance, replace those URLs with your domain. The Umami analytics tag (`umami.nackz.dev`, in `site/index.html` and in the page template of `tools/generate-seo-pages.js`) points to the official instance too: remove it or point it to your own Umami, and adjust the `Content-Security-Policy` in `deploy/security-headers.conf` accordingly.
+`site/index.html` (canonical URL, Open Graph, JSON-LD), `site/robots.txt`, `site/sitemap.xml` and `site/llms.txt` reference the official instance `https://droidex.nackz.dev`. If you host your own public instance, replace those URLs with your domain. The Umami analytics tag (in `site/index.html` and in the page template of `tools/generate-seo-pages.js`) loads `u/script.js`, a first-party path that nginx proxies to an Umami container (`UMAMI_UPSTREAM` in `.env`, default `http://umami:3000` on the shared Docker network — see `deploy/nginx.conf`). Set the variable to your own instance and put your website id in the tag, or remove the tag: without an Umami upstream the `/u/` path simply answers 502 and nothing else is affected.
 
 ### Without Traefik / without sync
 
@@ -217,7 +217,7 @@ Since v1.9.0, divergence between a device and the account is resolved **automati
 
 ### Personal data (GDPR)
 
-Accounts are optional. When one is created, PocketBase stores the Google email, the profile name and the collection registry — nothing else. Audience is measured with a self-hosted [Umami](https://umami.is/) instance: no cookies, no personal data (IP hashed with a daily salt), so no consent banner is required. To exclude your own visits, run `localStorage.setItem('umami.disabled', '1')` once in the browser console. The "Delete my account" button removes the account **and** its backup (cascade deletion), with no admin intervention. If you host a public instance, remember to adapt the contact info in the footer.
+Accounts are optional. When one is created, PocketBase stores the Google email, the profile name and the collection registry — nothing else. Audience is measured with a self-hosted [Umami](https://umami.is/) instance, served first-party through nginx: no cookies, no personal data (IP hashed with a daily salt), no third-party request, so no consent banner is required. To exclude your own visits, run `localStorage.setItem('umami.disabled', '1')` once in the browser console. The "Delete my account" button removes the account **and** its backup (cascade deletion), with no admin intervention. If you host a public instance, remember to adapt the contact info in the footer.
 
 ## Game data and known limitations
 
