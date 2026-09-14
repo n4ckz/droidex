@@ -296,7 +296,7 @@ function refreshLiveCcu(){
     .catch(()=>{ liveCcu=null; renderLiveCcu(); });
 }
 
-const FILTER_DEFS=[['all','filterAll'],['keep','filterKeep'],['missing','filterMissing'],['base','filterBase'],['wish','filterWish'],['Worker','filterWorker'],['Astromech','filterAstromech'],['Battle','filterBattle']];
+const FILTER_DEFS=[['all','filterAll'],['keep','filterKeep'],['missing','filterMissing'],['base','filterBase'],['wish','filterWish'],['Worker','filterWorker'],['Astromech','filterAstromech'],['Battle','filterBattle'],['Protocol','filterProtocol']];
 function countFor(f){
   const prev=filter; filter=f;
   const n=DROIDS.filter(droidMatches).length;
@@ -409,7 +409,10 @@ function renderDroid(d){
   }
 
   let value='';
-  if(d.inc){
+  if(d.inc && !d.inc.some(x=>x!=null)){
+    /* droïde aux stats encore inconnues (Protocol v1.30 : aucune source) — seul le perk */
+    if(d.perk) value='<div class="value-line"><span class="dim">'+d.perk+'</span></div>';
+  }else if(d.inc){
     value='<div class="value-line"><span class="ico-cred" aria-hidden="true"></span>'+fmtInc(d.inc[0])+'/s → '+fmtInc(d.inc[4])+'/s'+
       (d.bskCost?' <span class="dim">· BSK '+d.bskCost+'</span>':'')+
       (d.perk?' <span class="dim">· '+d.perk+'</span>':'')+'</div>';

@@ -132,6 +132,8 @@ header{border-bottom:1px solid rgba(var(--acc-rgb),.25)}
 .type-ico.t-worker{background-image:url('icons/game/worker.webp')}
 .type-ico.t-astromech{background-image:url('icons/game/astromech.webp')}
 .type-ico.t-battle{background-image:url('icons/game/battle.webp')}
+/* Protocol (v1.30) : pictogramme SVG provisoire, l'icône du jeu n'est pas encore disponible */
+.type-ico.t-protocol{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><rect x='6' y='2' width='8' height='9' rx='3' fill='%23d9b45a'/><circle cx='8.3' cy='6' r='1.2' fill='%23101120'/><circle cx='11.7' cy='6' r='1.2' fill='%23101120'/><rect x='8' y='11' width='4' height='3' fill='%23b8933f'/><path d='M4 18c0-3 2.5-4.5 6-4.5s6 1.5 6 4.5z' fill='%23d9b45a'/></svg>")}
 .card-actions{margin-left:auto;display:inline-flex;gap:2px}
 .icon-btn{background:none;border:none;cursor:pointer;font-size:13px;line-height:1;padding:2px 4px;color:var(--n-500)}
 .icon-btn.on-wish{color:var(--accent)}

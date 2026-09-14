@@ -51,6 +51,7 @@ const I18N = {
     filterBase: 'In base',
     filterWorker: 'Worker',
     filterAstromech: 'Astromech',
+    filterProtocol: 'Protocol',
     filterBattle: 'Battle',
     loading: 'LOADING REGISTRY…',
     autoSave: 'Autosave ● local',
@@ -105,10 +106,10 @@ const I18N = {
       'and your registry are stored on our server, deletable at any time via “Delete my account”.',
     aboutTitle: 'About Droidex — Star Wars: Droid Tycoon collection tracker',
     aboutP1: 'Droidex tracks the full Droidex of Star Wars: Droid Tycoon, the Fortnite mode by ' +
-      'FOAD/Blzn Studios: 88 droids and 562 variants across 7 tiers — Basic, Gold, Diamond, Rainbow, Beskar, ' +
-      'Galactic and Stellar — in one unified x/562 counter, exactly like the in-game Droidex screen, plus the ' +
+      'FOAD/Blzn Studios: 92 droids and 590 variants across 7 tiers — Basic, Gold, Diamond, Rainbow, Beskar, ' +
+      'Galactic and Stellar — in one unified x/590 counter, exactly like the in-game Droidex screen, plus the ' +
       'Flawless counter. That includes the 17 fusion-exclusive droids of the Droid Fusion update, each shown ' +
-      'with its fusion recipe, and D-O, the 9th Iconic. Tap any variant to mark ' +
+      'with its fusion recipe, D-O, the 9th Iconic, and the four Protocol droids of the Protocol update (SA-5, LOM, PZ, TDA). Tap any variant to mark ' +
       'it owned or placed in your base; a higher variant always satisfies a lower requirement.',
     aboutP2: 'Progression runs through 35 rebirth levels repeated across 5 cycles, each needing ' +
       '3 specific droids in your base. Pick your target rebirth and the tracker shows exactly which droids are ' +
@@ -158,6 +159,7 @@ const I18N = {
     filterBase: 'En base',
     filterWorker: 'Worker',
     filterAstromech: 'Astromech',
+    filterProtocol: 'Protocole',
     filterBattle: 'Battle',
     loading: 'CHARGEMENT DU REGISTRE…',
     autoSave: 'Auto-save ● local',
@@ -212,10 +214,10 @@ const I18N = {
       'et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».',
     aboutTitle: 'À propos de Droidex — tracker de collection Star Wars: Droid Tycoon',
     aboutP1: 'Droidex suit le Droidex complet de Star Wars: Droid Tycoon, le mode Fortnite de ' +
-      'FOAD/Blzn Studios : 88 droïdes et 562 variantes sur 7 paliers — Basic, Or, Diamant, Arc-en-ciel, Beskar, ' +
-      'Galactique et Stellaire — dans un compteur x/562 unifié, exactement comme l\'écran Droidex du jeu, plus le ' +
+      'FOAD/Blzn Studios : 92 droïdes et 590 variantes sur 7 paliers — Basic, Or, Diamant, Arc-en-ciel, Beskar, ' +
+      'Galactique et Stellaire — dans un compteur x/590 unifié, exactement comme l\'écran Droidex du jeu, plus le ' +
       'compteur Flawless. Cela inclut les 17 droïdes exclusifs à la fusion de la mise à jour Droid Fusion, ' +
-      'chacun affiché avec sa recette, et D-O, 9e Iconique. Un tap sur une ' +
+      'chacun affiché avec sa recette, D-O, 9e Iconique, et les quatre droïdes Protocol de la mise à jour Protocol (SA-5, LOM, PZ, TDA). Un tap sur une ' +
       'variante la marque possédée ou placée en base ; une variante supérieure satisfait toujours une exigence inférieure.',
     aboutP2: 'La progression passe par 35 niveaux de renaissance répétés sur 5 cycles, chacun exigeant ' +
       '3 droïdes précis dans votre base. Choisissez votre renaissance cible et le tracker montre exactement ' +

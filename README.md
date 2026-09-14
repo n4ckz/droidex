@@ -23,10 +23,10 @@ The game features a Droidex of 200+ collectible droids across 7 variants (Basic,
 - **Value data on every droid**: income per second and credit cost at each of the seven variants, plus the passive perk. No other value list publishes the cost of every variant — our main source only gives the Beskar one, so the rest is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
 - **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
-- **Game-faithful counters**: one unified x/562 total across all seven variants, exactly like the in-game Droidex screen, plus the Flawless ✦ counter with its income multiplier — and RB·GLC / RB·STL badges tell you which droids rebirths 28 and 31+ need.
+- **Game-faithful counters**: one unified x/590 total across all seven variants, exactly like the in-game Droidex screen, plus the Flawless ✦ counter with its income multiplier — and RB·GLC / RB·STL badges tell you which droids rebirths 28 and 31+ need.
 - **Fusion droids** (Droid Fusion update, v1.27): the 17 fusion-exclusive droids are tracked like any other, and each card shows its exact three-droid fusion recipe (⚗ Mouse + Mouse + ARG…).
 - **Live player counter**: "● 12.5K in game" in the header — concurrent players on the island, straight from Epic's official Ecosystem API, refreshed every 5 minutes (hidden gracefully when offline). A full [stats page](https://droidex.nackz.dev/stats/) adds daily peaks, retention and charts.
-- **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle, plus search.
+- **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle / Protocol, plus search.
 - **Iconic droids** (BB-8, Mister Bones, IG-11 Marshal, DJ R-3X, CB-23, R2-D2, C-3PO, Chopper, D-O): simple owned + in-base toggles, no variants.
 - **Cross-device sync (optional)**: sign in with a Google account and your registry follows you. Without an account, everything stays in your browser (`localStorage`) — no cookies, no mandatory signup.
 - **JSON export/import** as a fallback, or to stay 100 % offline.
@@ -221,7 +221,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (70 tracked droids including 8 Iconics, rebirth requirements for the 5 cycles × 35 levels, credit costs, per-variant income and cost, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-08-20:
+The data (92 tracked droids including 9 Iconics, the 17 fusion droids and the 4 Protocol droids, rebirth requirements for the 5 cycles × 35 levels, credit costs, per-variant income and cost, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-08-20:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)

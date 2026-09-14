@@ -60,10 +60,10 @@ const setTarget = (w, rb) => {
     const { window: w, errors } = boot();
     assert(errors.length === 0, 'aucune erreur JS au chargement' + (errors.length ? ' — ' + errors[0] : ''));
     const cards = w.document.querySelectorAll('.droid');
-    assert(cards.length === 88, '88 droïdes rendus (obtenu : ' + cards.length + ')');
+    assert(cards.length === 92, '92 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '000/562', 'progression "000/562" (obtenu : "' + label + '")');
+    assert(label === '000/590', 'progression "000/590" (obtenu : "' + label + '")');
     const segs = w.document.getElementById('progressSegs');
     assert(segs && segs.children.length === 10, '10 segments de progression rendus');
     assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
@@ -171,7 +171,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '001/562', 'progression 001/562 (obtenu : "' + label + '")');
+    assert(label === '001/590', 'progression 001/562 (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -348,15 +348,17 @@ const setTarget = (w, rb) => {
     const { window: w } = boot();
     const side = w.document.getElementById('filtersSide');
     const chips = w.document.getElementById('filtersChips');
-    assert(side && side.querySelectorAll('.chip').length === 8, '8 filtres dans la sidebar');
-    assert(chips && chips.querySelectorAll('.chip').length === 8, '8 chips mobiles');
+    assert(side && side.querySelectorAll('.chip').length === 9, '9 filtres dans la sidebar');
+    assert(chips && chips.querySelectorAll('.chip').length === 9, '9 chips mobiles');
     const all = side.querySelector('[data-filter="all"] .chip-count');
-    assert(all && all.textContent === '88', 'compteur TOUS = 88 (obtenu : ' + (all && all.textContent) + ')');
+    assert(all && all.textContent === '92', 'compteur TOUS = 92 (obtenu : ' + (all && all.textContent) + ')');
     const worker = side.querySelector('[data-filter="Worker"] .chip-count');
     const astro = side.querySelector('[data-filter="Astromech"] .chip-count');
     const battle = side.querySelector('[data-filter="Battle"] .chip-count');
-    assert(parseInt(worker.textContent,10)+parseInt(astro.textContent,10)+parseInt(battle.textContent,10) === 88,
-      'compteurs par classe sommant à 88');
+    const proto = side.querySelector('[data-filter="Protocol"] .chip-count');
+    assert(parseInt(worker.textContent,10)+parseInt(astro.textContent,10)+parseInt(battle.textContent,10)+parseInt(proto.textContent,10) === 92,
+      'compteurs par classe (4 classes) sommant à 92');
+    assert(proto && proto.textContent === '5', 'filtre Protocol = 5 (SA-5, LOM, PZ, TDA + C-3PO ; obtenu : ' + (proto && proto.textContent) + ')');
     // clic sur un filtre côté sidebar → filtre actif des deux côtés
     side.querySelector('[data-filter="Worker"]').click();
     assert(side.querySelector('[data-filter="Worker"]').classList.contains('active'), 'filtre actif sidebar');
@@ -542,7 +544,7 @@ const setTarget = (w, rb) => {
     assert(tiers[6].dataset.t === '6' && tiers[6].textContent.includes('STL'), '7ᵉ pastille libellée STL');
     // compteur Flawless à vide (fidèle à l'écran du jeu : « ✦ x/62 (×0.0x) »)
     const fc = w.document.getElementById('flawlessCount');
-    assert(fc && fc.textContent === '✦ 0/79 (×0.00)', 'compteur Flawless "✦ 0/79 (×0.00)" (obtenu : "' + (fc && fc.textContent) + '")');
+    assert(fc && fc.textContent === '✦ 0/83 (×0.00)', 'compteur Flawless "✦ 0/79 (×0.00)" (obtenu : "' + (fc && fc.textContent) + '")');
     // Proto-Roller Galactique en base → badge RB28 vert, compteur principal unifié incrémenté
     findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 0 → 1
     findCard(w, 'Proto-Roller').querySelector('.tier[data-t="5"]').click();  // 1 → 2 en base
@@ -552,8 +554,8 @@ const setTarget = (w, rb) => {
     assert(badge && badge.textContent === '✓ RB28·GLC', 'badge "✓ RB28·GLC" (obtenu : "' + (badge && badge.textContent) + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'), 'badge RB28 vert non barré');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('45T'), 'crédits RB28 : 45T');
-    assert(w.document.getElementById('progressLabel').textContent === '001/562',
-      'Galactique possédé : compteur unifié passé à 001/562 (562 depuis les droïdes fusion + D-O)');
+    assert(w.document.getElementById('progressLabel').textContent === '001/590',
+      'Galactique possédé : compteur unifié passé à 001/590 (590 depuis les droïdes Protocol)');
     assert(w.document.getElementById('collectionBonus').textContent.includes('+1%'),
       'droïde possédé en Galactique seul → compte comme distinct (+1%)');
     // SEN-TRI Stellar en base → badge RB31 vert, compteur unifié à 002/442
@@ -563,12 +565,12 @@ const setTarget = (w, rb) => {
     const badge31 = [...findCard(w, 'SEN-TRI').querySelectorAll('.req-badge')].find(b => b.textContent.includes('RB31'));
     assert(badge31 && badge31.textContent === '✓ RB31·STL', 'badge "✓ RB31·STL" (obtenu : "' + (badge31 && badge31.textContent) + '")');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('150T'), 'crédits RB31 : 150T');
-    assert(w.document.getElementById('progressLabel').textContent === '002/562',
+    assert(w.document.getElementById('progressLabel').textContent === '002/590',
       'Stellar possédé : compteur unifié passé à 002/562');
     // toggle ✦ sur SEN-TRI → compteur Flawless et multiplicateur du jeu
     findCard(w, 'SEN-TRI').querySelector('.icon-btn.flaw').click();
-    assert(w.document.getElementById('flawlessCount').textContent === '✦ 1/79 (×0.01)',
-      'compteur Flawless "✦ 1/79 (×0.01)" (obtenu : "' + w.document.getElementById('flawlessCount').textContent + '")');
+    assert(w.document.getElementById('flawlessCount').textContent === '✦ 1/83 (×0.01)',
+      'compteur Flawless "✦ 1/83 (×0.01)" (obtenu : "' + w.document.getElementById('flawlessCount').textContent + '")');
   }
   {
     // le Galactique satisfait une exigence inférieure (règle variante supérieure)
@@ -663,7 +665,7 @@ const setTarget = (w, rb) => {
     const home = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
     const visible = home.replace(/<noscript>[\s\S]*?<\/noscript>/, '');
     assert(visible.includes('id="about"'), 'home : section #about statique hors noscript');
-    assert(/id="about"[\s\S]*562[\s\S]*Stellar/.test(visible), 'about : chiffres clés indexables (562, Stellar)');
+    assert(/id="about"[\s\S]*590[\s\S]*Stellar/.test(visible), 'about : chiffres clés indexables (590, Stellar)');
     assert(/id="about"[\s\S]*href="value-list\/"[\s\S]*href="rebirth-requirements\/"/.test(visible),
       'about : liens internes vers les pages de contenu');
     // rendu + bascule FR via l'i18n de l'app
@@ -719,8 +721,8 @@ const setTarget = (w, rb) => {
     assert(!findCard(w, 'Gonk').querySelector('.fusion-line'), 'Gonk : pas de ligne de fusion');
     // un tap sur une variante fusion incrémente le compteur unifié
     findCard(w, 'X-ONK').querySelector('.tier[data-t="0"]').click();
-    assert(w.document.getElementById('progressLabel').textContent === '001/562',
-      'X-ONK Basic possédé : compteur unifié à 001/562');
+    assert(w.document.getElementById('progressLabel').textContent === '001/590',
+      'X-ONK Basic possédé : compteur unifié à 001/590');
     // D-O : 9ᵉ Iconique, toggles possédé/en base comme les autres
     const doCard = findCard(w, 'D-O');
     assert(doCard && doCard.querySelector('.iconic-own') && !doCard.querySelector('.tier'),
@@ -736,6 +738,44 @@ const setTarget = (w, rb) => {
     const gen = fs.readFileSync(path.join(SITE, '..', 'tools', 'update-gamedata.py'), 'utf8');
     assert(gen.includes('parse_previous_fusion') && gen.includes('FUSION_RECIPES'),
       'générateur : repli parse_previous_fusion + recettes statiques');
+  }
+
+  /* ---- 27. Droïdes Protocol (v1.30) ---- */
+  console.log('\n[27] Droïdes Protocol (v1.30) : 4ᵉ classe, compteurs 590/83, stats inconnues');
+  {
+    const { window: w } = boot();
+    const dataSrc = fs.readFileSync(path.join(SITE, 'data.js'), 'utf8');
+    ['sa5', 'lom', 'pz', 'tda'].forEach(id => {
+      assert(new RegExp("\\{id:'" + id + "',n:'[^']+',t:'Protocol'").test(dataSrc), 'data.js : ' + id + ' de classe Protocol');
+    });
+    assert(/\{id:'c3po',n:'C-3PO',t:'Protocol'/.test(dataSrc), 'data.js : C-3PO reclassé Protocol');
+    assert(/\{id:'tda'[^}]*r:'Mythic'[^}]*perk:'1000% Credit Multiplier'/.test(dataSrc), 'data.js : TDA Mythique, perk 1000% Credit Multiplier');
+    // carte : 7 pastilles, pas de revenus (sources muettes) mais le perk visible, icône de classe
+    const tda = findCard(w, 'TDA');
+    assert(tda && tda.querySelectorAll('.tier').length === 7, 'TDA : carte à 7 pastilles de variante');
+    const vl = tda && tda.querySelector('.value-line');
+    assert(vl && !vl.textContent.includes('null') && vl.textContent.includes('1000% Credit Multiplier'),
+      'TDA : value-line sans "null", perk affiché (obtenu : "' + (vl && vl.textContent) + '")');
+    assert(tda.querySelector('.type-ico.t-protocol'), 'TDA : icône de classe Protocol');
+    // tap → compteur unifié 590 et distincts sur 92
+    tda.querySelector('.tier[data-t="0"]').click();
+    assert(w.document.getElementById('progressLabel').textContent === '001/590', 'TDA Basic possédé : compteur unifié à 001/590');
+    // filtre Protocol actif → seuls les 5 Protocol restent visibles
+    w.document.querySelector('#filtersSide [data-filter="Protocol"]').click();
+    const visible = w.document.querySelectorAll('#list .droid');
+    assert(visible.length === 5, 'filtre Protocol : 5 cartes rendues (obtenu : ' + visible.length + ')');
+    // libellé FR du filtre
+    w.setLang('fr');
+    assert(w.document.querySelector('#filtersSide [data-filter="Protocol"]').textContent.includes('Protocole'), 'filtre Protocol libellé « Protocole » en FR');
+    // pages SEO : value list avec les 4 Protocol (« — » partout), FAQ Protocol EN+FR, Flawless Stellar 1/50
+    const readPage = f => fs.readFileSync(path.join(SITE, f), 'utf8');
+    const vlEn = readPage('value-list/index.html');
+    assert(vlEn.includes('SA-5') && vlEn.includes('TDA') && vlEn.includes('Protocol'), 'value list EN : droïdes Protocol listés');
+    assert(readPage('faq/index.html').includes('Protocol droids') && readPage('fr/faq/index.html').includes('droïdes Protocol'), 'FAQ EN+FR : entrée droïdes Protocol');
+    assert(readPage('faq/index.html').includes('1 in 50 for Stellar') && readPage('fr/faq/index.html').includes('1 sur 50 en Stellaire'), 'FAQ EN+FR : odds Flawless du Stellar');
+    // générateur : injection Protocol + repli sur la page individuelle du wiki
+    const gen = fs.readFileSync(path.join(SITE, '..', 'tools', 'update-gamedata.py'), 'utf8');
+    assert(gen.includes("'Protocol': 3") && gen.includes('parse_droid_page_costs'), 'générateur : TYPE_ORDER Protocol + repli page individuelle');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));

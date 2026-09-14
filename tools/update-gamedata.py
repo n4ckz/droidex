@@ -44,6 +44,7 @@ NAME2ID = {
  'BB8':'bb8','BB-8':'bb8','MISTER BONES':'misterbones','IG-11 MARSHAL':'ig11','DJ-R3X':'djr3x',
  'CB-23':'cb23','R2-D2':'r2d2','C-3PO':'c3po','C-3P0':'c3po','CHOPPER':'chopper','C1-10P':'chopper',
  'D-O':'do','D-0':'do',
+ 'SA-5':'sa5','LOM':'lom','PZ':'pz','TDA':'tda',
  # Droïdes fusion (patch v1.27 « Droid Fusion » du 22/08/2026) — absents de
  # tycoon-tools, lus sur le wiki dédié (voir parse_fusion_stats)
  'WHL-EX':'whlex','ZRO-TEC':'zrotec','BTL-R':'btlr','N-UL':'nul','SCRP-R':'scrpr',
@@ -66,6 +67,7 @@ DISPLAY = {
  'ric1200':'RIC-1200','lep':'LEP','loadlifter':'Loadlifter','motrak':'MO-TRAK','tritek':'TRI-TEK',
  'cyclens':'CYCLENS','drftr':'DRFT-R','kx':'KX','ig':'IG','bb8':'BB-8','misterbones':'Mister Bones',
  'ig11':'IG-11 Marshal','djr3x':'DJ R-3X','r2d2':'R2-D2','c3po':'C-3PO','chopper':'Chopper','do':'D-O',
+ 'sa5':'SA-5','lom':'LOM','pz':'PZ','tda':'TDA',
  'whlex':'WHL-EX','zrotec':'ZRO-TEC','btlr':'BTL-R','nul':'N-UL','scrpr':'SCRP-R',
  'armcore':'ARM-CORE','optar':'OPT-AR','rotor':'RO-TOR','fus3':'FUS-3','qikbit':'QIK-BIT',
  'orbxl':'ORB-XL','riv3t':'RIV-3T','lugg':'LUG-G','lowmo':'LOW-MO','axipod':'AXI-POD',
@@ -98,7 +100,7 @@ FUSION_RECIPES = {
 TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4, 'GALACTIC': 5,
               'STELLAR': 6}
 RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Iconic']
-TYPE_ORDER = {'Worker': 0, 'Astromech': 1, 'Battle': 2}
+TYPE_ORDER = {'Worker': 0, 'Astromech': 1, 'Battle': 2, 'Protocol': 3}
 
 
 def fetch(url):
@@ -180,6 +182,33 @@ WIKI_ALIAS = {'MONO-WALKER': 'monowlkr', 'OPTI-STRIKE': 'optistrk',
               'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek', 'B-U4D': 'bu4d'}
 
 
+def fetch_wiki_page(title):
+    """Wikitext d'une page du wiki dédié (redirections suivies)."""
+    qs = urllib.parse.urlencode({'action': 'parse', 'page': title, 'prop': 'wikitext',
+                                 'format': 'json', 'redirects': 1})
+    return json.loads(fetch(f'{WIKI_API}?{qs}'))['parse']['wikitext']['*']
+
+
+def parse_droid_page_costs(text):
+    """Coûts par variante lus sur la page INDIVIDUELLE d'un droïde (onglets
+    « Base= », « |-| Gold= »… chacun avec une table Cost/Income/Sell/…) —
+    repli quand la page Droidex du wiki laisse une case vide (vécu : coût
+    Galactique de WHL-EX absent de la page Droidex mais présent sur sa page).
+    Retourne une liste alignée sur WIKI_TABS, None quand l'onglet manque."""
+    parts = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
+    chunks = {'Base': parts[0]}
+    for i in range(1, len(parts) - 1, 2):
+        chunks[parts[i].strip()] = parts[i + 1]
+    out = [None] * len(WIKI_TABS)
+    for idx, tab in enumerate(WIKI_TABS):
+        m = re.search(r'!Cost\s*\n(?:![^\n]*\n)*\|-\s*\n\|\s*([\d.,]+[KMBTkmbt]?)\s*\n', chunks.get(tab, ''))
+        if m:
+            cost = re.sub(r'([kmbt])$', lambda x: x.group(1).upper(), m.group(1).replace(',', ''))
+            if re.fullmatch(r'[\d.]+[KMBT]?', cost):
+                out[idx] = cost
+    return out
+
+
 def fetch_wiki_droidex():
     """Wikitext de la page Droidex du wiki dédié (« Droiddex » jusqu'au
     03/08/2026 — redirects=1 absorbe les renommages)."""
@@ -246,7 +275,7 @@ def parse_fusion_stats(text):
                 continue
             if did not in fus_vals:
                 rar = re.search(r'Rarity\|(\w+)', cells[0])
-                typ = re.search(r'File:\s*(Worker|Astromech|Battle)', cells[1])
+                typ = re.search(r'File:\s*(Worker|Astromech|Battle|Protocol)', cells[1])
                 if not rar or not typ:
                     continue
                 fus_vals[did] = {'rarity': rar.group(1).capitalize(),
@@ -502,6 +531,21 @@ def main():
     # la source primera dès qu'elle le référencera.
     vals.setdefault('do', {'rarity': 'Iconic', 'type': 'Worker',
                            'perk': 'Half Fusion Time', 'inc': [None] * 7, 'beskarCost': None})
+    # Droïdes Protocol — 4ᵉ classe du patch v1.30 (12/09/2026), obtenus
+    # uniquement via les World Mission Crates. Absents de tycoon-tools ;
+    # rareté, classe et perk companion (Credit Multiplier, échelonné par
+    # rareté) lus sur le wiki dédié, dont les pages sont encore « Stub » :
+    # aucun revenu ni coût connu, les tableaux affichent « — » en attendant.
+    # Même doctrine setdefault : tycoon-tools primera dès qu'il les listera.
+    for did, rar, perk in (('sa5', 'Rare', '400% Credit Multiplier'),
+                           ('lom', 'Epic', '600% Credit Multiplier'),
+                           ('pz', 'Legendary', '800% Credit Multiplier'),
+                           ('tda', 'Mythic', '1000% Credit Multiplier')):
+        vals.setdefault(did, {'rarity': rar, 'type': 'Protocol', 'perk': perk,
+                              'inc': [None] * 7, 'beskarCost': None})
+    # C-3PO reclassé Protocol par ce même patch (notes officielles + wiki) :
+    # tycoon-tools le laisse en Worker → exception assumée à « la source prime ».
+    vals['c3po']['type'] = 'Protocol'
     rebirths, unlocks, credits = parse_rebirths()
     print(f'  {len(vals)} droïdes (tycoon-tools + iconiques) · {len(rebirths)} cycles × {len(rebirths[1])} renaissances')
 
@@ -532,6 +576,24 @@ def main():
         print(f'  {len(fus_vals)} droïdes fusion lus sur le wiki dédié (leur seule source)')
         vals.update(fus_vals)
         all_costs.update(fus_costs)
+        # cases encore vides sur la page Droidex : repli sur la page du droïde
+        # (une requête par droïde à trou), validé ensuite par
+        # check_variant_costs comme le reste
+        filled = 0
+        for did, series in all_costs.items():
+            if all(series) or did not in vals:
+                continue
+            try:
+                page_costs = parse_droid_page_costs(fetch_wiki_page(DISPLAY[did]))
+            except Exception as e:
+                print(f'  ⚠ page wiki de {DISPLAY[did]} illisible ({e.__class__.__name__}) — ignorée')
+                continue
+            for idx, c in enumerate(series):
+                if not c and page_costs[idx]:
+                    series[idx] = page_costs[idx]
+                    filled += 1
+        if filled:
+            print(f'  {filled} coût(s) lu(s) sur les pages individuelles du wiki')
         costs = check_variant_costs(vals, all_costs)
         # une valeur déjà publiée (donc validée à l'époque contre le multiple)
         # ne disparaît pas parce que le wiki l'a remplacée par une coquille ou

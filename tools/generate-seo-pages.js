@@ -174,10 +174,10 @@ const STR = {
 const SEE_ALSO = {
   'value-list': {
     en: (rel) => `To put these numbers to use, check the <a href="../rebirth-requirements/">rebirth requirements for all 35 levels and 5 cycles</a> — ` +
-      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 562 droid variants</a>. ` +
+      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 590 droid variants</a>. ` +
       `Flawless odds per variant are detailed in the <a href="../faq/">Droid Tycoon FAQ</a>.`,
     fr: (rel) => `Pour exploiter ces chiffres, consultez les <a href="../rebirth-requirements/">exigences des 35 niveaux de renaissance sur les 5 cycles</a> — ` +
-      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 562 variantes de droïdes</a>. ` +
+      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 590 variantes de droïdes</a>. ` +
       `Les chances de Flawless par variante sont détaillées dans la <a href="../faq/">FAQ Droid Tycoon</a>.`,
   },
   'rebirth-requirements': {
@@ -662,7 +662,7 @@ const FAQ = [
     a: {
       en: 'Galactic is the sixth variant tier, added above Beskar in the mid-July 2026 game update (the Stellar ' +
         'tier sits above it since the August 15, 2026 update). Since the Stellar update the in-game Droidex counts ' +
-        'all seven variants in one unified total, 562 with the fusion droids and D-O, and Droidex mirrors that. ' +
+        'all seven variants in one unified total, 590 with the fusion, D-O and Protocol droids, and Droidex mirrors that. ' +
         'Rebirth 28 — the first Galactic-gated level in each ' +
         'cycle — requires one specific Galactic droid placed in your base (for example a Galactic ' +
         'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
@@ -672,7 +672,7 @@ const FAQ = [
         'shows RB·GLC requirement badges so you know exactly which Galactic droids your next rebirth needs.',
       fr: 'Le Galactique est le sixième palier de variante, ajouté au-dessus du Beskar par la mise à jour de ' +
         'mi-juillet 2026 (le palier Stellaire le surplombe depuis la mise à jour du 15 août 2026). Depuis la mise à ' +
-        'jour Stellar, l\'écran Droidex du jeu compte les sept variantes dans un total unifié — 562 avec les droïdes fusion et D-O — et Droidex ' +
+        'jour Stellar, l\'écran Droidex du jeu compte les sept variantes dans un total unifié — 590 avec les droïdes fusion, D-O et Protocol — et Droidex ' +
         'fait de même. La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
         'droïde Galactique précis placé dans la base (par exemple un Proto-Roller Galactique au cycle 1), aux ' +
         'côtés d\'un droïde Arc-en-ciel, d\'un Beskar et de 45T de crédits. Comme toute variante supérieure, une ' +
@@ -692,7 +692,7 @@ const FAQ = [
         'the Cantina Shop are further sources. The same update added rebirth levels 31 to 35 and a fifth rebirth ' +
         'cycle: rebirth 31 is the first level to require Stellar-tier droids in your base, with credit costs ' +
         'climbing from 150T at rebirth 31 to 778T at rebirth 35. The in-game Droidex counts Stellar copies in its ' +
-        'unified variant total (562 with the fusion droids and D-O), and Droidex does the same, with RB·STL ' +
+        'unified variant total (590 with the fusion, D-O and Protocol droids), and Droidex does the same, with RB·STL ' +
         'requirement badges; a Stellar copy satisfies any lower variant requirement for the same droid. ' +
         'Stellar income values are documented for nearly every standard droid and are completed at ' +
         'every data refresh.',
@@ -703,7 +703,7 @@ const FAQ = [
         'a ajouté les niveaux de renaissance 31 à 35 et un cinquième cycle : la renaissance 31 est le premier ' +
         'niveau à exiger des droïdes Stellaires dans la base, avec des coûts qui grimpent de 150T (renaissance 31) ' +
         'à 778T (renaissance 35). L\'écran Droidex du jeu compte les copies Stellaires dans son total unifié de ' +
-        'variantes (562 avec les droïdes fusion et D-O), et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
+        'variantes (590 avec les droïdes fusion, D-O et Protocol), et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
         'copie Stellaire valide toute exigence de variante inférieure du même droïde. Les revenus Stellaires sont ' +
         'documentés pour la quasi-totalité des droïdes standard et se complètent à chaque rafraîchissement des ' +
         'données.',
@@ -719,7 +719,7 @@ const FAQ = [
         'variant used (two Gold and one Stellar give a Gold copy). Seventeen droids can only be obtained this ' +
         'way: WHL-EX, ZRO-TEC and BTL-R (Rare), N-UL, SCRP-R, ARM-CORE and OPT-AR (Epic), RO-TOR, FUS-3, ' +
         'QIK-BIT and ORB-XL (Legendary), plus RIV-3T, LUG-G, LOW-MO, AXI-POD, SRV-O and X-ONK (Mythic). All ' +
-        'seventeen count in the in-game Droidex — the unified total is now 562 variants — and Droidex tracks ' +
+        'seventeen count in the in-game Droidex — the unified total reached 562 variants, 590 since the Protocol update — and Droidex tracks ' +
         'each one like any other droid, with its income, costs and the exact three-droid recipe shown on its ' +
         'card. Fusing three identical droids upgrades the variant instead (three Basic Mouse give one Gold ' +
         'Mouse), and three random droids of the same rarity yield a random droid of the rarity above. The D-O ' +
@@ -732,7 +732,7 @@ const FAQ = [
         'Dix-sept droïdes ne s\'obtiennent que par fusion : WHL-EX, ZRO-TEC et BTL-R (Rares), N-UL, SCRP-R, ' +
         'ARM-CORE et OPT-AR (Épiques), RO-TOR, FUS-3, QIK-BIT et ORB-XL (Légendaires), plus RIV-3T, LUG-G, ' +
         'LOW-MO, AXI-POD, SRV-O et X-ONK (Mythiques). Les dix-sept comptent dans le Droidex du jeu — le total ' +
-        'unifié passe à 562 variantes — et Droidex suit chacun comme n\'importe quel droïde, avec ses revenus, ' +
+        'unifié est passé à 562 variantes, 590 depuis la mise à jour Protocol — et Droidex suit chacun comme n\'importe quel droïde, avec ses revenus, ' +
         'ses coûts et la recette exacte des trois droïdes affichée sur sa carte. Fusionner trois droïdes ' +
         'identiques monte la variante d\'un cran (trois Mouse Basic donnent un Mouse Or), et trois droïdes ' +
         'quelconques d\'une même rareté donnent un droïde aléatoire de la rareté supérieure. L\'événement D-O ' +
@@ -762,8 +762,8 @@ const FAQ = [
       en: 'Flawless is a shiny cosmetic paint rolled once, at the moment a droid finishes crafting, and kept forever ' +
         'in your Droidex. The odds depend only on the variant you crafted, never on the droid\'s rarity — a Mythic ' +
         'droid is no more likely to roll Flawless than a Common one at the same variant. Base odds are 1 in 1000 for ' +
-        'Basic, 1 in 500 for Gold, 1 in 250 for Diamond, 1 in 125 for Rainbow, 1 in 100 for Beskar and 1 in 75 for ' +
-        'Galactic. Two multipliers stack on top: the Flawless Charm from the Nova Shop (500 Nova crystals) doubles ' +
+        'Basic, 1 in 500 for Gold, 1 in 250 for Diamond, 1 in 125 for Rainbow, 1 in 100 for Beskar, 1 in 75 for ' +
+        'Galactic and 1 in 50 for Stellar. Two multipliers stack on top: the Flawless Charm from the Nova Shop (500 Nova crystals) doubles ' +
         'your chance, and events double it as well — running both during an event is the fastest way to fill the ' +
         'Flawless column. Each unique Flawless droid also grants a small permanent income multiplier, with a further ' +
         'reward once 51 unique Flawless droids are collected. Iconic droids cannot roll Flawless, since they are ' +
@@ -773,7 +773,7 @@ const FAQ = [
         'droïde se termine, et conservée à vie dans le Droidex. Les chances dépendent uniquement de la variante ' +
         'craftée, jamais de la rareté du droïde : à variante égale, un Mythique n\'a pas plus de chances qu\'un ' +
         'Commun. Les taux de base sont de 1 sur 1000 en Basic, 1 sur 500 en Or, 1 sur 250 en Diamant, 1 sur 125 en ' +
-        'Arc-en-ciel, 1 sur 100 en Beskar et 1 sur 75 en Galactique. Deux multiplicateurs se cumulent par-dessus : ' +
+        'Arc-en-ciel, 1 sur 100 en Beskar, 1 sur 75 en Galactique et 1 sur 50 en Stellaire. Deux multiplicateurs se cumulent par-dessus : ' +
         'le Flawless Charm de la boutique Nova (500 cristaux) double les chances, et les événements les doublent ' +
         'aussi — cumuler les deux pendant un événement est le moyen le plus rapide de remplir la colonne Flawless. ' +
         'Chaque droïde Flawless unique apporte en plus un petit multiplicateur de revenus permanent, avec une ' +
@@ -817,6 +817,30 @@ const FAQ = [
         'différents — même tous en Basic — donne +40 % de revenus en plus de la progression normale par ' +
         'renaissances et variantes. Droidex affiche en permanence le nombre de droïdes distincts et le bonus ' +
         'correspondant dans l\'en-tête, mis à jour en direct.',
+    },
+  },
+  {
+    q: { en: 'What are Protocol droids (SA-5, LOM, PZ, TDA) and how do I get them?',
+         fr: 'Que sont les droïdes Protocol (SA-5, LOM, PZ, TDA) et comment les obtenir ?' },
+    a: {
+      en: 'The Protocol update (game patch v1.30, September 12, 2026) added a fourth droid class, Protocol, next to ' +
+        'Worker, Astromech and Battle, with four new droids: SA-5 (Rare), LOM (Epic), PZ (Legendary) and TDA ' +
+        '(Mythic). They cannot be crafted or bought at the Sandcrawler: each one comes as a blueprint from a ' +
+        'World Mission Crate, unlocked by completing one of the revamped World Missions shown on your HUD (a ' +
+        'new mission starts 10 minutes after the previous one). Their companion perk is a Credit Multiplier that ' +
+        'scales with rarity (400% for SA-5 up to 1000% for TDA). C-3PO is now a Protocol droid as well. ' +
+        'Droidex tracks all four across the seven variants, in the unified 590-variant total; their income and ' +
+        'costs are not documented by any community source yet and will appear at the next data refresh once they are.',
+      fr: 'La mise à jour Protocol (patch v1.30 du 12 septembre 2026) ajoute une quatrième classe de droïdes, ' +
+        'Protocol, à côté de Worker, Astromech et Battle, avec quatre nouveaux droïdes Protocol : SA-5 (Rare), LOM ' +
+        '(Épique), PZ (Légendaire) et TDA (Mythique). Ils ne se fabriquent pas et ne s\'achètent pas au ' +
+        'Sandcrawler : chacun arrive sous forme de blueprint dans une World Mission Crate, débloquée en ' +
+        'terminant l\'une des missions du monde refondues affichées sur le HUD (une nouvelle mission démarre ' +
+        '10 minutes après la précédente). Leur perk de compagnon est un multiplicateur de crédits qui grandit ' +
+        'avec la rareté (400 % pour SA-5 jusqu\'à 1000 % pour TDA). C-3PO est désormais lui aussi un droïde ' +
+        'Protocol. Droidex suit les quatre sur les sept variantes, dans le total unifié de 590 ; leurs revenus ' +
+        'et coûts ne sont documentés par aucune source communautaire pour l\'instant et apparaîtront au ' +
+        'prochain rafraîchissement des données dès qu\'ils le seront.',
     },
   },
   {

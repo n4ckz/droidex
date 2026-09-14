@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.0 — 2026-09-14
+
+- Protocol update (game patch v1.30, September 12): a fourth droid class, Protocol, joins Worker, Astromech and Battle — new filter with live count and class icon — with its four droids SA-5 (Rare), LOM (Epic), PZ (Legendary) and TDA (Mythic), obtained only from World Mission Crates, companion perk Credit Multiplier scaled by rarity. C-3PO is now a Protocol droid. The unified counter follows the game: x/590 across seven variants (83 droids with variants + 9 Iconics); the Flawless counter spans the 83 variant droids. Their income and costs are not documented by any community source yet and show as "—" until they are.
+- FAQ: new entry on Protocol droids (English and French); Flawless odds now include the Stellar tier (1 in 50).
+- Game data: WHL-EX's Galactic cost (6.5M) filled in — the generator now falls back to a droid's own wiki page when the wiki's Droidex table leaves a cell empty, still under the fixed-multiple guard.
+
 ## 1.18.1 — 2026-09-14
 
 - Audience measurement served first-party: the Umami script and its beacon now go through the site's own domain (`/u/`, proxied by nginx to the Umami container, target configurable with `UMAMI_UPSTREAM`), so ad blockers no longer discard those visits and the Content-Security-Policy is back to strict `'self'` with no third-party request. Without an Umami upstream (local compose, self-hosting without analytics) the path answers 502 and nothing else is affected.
