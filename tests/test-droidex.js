@@ -413,8 +413,7 @@ const setTarget = (w, rb) => {
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
     assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');
-    // v1.14.0 : titles/meta orientés CTR — GSC du 02/08/2026 : position 2 sur
-    // « rebirth requirements cycle 2/3 » mais 141 impressions → 1 clic (0,7 %)
+    // v1.14.0 : titles/meta orientés CTR (les cycles sont le sujet différenciant)
     assert(rb.includes('All 35 Levels &amp; Cycles 2-5'), 'rebirths : title ciblé sur les cycles 2-5');
     assert(rb.includes('Super Rebirth cycles 2 to 5'), 'rebirths : description nommant les cycles 2 à 5');
     const faq = read('faq/index.html');
