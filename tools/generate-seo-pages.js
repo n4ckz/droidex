@@ -829,8 +829,9 @@ const FAQ = [
         'World Mission Crate, unlocked by completing one of the revamped World Missions shown on your HUD (a ' +
         'new mission starts 10 minutes after the previous one). Their companion perk is a Credit Multiplier that ' +
         'scales with rarity (400% for SA-5 up to 1000% for TDA). C-3PO is now a Protocol droid as well. ' +
-        'Droidex tracks all four across the seven variants, in the unified 590-variant total; their income and ' +
-        'costs are not documented by any community source yet and will appear at the next data refresh once they are.',
+        'Droidex tracks all four across the seven variants, in the unified 590-variant total, with their income per ' +
+        'variant and Beskar cost; their other variant costs are not documented by any community source yet and will ' +
+        'appear at the next data refresh once they are.',
       fr: 'La mise à jour Protocol (patch v1.30 du 12 septembre 2026) ajoute une quatrième classe de droïdes, ' +
         'Protocol, à côté de Worker, Astromech et Battle, avec quatre nouveaux droïdes Protocol : SA-5 (Rare), LOM ' +
         '(Épique), PZ (Légendaire) et TDA (Mythique). Ils ne se fabriquent pas et ne s\'achètent pas au ' +
@@ -838,9 +839,9 @@ const FAQ = [
         'terminant l\'une des missions du monde refondues affichées sur le HUD (une nouvelle mission démarre ' +
         '10 minutes après la précédente). Leur perk de compagnon est un multiplicateur de crédits qui grandit ' +
         'avec la rareté (400 % pour SA-5 jusqu\'à 1000 % pour TDA). C-3PO est désormais lui aussi un droïde ' +
-        'Protocol. Droidex suit les quatre sur les sept variantes, dans le total unifié de 590 ; leurs revenus ' +
-        'et coûts ne sont documentés par aucune source communautaire pour l\'instant et apparaîtront au ' +
-        'prochain rafraîchissement des données dès qu\'ils le seront.',
+        'Protocol. Droidex suit les quatre sur les sept variantes, dans le total unifié de 590, avec leurs revenus ' +
+        'par variante et leur coût Beskar ; leurs autres coûts de variante ne sont documentés par aucune source ' +
+        'communautaire pour l\'instant et apparaîtront au prochain rafraîchissement des données dès qu\'ils le seront.',
     },
   },
   {

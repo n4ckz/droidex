@@ -4,7 +4,7 @@
    Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
    main : relancer le script puis relire le diff.
 
-   Sources communautaires (recoupées le 14/09/2026) :
+   Sources communautaires (recoupées le 15/09/2026) :
    - Exigences de renaissance (5 cycles × 35) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
@@ -59,7 +59,7 @@ const DROIDS = [
  {id:'hovr',n:'HOV-R',t:'Battle',r:'Rare',inc:[62,124,248,496,744,1500,2000],bskCost:'2.24M',cost:['140K','560K','1.12M','1.68M','2.24M','2.8M','3.36M'],perk:'+200 max HP'},
  {id:'vectarm',n:'VECT-Arm',t:'Battle',r:'Rare',inc:[27,54,108,216,324,648,864],bskCost:'832K',cost:['52K','208K','416K','624K','832K','1.04M','1.25M'],perk:'+200 max HP'},
  {id:'navex',n:'NAV-EX',t:'Battle',r:'Rare',inc:[18,36,72,144,216,432,576],bskCost:'576K',cost:['36K','144K','288K','432K','576K','720K','864K'],perk:'+200 max HP'},
- {id:'sa5',n:'SA-5',t:'Protocol',r:'Rare',inc:[null,null,null,null,null,null,null],perk:'400% Credit Multiplier'},
+ {id:'sa5',n:'SA-5',t:'Protocol',r:'Rare',inc:[14,28,56,112,168,336,448],bskCost:'2.88M',perk:'12.0 credit mult'},
  /* Epic */
  {id:'nul',n:'N-UL',t:'Worker',r:'Epic',inc:[720,1440,2880,5760,24480,37440,57600],bskCost:'1.7B',cost:['13.6M','54.4M','108.8M','217.6M','1.7B','4.07B','10.2B'],fusion:true,fus:['gunrunner','bb','b1heavy'],perk:'60% Crafting Speed'},
  {id:'gunrunner',n:'Gunrunner',t:'Worker',r:'Epic',inc:[660,1300,2600,5300,22400,34300,52800],bskCost:'787.5M',cost:['6.3M','25.2M','50.4M','75.6M','787.5M','1.89B','4.72B'],perk:'1.4 craft speed'},
@@ -83,7 +83,7 @@ const DROIDS = [
  {id:'lngshot',n:'LNG-Shot',t:'Battle',r:'Epic',inc:[450,900,1800,3600,15300,23400,36000],bskCost:'525M',cost:['4.2M','16.8M','33.6M','50.4M','525M','1.26B','3.15B'],perk:'+220 max HP'},
  {id:'b2super',n:'B2 Super',t:'Battle',r:'Epic',inc:[420,840,1700,3400,14300,21800,33600],bskCost:'487.5M',cost:['3.9M','15.6M','31.2M','46.8M','487.5M','1.17B','2.92B'],perk:'+220 max HP'},
  {id:'haulr',n:'Haul-R',t:'Battle',r:'Epic',inc:[270,540,1100,2200,9200,14000,21600],bskCost:'300M',cost:['2.4M','9.6M','19.2M','28.8M','300M','720M','1.8B'],perk:'+220 max HP'},
- {id:'lom',n:'LOM',t:'Protocol',r:'Epic',inc:[null,null,null,null,null,null,null],perk:'600% Credit Multiplier'},
+ {id:'lom',n:'LOM',t:'Protocol',r:'Epic',inc:[105,210,420,840,3600,5500,8400],bskCost:'875M',perk:'14.0 credit mult'},
  /* Legendary */
  {id:'fus3',n:'FUS-3',t:'Worker',r:'Legendary',inc:[1600,3200,6400,12800,38400,96000,240000],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T'],fusion:true,fus:['bu4d','bu4d','r7'],perk:'80% Crafting Speed'},
  {id:'monowlkr',n:'Mono-WLKR',t:'Worker',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B'],perk:'1.6 craft speed'},
@@ -97,7 +97,7 @@ const DROIDS = [
  {id:'optistrk',n:'Opti-STRK',t:'Battle',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B'],perk:'+240 max HP'},
  {id:'b2rp',n:'B2-RP',t:'Battle',r:'Legendary',inc:[1300,2600,5200,10400,31300,78200,195600],bskCost:'12.4B',cost:['31M',null,'248M','372M','12.4B','74.4B','449.5B'],perk:'+240 max HP'},
  {id:'cyclograv',n:'Cyclo-Grav',t:'Battle',r:'Legendary',inc:[1300,2500,5000,10100,30200,75600,189000],bskCost:'12B',cost:['30M',null,'240M','360M','12B','72B','435B'],perk:'+240 max HP'},
- {id:'pz',n:'PZ',t:'Protocol',r:'Legendary',inc:[null,null,null,null,null,null,null],perk:'800% Credit Multiplier'},
+ {id:'pz',n:'PZ',t:'Protocol',r:'Legendary',inc:[900,1800,3600,7200,21600,54000,135000],bskCost:'14.8B',perk:'16.0 credit mult'},
  /* Mythic */
  {id:'riv3t',n:'RIV-3T',t:'Worker',r:'Mythic',inc:[8400,16800,33600,67200,134400,369600,1050000],bskCost:'288B',cost:['360M','1.44B','2.88B','8.63B','288B','1.68T','10.07T'],fusion:true,fus:['ric','ig','kx'],perk:'100% Crafting Speed'},
  {id:'lowmo',n:'LOW-MO',t:'Worker',r:'Mythic',inc:[7800,null,null,62400,null,343200,975000],bskCost:'272B',cost:['340M','1.36B','2.7B','8.16B','272B','1.6T',null],fusion:true,fus:['alt','alt','loadlifter'],perk:'100% Crafting Speed'},
@@ -116,7 +116,7 @@ const DROIDS = [
  {id:'srvo',n:'SRV-O',t:'Battle',r:'Mythic',inc:[7600,15200,30400,60800,121600,334400,950000],bskCost:'256B',cost:['320M','1.28B','2.55B','7.68B','256B','1.5T','8.96T'],fusion:true,fus:['b1heavy','b1heavy','ric1200'],perk:'+100 Max Health'},
  {id:'kx',n:'KX',t:'Battle',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T'],perk:'+260 max HP'},
  {id:'ig',n:'IG',t:'Battle',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T'],perk:'+260 max HP'},
- {id:'tda',n:'TDA',t:'Protocol',r:'Mythic',inc:[null,null,null,null,null,null,null],perk:'1000% Credit Multiplier'},
+ {id:'tda',n:'TDA',t:'Protocol',r:'Mythic',inc:[4000,8000,16000,32000,64000,176000,500000],bskCost:'320B',perk:'18.0 credit mult'},
  /* Iconic */
  {id:'do',n:'D-O',t:'Worker',r:'Iconic',iconic:true,perk:'50% Fusion Time'},
  {id:'djr3x',n:'DJ R-3X',t:'Worker',r:'Iconic',iconic:true,perk:'×2 World Quest Rewards'},

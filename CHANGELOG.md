@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.19.1 — 2026-09-15
+
+- Game data: the four Protocol droids (SA-5, LOM, PZ, TDA) now carry their income per variant and Beskar cost from the main source, which also spells their companion perk as a multiplier ("12.0 credit mult" up to "18.0 credit mult"); cards show income and cost like any other droid. Their other variant costs are still undocumented and show as "—".
+- FAQ, llms.txt: Protocol entry updated accordingly.
+- Tests: the Protocol section no longer freezes source values; the "perk only" card layout for droids without documented income is covered by a synthetic droid.
+
 ## 1.19.0 — 2026-09-14
 
 - Protocol update (game patch v1.30, September 12): a fourth droid class, Protocol, joins Worker, Astromech and Battle — new filter with live count and class icon — with its four droids SA-5 (Rare), LOM (Epic), PZ (Legendary) and TDA (Mythic), obtained only from World Mission Crates, companion perk Credit Multiplier scaled by rarity. C-3PO is now a Protocol droid. The unified counter follows the game: x/590 across seven variants (83 droids with variants + 9 Iconics); the Flawless counter spans the 83 variant droids. Their income and costs are not documented by any community source yet and show as "—" until they are.

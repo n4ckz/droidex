@@ -741,7 +741,7 @@ const setTarget = (w, rb) => {
   }
 
   /* ---- 27. Droïdes Protocol (v1.30) ---- */
-  console.log('\n[27] Droïdes Protocol (v1.30) : 4ᵉ classe, compteurs 590/83, stats inconnues');
+  console.log('\n[27] Droïdes Protocol (v1.30) : 4ᵉ classe, compteurs 590/83, stats de la source');
   {
     const { window: w } = boot();
     const dataSrc = fs.readFileSync(path.join(SITE, 'data.js'), 'utf8');
@@ -749,13 +749,19 @@ const setTarget = (w, rb) => {
       assert(new RegExp("\\{id:'" + id + "',n:'[^']+',t:'Protocol'").test(dataSrc), 'data.js : ' + id + ' de classe Protocol');
     });
     assert(/\{id:'c3po',n:'C-3PO',t:'Protocol'/.test(dataSrc), 'data.js : C-3PO reclassé Protocol');
-    assert(/\{id:'tda'[^}]*r:'Mythic'[^}]*perk:'1000% Credit Multiplier'/.test(dataSrc), 'data.js : TDA Mythique, perk 1000% Credit Multiplier');
-    // carte : 7 pastilles, pas de revenus (sources muettes) mais le perk visible, icône de classe
+    // depuis le 15/09/2026 tycoon-tools documente les 4 Protocol (revenus ×7, coût Beskar, perk « N credit mult »)
+    assert(/\{id:'tda'[^}]*r:'Mythic'[^}]*inc:\[\d+(,\d+){6}\][^}]*bskCost:'[^']+'[^}]*perk:'[^']+credit mult'/.test(dataSrc),
+      'data.js : TDA Mythique, 7 revenus, coût Beskar et perk de la source');
+    // carte : 7 pastilles, revenus Basic → Beskar + coût Beskar + perk, icône de classe
     const tda = findCard(w, 'TDA');
     assert(tda && tda.querySelectorAll('.tier').length === 7, 'TDA : carte à 7 pastilles de variante');
     const vl = tda && tda.querySelector('.value-line');
-    assert(vl && !vl.textContent.includes('null') && vl.textContent.includes('1000% Credit Multiplier'),
-      'TDA : value-line sans "null", perk affiché (obtenu : "' + (vl && vl.textContent) + '")');
+    assert(vl && !vl.textContent.includes('null') && /\/s → .+\/s · BSK .+ · .+credit mult/.test(vl.textContent),
+      'TDA : value-line revenus + BSK + perk (obtenu : "' + (vl && vl.textContent) + '")');
+    // garde conservée pour un futur droïde aux stats inconnues (inc tout null) : seul le perk, jamais « null/s »
+    const ghost = w.renderDroid({ id: 'ghost', n: 'GHOST', t: 'Protocol', r: 'Rare', inc: [null, null, null, null, null, null, null], perk: 'Ghost Perk' });
+    const gvl = ghost.querySelector('.value-line');
+    assert(gvl && gvl.textContent === 'Ghost Perk', 'droïde sans revenus documentés : value-line = perk seul (obtenu : "' + (gvl && gvl.textContent) + '")');
     assert(tda.querySelector('.type-ico.t-protocol'), 'TDA : icône de classe Protocol');
     // tap → compteur unifié 590 et distincts sur 92
     tda.querySelector('.tier[data-t="0"]').click();
@@ -767,7 +773,7 @@ const setTarget = (w, rb) => {
     // libellé FR du filtre
     w.setLang('fr');
     assert(w.document.querySelector('#filtersSide [data-filter="Protocol"]').textContent.includes('Protocole'), 'filtre Protocol libellé « Protocole » en FR');
-    // pages SEO : value list avec les 4 Protocol (« — » partout), FAQ Protocol EN+FR, Flawless Stellar 1/50
+    // pages SEO : value list avec les 4 Protocol (revenus, coûts « — »), FAQ Protocol EN+FR, Flawless Stellar 1/50
     const readPage = f => fs.readFileSync(path.join(SITE, f), 'utf8');
     const vlEn = readPage('value-list/index.html');
     assert(vlEn.includes('SA-5') && vlEn.includes('TDA') && vlEn.includes('Protocol'), 'value list EN : droïdes Protocol listés');
