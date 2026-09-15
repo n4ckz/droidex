@@ -145,7 +145,7 @@ jobs:
           done
           exit 1
 
-      - name: Open the signal issue of the day
+      - name: Open the signal issues of the day
         if: steps.sig.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -156,21 +156,43 @@ jobs:
           # +234 %) s'étaient empilés en commentaires d'une issue ouverte le
           # 22/07 — aucune notification saillante, patch repéré une semaine plus
           # tard. Une issue datée par jour reste bruyante mais visible.
+          #
+          # Les LIENS ENTRANTS ont leur propre issue : noyé dans « patch du jeu
+          # possible », le retrait du lien du wiki dédié (29/08/2026, signalé le
+          # 30/08) a été fermé en bloc avec les signaux de patch et découvert
+          # le 15/09. Un lien perdu ne se rétablit pas seul, il appelle une
+          # action humaine — il doit être lisible dans le titre.
           DAY=$(date -u +%F)
-          TITLE="Signal communautaire du $DAY : patch du jeu possible"
-          {
-            echo "Des sources ont bougé — le jeu a peut-être été patché."
-            echo
-            # signals.txt est du markdown déjà assaini par watch-signals.py
-            cat signals.txt
-            echo
-            echo "_Ce signal n'a modifié aucune donnée : la veille tycoon-tools ouvrira sa PR \`bot/gamedata-update\` quand la value list changera. Fermer cette issue une fois le patch identifié (ou écarté)._"
-          } > body.md
-          # une relance manuelle le même jour complète l'issue du jour
-          NUM=$(gh issue list --label gamedata-signal --state open --search "$TITLE in:title" \
-                  --json number,title --jq "map(select(.title == \"$TITLE\")) | .[0].number")
-          if [ -n "$NUM" ] && [ "$NUM" != "null" ]; then
-            gh issue comment "$NUM" --body-file body.md
-          else
-            gh issue create --title "$TITLE" --label gamedata-signal --body-file body.md
+          open_issue() {  # $1 = titre, $2 = fichier corps ; une relance le même jour complète l'issue du jour
+            NUM=$(gh issue list --label gamedata-signal --state open --search "$1 in:title" \
+                    --json number,title --jq "map(select(.title == \"$1\")) | .[0].number")
+            if [ -n "$NUM" ] && [ "$NUM" != "null" ]; then
+              gh issue comment "$NUM" --body-file "$2"
+            else
+              gh issue create --title "$1" --label gamedata-signal --body-file "$2"
+            fi
+          }
+          # signals.txt est du markdown déjà assaini par watch-signals.py ;
+          # on en détache le bloc wiki-backlinks (de sa ligne CHANGED à sa ligne « → vérifier »)
+          rm -f backlinks.txt
+          awk -v out=backlinks.txt '/^CHANGED wiki-backlinks/ {blk=1} blk {print > out; if (/→ vérifier/) blk=0; next} {print}' signals.txt > rest.txt
+          if [ -s backlinks.txt ]; then
+            {
+              echo "Un lien vers droidex.nackz.dev est apparu ou a disparu sur un wiki communautaire."
+              echo
+              cat backlinks.txt
+              echo
+              echo "_Regarder l'historique de la page concernée et décider d'une action humaine : un lien entrant perdu ne se rétablit pas seul. Ne pas fermer cette issue avec les signaux de patch._"
+            } > body-backlinks.md
+            open_issue "Liens entrants modifiés le $DAY (wikis)" body-backlinks.md
+          fi
+          if grep -q '^CHANGED ' rest.txt; then
+            {
+              echo "Des sources ont bougé — le jeu a peut-être été patché."
+              echo
+              cat rest.txt
+              echo
+              echo "_Ce signal n'a modifié aucune donnée : la veille tycoon-tools ouvrira sa PR \`bot/gamedata-update\` quand la value list changera. Fermer cette issue une fois le patch identifié (ou écarté)._"
+            } > body.md
+            open_issue "Signal communautaire du $DAY : patch du jeu possible" body.md
           fi
