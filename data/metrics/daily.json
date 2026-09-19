@@ -708,5 +708,16 @@
   "retentionD1": 0.69,
   "retentionD7": 0.6,
   "uniquePlayers": 169234
+ },
+ "2026-09-18": {
+  "averageMinutesPerPlayer": 128.19,
+  "favorites": 1221,
+  "minutesPlayed": 23475027,
+  "peakCCU": 26045,
+  "plays": 410280,
+  "recommendations": 902,
+  "retentionD1": 0.67,
+  "retentionD7": 0.58,
+  "uniquePlayers": 183124
  }
 }
