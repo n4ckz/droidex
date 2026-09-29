@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.20.1 — 2026-09-29
+
+- `/fr` and `/fr/` no longer answer 403 (a folder without its own page): they redirect permanently to the tracker in French. The tracker now accepts `?lang=fr` or `?lang=en` in its address, applies it as an explicit language choice (remembered like the language selector) and removes it from the address bar.
+
 ## 1.20.0 — 2026-09-29
 
 - Kyber update (game patch v1.32, September 26): Kyber becomes the eighth variant, above Stellar, with its KYB pill and colour on every card. Rebirths 36 to 40 are added to all five cycles (1.19Qa to 15Qa credits), each asking for three Kyber-tier droids. The unified counter follows the game at x/673 (83 droids × 8 variants + 9 Iconics). Existing registries gain the Kyber slot automatically. Kyber income is documented for about half the droids; Kyber costs are not documented yet and show as "—".

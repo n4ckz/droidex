@@ -267,6 +267,19 @@ function setLang(lang){
 (function initLang(){
   let saved = null;
   try{ saved = localStorage.getItem(LANG_KEY); }catch(e){}
+  /* ?lang=fr|en (cible de la redirection nginx /fr/ → /?lang=fr) : choix
+     explicite, persisté comme le sélecteur, puis retiré de l'URL affichée */
+  let asked = null;
+  try{ asked = new URLSearchParams(location.search).get('lang'); }catch(e){}
+  if(I18N[asked]){
+    saved = asked;
+    try{ localStorage.setItem(LANG_KEY, asked); }catch(e){}
+    try{
+      const u = new URL(location.href);
+      u.searchParams.delete('lang');
+      history.replaceState(history.state, '', u.pathname + u.search + u.hash);
+    }catch(e){}
+  }
   /* première visite (aucun choix enregistré) : préselectionne le français
      pour les navigateurs francophones, anglais sinon */
   const detected = (navigator.language || '').toLowerCase().startsWith('fr') ? 'fr' : 'en';

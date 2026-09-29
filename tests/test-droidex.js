@@ -40,9 +40,9 @@ const CCU_FIXTURE = { peakCCU: [
   { value: null,  timestamp: '2026-07-21T07:50:00.000Z' }
 ] };
 
-function boot(localStorageSeed, lang, navLang, fetchImpl) {
+function boot(localStorageSeed, lang, navLang, fetchImpl, url) {
   const errors = [];
-  const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only' });
+  const dom = new JSDOM(html, { url: url || 'http://localhost/', runScripts: 'outside-only' });
   const { window } = dom;
   window.confirm = () => true;
   /* aucun appel réseau réel dans les tests : stub de fetch (API CCU d'Epic) */
@@ -824,6 +824,28 @@ const setTarget = (w, rb) => {
     // générateur : injection Protocol + repli sur la page individuelle du wiki
     const gen = fs.readFileSync(path.join(SITE, '..', 'tools', 'update-gamedata.py'), 'utf8');
     assert(gen.includes("'Protocol': 3") && gen.includes('parse_droid_page_costs'), 'générateur : TYPE_ORDER Protocol + repli page individuelle');
+  }
+
+  /* ---- 28. /fr/ → /?lang=fr (v1.20.1) ----
+     /fr/ n'avait pas de page : 403 d'index de dossier. nginx redirige vers la
+     home en français ; l'app lit ?lang=, le persiste puis le retire de l'URL. */
+  console.log('\n[28] Paramètre ?lang= (cible de la redirection /fr/)');
+  {
+    const { window: w, errors } = boot(null, null, 'en-US', null, 'http://localhost/?lang=fr#x');
+    assert(errors.length === 0, '?lang=fr : aucune erreur JS');
+    assert(w.document.documentElement.lang === 'fr' && w.document.getElementById('langSelect').value === 'fr',
+      '?lang=fr sur un navigateur anglais → interface en français');
+    assert(w.localStorage.getItem('droidex-lang') === 'fr', '?lang=fr persisté comme un choix explicite');
+    assert(w.location.search === '' && w.location.hash === '#x', 'paramètre retiré de l\'URL (ancre conservée)');
+    // le paramètre prime sur un choix enregistré, une valeur inconnue est ignorée
+    const en = boot(null, 'fr', 'fr-FR', null, 'http://localhost/?lang=en').window;
+    assert(en.document.documentElement.lang === 'en' && en.localStorage.getItem('droidex-lang') === 'en',
+      '?lang=en remplace un choix FR enregistré');
+    const bad = boot(null, 'fr', 'en-US', null, 'http://localhost/?lang=xx').window;
+    assert(bad.document.documentElement.lang === 'fr' && bad.location.search === '?lang=xx',
+      '?lang=xx ignoré (choix enregistré conservé, URL intacte)');
+    const conf = fs.readFileSync(path.join(SITE, '..', 'deploy', 'nginx.conf'), 'utf8');
+    assert(/location ~ \^\/fr\/\?\$ \{[\s\S]*?return 301 \/\?lang=fr;/.test(conf), 'nginx : /fr et /fr/ → 301 /?lang=fr');
   }
 
   console.log('\n' + (failures ? '❌ ' + failures + ' échec(s)' : '✅ Tous les tests passent'));
