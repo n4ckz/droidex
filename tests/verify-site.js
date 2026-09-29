@@ -47,17 +47,22 @@ function check(cond, label, detail) {
   console.log('  version servie : ' + (version || 'INTROUVABLE'));
   check(!!version, 'version.js expose APP_VERSION');
 
-  /* cohérence structurelle des compteurs : total = 7×standard + iconiques */
+  /* cohérence structurelle des compteurs : total = variantes×standard + iconiques
+     (nombre de variantes lu dans le DOM : 7 à la MàJ Stellar, 8 à la MàJ Kyber) */
   const cards = page.locator('.droid');
   const nCards = await cards.count();
   const nIconic = await page.locator('.droid .iconic-own').count();
   const nStandard = nCards - nIconic;
+  const perCard = await page.$$eval('.droid', els => [...new Set(els
+    .map(e => e.querySelectorAll('.tier').length).filter(n => n > 0))]);
+  const nTiers = perCard.length === 1 ? perCard[0] : NaN;
   const progress = (await page.locator('#progressLabel').textContent()).trim();
   const total = parseInt(progress.split('/')[1], 10);
-  console.log(`  cartes : ${nCards} (${nStandard} standard + ${nIconic} iconiques) · compteur ${progress}`);
+  console.log(`  cartes : ${nCards} (${nStandard} standard + ${nIconic} iconiques) · ${nTiers} variantes · compteur ${progress}`);
   check(nCards > 0, 'des cartes de droïdes sont rendues');
-  check(total === 7 * nStandard + nIconic, 'compteur principal = 7×standard + iconiques',
-    `${total} vs ${7 * nStandard + nIconic}`);
+  check(perCard.length === 1, 'toutes les cartes standard ont le même nombre de pastilles', perCard.join('/'));
+  check(total === nTiers * nStandard + nIconic, `compteur principal = ${nTiers}×standard + iconiques`,
+    `${total} vs ${nTiers * nStandard + nIconic}`);
 
   /* compteur flawless = nb de droïdes standard */
   const flawless = (await page.locator('#flawlessCount').textContent()).trim();

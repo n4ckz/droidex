@@ -206,8 +206,11 @@ WIKI_ALIAS = {
     'optistrike': 'optistrk',
     'utiltech': 'utiltecultitech',
     'tritrek': 'tritek',
+    'l0': 'lo',                   # « L0 » (zéro) chez eux
+    'utiltec': 'utiltecultitech',  # notre nom d'affichage porte l'alias
 }
-WIKI_VARIANTS = {'base': 0, 'gold': 1, 'diamond': 2, 'rainbow': 3, 'beskar': 4, 'galactic': 5}
+WIKI_VARIANTS = {'base': 0, 'gold': 1, 'diamond': 2, 'rainbow': 3, 'beskar': 4, 'galactic': 5,
+                 'stellar': 6, 'kyber': 7}
 
 
 def _norm_name(s):
@@ -216,13 +219,13 @@ def _norm_name(s):
 
 def _fmt(reqs):
     """« gonk BAS, r9 GLD » — court, et sans caractère que clean() supprimerait."""
-    short = ['BAS', 'GLD', 'DIA', 'RBW', 'BSK', 'GLC']
+    short = ['BAS', 'GLD', 'DIA', 'RBW', 'BSK', 'GLC', 'STL', 'KYB']
     return ', '.join(f'{n} {short[t] if t is not None and t < len(short) else "?"}' for n, t in reqs)
 
 
 def _norm_credits(s):
     """« 45.00T » (wiki) et « 45T » (nous) désignent le même coût."""
-    m = re.fullmatch(r'([\d.]+)\s*([KMBT])', s.strip())
+    m = re.fullmatch(r'([\d.]+)\s*([KMBT]|Qa)', s.strip())
     if not m:
         return s.strip()
     return f'{float(m.group(1)):g}{m.group(2)}'
@@ -284,7 +287,7 @@ def _wiki_rebirths():
             if len(reqs) != 3:
                 continue
             rebirths[cyc][lvl] = sorted(reqs)
-            cred = re.search(r'\n\|([\d.]+\s*[KMBT])\s*$', blk.rstrip())
+            cred = re.search(r'\n\|([\d.]+\s*(?:[KMBT]|Qa))\s*$', blk.rstrip())
             if cred:
                 credits[lvl] = _norm_credits(cred.group(1))
     return rebirths, credits

@@ -13,8 +13,8 @@ const BASE_ICON = '<svg class="ico-base" viewBox="0 0 24 24" width="12" height="
 
 const I18N = {
   en: {
-    _tiers: ['Basic','Gold','Diamond','Rainbow','Beskar','Galactic','Stellar'],
-    _tierShort: ['BAS','GLD','DIA','RBW','BSK','GLC','STL'],
+    _tiers: ['Basic','Gold','Diamond','Rainbow','Beskar','Galactic','Stellar','Kyber'],
+    _tierShort: ['BAS','GLD','DIA','RBW','BSK','GLC','STL','KYB'],
     _rarities: {Common:'Common',Rare:'Rare',Epic:'Epic',Legendary:'Legendary',Mythic:'Mythic',Iconic:'Iconic'},
     title: "Droidex — Star Wars: Droid Tycoon Collection Tracker (Fortnite)",
     h1: "Droidex — Droidsmith's Registry",
@@ -106,23 +106,23 @@ const I18N = {
       'and your registry are stored on our server, deletable at any time via “Delete my account”.',
     aboutTitle: 'About Droidex — Star Wars: Droid Tycoon collection tracker',
     aboutP1: 'Droidex tracks the full Droidex of Star Wars: Droid Tycoon, the Fortnite mode by ' +
-      'FOAD/Blzn Studios: 92 droids and 590 variants across 7 tiers — Basic, Gold, Diamond, Rainbow, Beskar, ' +
-      'Galactic and Stellar — in one unified x/590 counter, exactly like the in-game Droidex screen, plus the ' +
+      'FOAD/Blzn Studios: 92 droids and 673 variants across 8 tiers — Basic, Gold, Diamond, Rainbow, Beskar, ' +
+      'Galactic, Stellar and Kyber — in one unified x/673 counter, exactly like the in-game Droidex screen, plus the ' +
       'Flawless counter. That includes the 17 fusion-exclusive droids of the Droid Fusion update, each shown ' +
       'with its fusion recipe, D-O, the 9th Iconic, and the four Protocol droids of the Protocol update (SA-5, LOM, PZ, TDA). Tap any variant to mark ' +
       'it owned or placed in your base; a higher variant always satisfies a lower requirement.',
-    aboutP2: 'Progression runs through 35 rebirth levels repeated across 5 cycles, each needing ' +
+    aboutP2: 'Progression runs through 40 rebirth levels repeated across 5 cycles, each needing ' +
       '3 specific droids in your base. Pick your target rebirth and the tracker shows exactly which droids are ' +
       'still missing, which ones to keep, and which can safely leave your base — plus wishlist stars, Flawless ' +
       'tracking (odds from 1 in 1000 Basic to 1 in 75 Galactic), the collection bonus and a live player counter. ' +
       'Free, no ads, open source, English and French.',
     aboutLinks: 'Dive deeper: <a href="value-list/">value list — income and cost of every ' +
-      'variant</a> · <a href="rebirth-requirements/">rebirth requirements for all 35 levels and 5 cycles</a> ' +
+      'variant</a> · <a href="rebirth-requirements/">rebirth requirements for all 40 levels and 5 cycles</a> ' +
       '· <a href="faq/">FAQ</a> · <a href="stats/">live player count and daily stats</a>.'
   },
   fr: {
-    _tiers: ['Basic','Or','Diamant','Arc-en-ciel','Beskar','Galactique','Stellaire'],
-    _tierShort: ['BAS','GLD','DIA','RBW','BSK','GLC','STL'],
+    _tiers: ['Basic','Or','Diamant','Arc-en-ciel','Beskar','Galactique','Stellaire','Kyber'],
+    _tierShort: ['BAS','GLD','DIA','RBW','BSK','GLC','STL','KYB'],
     _rarities: {Common:'Commun',Rare:'Rare',Epic:'Épique',Legendary:'Légendaire',Mythic:'Mythique',Iconic:'Iconique'},
     title: 'Droidex — Tracker de collection Star Wars: Droid Tycoon (Fortnite)',
     h1: 'Droidex — Registre du droïdesmith',
@@ -214,18 +214,18 @@ const I18N = {
       'et votre registre sont stockés sur notre serveur, supprimables à tout moment via « Supprimer mon compte ».',
     aboutTitle: 'À propos de Droidex — tracker de collection Star Wars: Droid Tycoon',
     aboutP1: 'Droidex suit le Droidex complet de Star Wars: Droid Tycoon, le mode Fortnite de ' +
-      'FOAD/Blzn Studios : 92 droïdes et 590 variantes sur 7 paliers — Basic, Or, Diamant, Arc-en-ciel, Beskar, ' +
-      'Galactique et Stellaire — dans un compteur x/590 unifié, exactement comme l\'écran Droidex du jeu, plus le ' +
+      'FOAD/Blzn Studios : 92 droïdes et 673 variantes sur 8 paliers — Basic, Or, Diamant, Arc-en-ciel, Beskar, ' +
+      'Galactique, Stellaire et Kyber — dans un compteur x/673 unifié, exactement comme l\'écran Droidex du jeu, plus le ' +
       'compteur Flawless. Cela inclut les 17 droïdes exclusifs à la fusion de la mise à jour Droid Fusion, ' +
       'chacun affiché avec sa recette, D-O, 9e Iconique, et les quatre droïdes Protocol de la mise à jour Protocol (SA-5, LOM, PZ, TDA). Un tap sur une ' +
       'variante la marque possédée ou placée en base ; une variante supérieure satisfait toujours une exigence inférieure.',
-    aboutP2: 'La progression passe par 35 niveaux de renaissance répétés sur 5 cycles, chacun exigeant ' +
+    aboutP2: 'La progression passe par 40 niveaux de renaissance répétés sur 5 cycles, chacun exigeant ' +
       '3 droïdes précis dans votre base. Choisissez votre renaissance cible et le tracker montre exactement ' +
       'quels droïdes manquent encore, lesquels garder, et lesquels peuvent quitter votre base — plus la ' +
       'wishlist, le suivi Flawless (chances de 1 sur 1000 en Basic à 1 sur 75 en Galactique), le bonus de ' +
       'collection et un compteur de joueurs en direct. Gratuit, sans pub, open source, en français et en anglais.',
     aboutLinks: 'Pour aller plus loin : <a href="fr/value-list/">liste des valeurs — revenus et coût de ' +
-      'chaque variante</a> · <a href="fr/rebirth-requirements/">exigences des 35 niveaux de renaissance sur ' +
+      'chaque variante</a> · <a href="fr/rebirth-requirements/">exigences des 40 niveaux de renaissance sur ' +
       'les 5 cycles</a> · <a href="fr/faq/">FAQ</a> · <a href="fr/stats/">joueurs en direct et statistiques ' +
       'quotidiennes</a>.'
   }

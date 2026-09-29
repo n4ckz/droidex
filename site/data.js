@@ -4,119 +4,119 @@
    Ce fichier est GÉNÉRÉ par tools/update-gamedata.py — ne pas éditer à la
    main : relancer le script puis relire le diff.
 
-   Sources communautaires (recoupées le 15/09/2026) :
-   - Exigences de renaissance (5 cycles × 35) et value list :
+   Sources communautaires (recoupées le 29/09/2026) :
+   - Exigences de renaissance (5 cycles × 40) et value list :
      https://tycoon-tools.com/droid-tycoon/ — le cycle 1 (RB 1-23) a été
      vérifié identique à nos données validées en jeu réel
    - Droidex : https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/
    - Wiki : https://star-wars-droid-tycoon.fandom.com/wiki/
    - Événements / Iconiques : https://droidtycoonguide.com/events/
 
-   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellar] (null = non documenté)
+   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellar, Kyber] (null = non documenté)
    bskCost: coût du droïde en Beskar (tycoon-tools)
-   cost: coût du droïde dans chacune des 7 variantes, même ordre que inc —
+   cost: coût du droïde dans chacune des 8 variantes, même ordre que inc —
    tycoon-tools ne publie que celui du Beskar, cette série est donc recoupée sur
    le wiki dédié (seul champ venu d'une autre source, et seulement si son
    rapport au coût Beskar est celui de son couple rareté/variante)
    perk: bonus passif (termes du jeu)
    fusion/fus: droïde obtenable uniquement par Droid Fusion (patch v1.27 du
-   22/08/2026) — fus liste les 3 ids consommés par la recette ; toutes les
-   stats de ces droïdes viennent du wiki dédié (absents de tycoon-tools)
+   22/08/2026) — fus liste les 3 ids consommés par la recette ; stats de
+   tycoon-tools, coûts hors Beskar du wiki dédié comme pour les autres
    Les Iconiques rapportent +15%/s (pas de variantes).
    ========================================================================= */
 
 /* Les libellés de variantes et de raretés (dépendants de la langue) sont dans i18n.js.
-   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic, 6=Stellar. */
+   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic, 6=Stellar, 7=Kyber. */
 
 const DROIDS = [
  /* Common */
- {id:'gonk',n:'Gonk',t:'Worker',r:'Common',inc:[4,8,16,32,48,96,128],bskCost:'48K',cost:['3K','12K','24K','36K','48K','60K','72K'],perk:'1.0 craft speed'},
- {id:'mouse',n:'Mouse',t:'Worker',r:'Common',inc:[2,4,8,16,24,48,64],bskCost:'15.2K',cost:['950','3.8K','7.6K','11.4K','15.2K','19K','22.8K'],perk:'1.0 craft speed'},
- {id:'pit',n:'Pit',t:'Worker',r:'Common',inc:[2,4,8,16,24,48,64],bskCost:'17.6K',cost:['1.1K','4.4K','8.8K','13.2K','17.6K','22K','26.4K'],perk:'1.0 craft speed'},
- {id:'r8',n:'R8',t:'Astromech',r:'Common',inc:[4,8,16,32,48,96,128],bskCost:'48K',cost:['3K','12K','24K','36K','48K','60K','72K'],perk:'+5 pickaxe'},
- {id:'cb',n:'CB',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72,96],bskCost:'32K',cost:['2K','8K','16K','24K','32K','40K','48K'],perk:'+5 pickaxe'},
- {id:'r3',n:'R3',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72,96],bskCost:'32K',cost:['2K','8K','16K','24K','32K','40K','48K'],perk:'+5 pickaxe'},
- {id:'r5',n:'R5',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72,96],bskCost:'32K',cost:['2K','8K','16K','24K','32K','40K','48K'],perk:'+5 pickaxe'},
- {id:'improbe',n:'Imperial Probe',t:'Battle',r:'Common',inc:[6,12,24,48,72,144,192],bskCost:'80K',cost:['5K','20K','40K','60K','80K','100K','120K'],perk:'+180 max HP'},
- {id:'b1battle',n:'B1 Battle',t:'Battle',r:'Common',inc:[5,10,20,40,60,120,160],bskCost:'64K',cost:['4K','16K','32K','48K','64K','80K','96K'],perk:'+180 max HP'},
- {id:'id10',n:'ID10',t:'Battle',r:'Common',inc:[4,8,16,32,48,96,128],bskCost:'64K',cost:['4K','16K','32K','48K','64K','80K','96K'],perk:'+180 max HP'},
- {id:'drk1',n:'DRK-1 Probe',t:'Battle',r:'Common',inc:[3,6,12,24,36,72,96],bskCost:'48K',cost:['3K','12K','24K','36K','48K','60K','72K'],perk:'+180 max HP'},
+ {id:'gonk',n:'Gonk',t:'Worker',r:'Common',inc:[4,8,16,32,48,96,128,140],bskCost:'48K',cost:['3K','12K','24K','36K','48K','60K','72K',null],perk:'1.0 craft speed'},
+ {id:'mouse',n:'Mouse',t:'Worker',r:'Common',inc:[2,4,8,16,24,48,64,70],bskCost:'15.2K',cost:['950','3.8K','7.6K','11.4K','15.2K','19K','22.8K',null],perk:'1.0 craft speed'},
+ {id:'pit',n:'Pit',t:'Worker',r:'Common',inc:[2,4,8,16,24,48,64,70],bskCost:'17.6K',cost:['1.1K','4.4K','8.8K','13.2K','17.6K','22K','26.4K',null],perk:'1.0 craft speed'},
+ {id:'r8',n:'R8',t:'Astromech',r:'Common',inc:[4,8,16,32,48,96,128,140],bskCost:'48K',cost:['3K','12K','24K','36K','48K','60K','72K',null],perk:'+5 pickaxe'},
+ {id:'cb',n:'CB',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72,96,105],bskCost:'32K',cost:['2K','8K','16K','24K','32K','40K','48K',null],perk:'+5 pickaxe'},
+ {id:'r3',n:'R3',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72,96,105],bskCost:'32K',cost:['2K','8K','16K','24K','32K','40K','48K',null],perk:'+5 pickaxe'},
+ {id:'r5',n:'R5',t:'Astromech',r:'Common',inc:[3,6,12,24,36,72,96,105],bskCost:'32K',cost:['2K','8K','16K','24K','32K','40K','48K',null],perk:'+5 pickaxe'},
+ {id:'improbe',n:'Imperial Probe',t:'Battle',r:'Common',inc:[6,12,24,48,72,144,192,211],bskCost:'80K',cost:['5K','20K','40K','60K','80K','100K','120K',null],perk:'+180 max HP'},
+ {id:'b1battle',n:'B1 Battle',t:'Battle',r:'Common',inc:[5,10,20,40,60,120,160,null],bskCost:'64K',cost:['4K','16K','32K','48K','64K','80K','96K',null],perk:'+180 max HP'},
+ {id:'id10',n:'ID10',t:'Battle',r:'Common',inc:[4,8,16,32,48,96,128,140],bskCost:'64K',cost:['4K','16K','32K','48K','64K','80K','96K',null],perk:'+180 max HP'},
+ {id:'drk1',n:'DRK-1 Probe',t:'Battle',r:'Common',inc:[3,6,12,24,36,72,96,105],bskCost:'48K',cost:['3K','12K','24K','36K','48K','60K','72K',null],perk:'+180 max HP'},
  /* Rare */
- {id:'whlex',n:'WHL-EX',t:'Worker',r:'Rare',inc:[72,144,288,576,864,null,2300],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M'],fusion:true,fus:['mouse','mouse','arg'],perk:'40% Crafting Speed'},
- {id:'bu4d',n:'BU-4D',t:'Worker',r:'Rare',inc:[58,116,232,464,696,1400,1900],bskCost:'2.08M',cost:['130K','520K','1.04M','1.56M','2.08M','2.6M','3.12M'],perk:'1.2 craft speed'},
- {id:'senate',n:'Senate Hovercam',t:'Worker',r:'Rare',inc:[46,92,184,368,552,1100,1500],bskCost:'1.6M',cost:['100K','400K','800K','1.2M','1.6M','2M','2.4M'],perk:'1.2 craft speed'},
- {id:'arg',n:'ARG',t:'Worker',r:'Rare',inc:[42,84,168,336,504,1000,1300],bskCost:'1.41M',cost:['88K','352K','704K','1.06M','1.41M','1.76M','2.11M'],perk:'1.2 craft speed'},
- {id:'rollr',n:'ROLL-R',t:'Worker',r:'Rare',inc:[31,62,124,248,372,744,992],bskCost:'992K',cost:['62K','248K','496K','744K','992K','1.24M','1.49M'],perk:'1.2 craft speed'},
- {id:'balcore',n:'Bal-Core',t:'Worker',r:'Rare',inc:[23,46,92,184,276,552,736],bskCost:'688K',cost:['43K','172K','344K','516K','688K','860K',null],perk:'1.2 craft speed'},
- {id:'bdx',n:'BDX Explorer',t:'Worker',r:'Rare',inc:[15,30,60,120,180,360,480],bskCost:'400K',cost:['25K','100K','200K','300K','400K','500K','600K'],perk:'1.2 craft speed'},
- {id:'zrotec',n:'ZRO-TEC',t:'Astromech',r:'Rare',inc:[72,144,288,576,864,1730,2300],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M'],fusion:true,fus:['id10','id10','2bb'],perk:'+2 Pickaxe Level'},
- {id:'r9',n:'R9',t:'Astromech',r:'Rare',inc:[54,108,216,432,648,1300,1700],bskCost:'1.92M',cost:['120K','480K','960K','1.44M','1.92M','2.4M','2.88M'],perk:'+6 pickaxe'},
- {id:'r4',n:'R4',t:'Astromech',r:'Rare',inc:[50,100,200,400,600,1200,1600],bskCost:'1.76M',cost:['110K','440K','880K','1.32M','1.76M','2.2M','2.64M'],perk:'+6 pickaxe'},
- {id:'alt',n:'A-LT',t:'Astromech',r:'Rare',inc:[36,72,144,288,432,864,1100],bskCost:'1.18M',cost:['74K','296K','592K','885K','1.18M','1.48M','1.78M'],perk:'+6 pickaxe'},
- {id:'2bb',n:'2BB',t:'Astromech',r:'Rare',inc:[17,34,68,136,204,408,544],bskCost:'480K',cost:['30K','120K','240K','360K','480K','600K','720K'],perk:'+6 pickaxe'},
- {id:'btlr',n:'BTL-R',t:'Battle',r:'Rare',inc:[72,144,288,576,864,1730,2300],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M'],fusion:true,fus:['b1battle','r9','bdx'],perk:'+40 Max Health'},
- {id:'b1sec',n:'B1 Security',t:'Battle',r:'Rare',inc:[66,132,264,528,792,1600,2100],bskCost:'2.4M',cost:['150K','600K','1.2M','1.8M','2.4M','3M','3.6M'],perk:'+200 max HP'},
- {id:'hovr',n:'HOV-R',t:'Battle',r:'Rare',inc:[62,124,248,496,744,1500,2000],bskCost:'2.24M',cost:['140K','560K','1.12M','1.68M','2.24M','2.8M','3.36M'],perk:'+200 max HP'},
- {id:'vectarm',n:'VECT-Arm',t:'Battle',r:'Rare',inc:[27,54,108,216,324,648,864],bskCost:'832K',cost:['52K','208K','416K','624K','832K','1.04M','1.25M'],perk:'+200 max HP'},
- {id:'navex',n:'NAV-EX',t:'Battle',r:'Rare',inc:[18,36,72,144,216,432,576],bskCost:'576K',cost:['36K','144K','288K','432K','576K','720K','864K'],perk:'+200 max HP'},
- {id:'sa5',n:'SA-5',t:'Protocol',r:'Rare',inc:[14,28,56,112,168,336,448],bskCost:'2.88M',perk:'12.0 credit mult'},
+ {id:'whlex',n:'WHL-EX',t:'Worker',r:'Rare',inc:[72,144,288,576,864,1700,2300,null],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M',null],fusion:true,fus:['mouse','mouse','arg'],perk:'1.4 craft speed'},
+ {id:'bu4d',n:'BU-4D',t:'Worker',r:'Rare',inc:[58,116,232,464,696,1400,1900,2000],bskCost:'2.08M',cost:['130K','520K','1.04M','1.56M','2.08M','2.6M','3.12M',null],perk:'1.2 craft speed'},
+ {id:'senate',n:'Senate Hovercam',t:'Worker',r:'Rare',inc:[46,92,184,368,552,1100,1500,1600],bskCost:'1.6M',cost:['100K','400K','800K','1.2M','1.6M','2M','2.4M',null],perk:'1.2 craft speed'},
+ {id:'arg',n:'ARG',t:'Worker',r:'Rare',inc:[42,84,168,336,504,1000,1300,1500],bskCost:'1.41M',cost:['88K','352K','704K','1.06M','1.41M','1.76M','2.11M',null],perk:'1.2 craft speed'},
+ {id:'rollr',n:'ROLL-R',t:'Worker',r:'Rare',inc:[31,62,124,248,372,744,992,1100],bskCost:'992K',cost:['62K','248K','496K','744K','992K','1.24M','1.49M',null],perk:'1.2 craft speed'},
+ {id:'balcore',n:'Bal-Core',t:'Worker',r:'Rare',inc:[23,46,92,184,276,552,736,809],bskCost:'688K',cost:['43K','172K','344K','516K','688K','860K',null,null],perk:'1.2 craft speed'},
+ {id:'bdx',n:'BDX Explorer',t:'Worker',r:'Rare',inc:[15,30,60,120,180,360,480,null],bskCost:'400K',cost:['25K','100K','200K','300K','400K','500K','600K',null],perk:'1.2 craft speed'},
+ {id:'zrotec',n:'ZRO-TEC',t:'Astromech',r:'Rare',inc:[72,144,288,576,864,1700,2300,null],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M',null],fusion:true,fus:['id10','id10','2bb'],perk:'+7 pickaxe'},
+ {id:'r9',n:'R9',t:'Astromech',r:'Rare',inc:[54,108,216,432,648,1300,1700,1900],bskCost:'1.92M',cost:['120K','480K','960K','1.44M','1.92M','2.4M','2.88M',null],perk:'+6 pickaxe'},
+ {id:'r4',n:'R4',t:'Astromech',r:'Rare',inc:[50,100,200,400,600,1200,1600,1800],bskCost:'1.76M',cost:['110K','440K','880K','1.32M','1.76M','2.2M','2.64M',null],perk:'+6 pickaxe'},
+ {id:'alt',n:'A-LT',t:'Astromech',r:'Rare',inc:[36,72,144,288,432,864,1100,null],bskCost:'1.18M',cost:['74K','296K','592K','885K','1.18M','1.48M','1.78M',null],perk:'+6 pickaxe'},
+ {id:'2bb',n:'2BB',t:'Astromech',r:'Rare',inc:[17,34,68,136,204,408,544,598],bskCost:'480K',cost:['30K','120K','240K','360K','480K','600K','720K',null],perk:'+6 pickaxe'},
+ {id:'btlr',n:'BTL-R',t:'Battle',r:'Rare',inc:[72,144,288,576,864,1700,2300,null],bskCost:'5.2M',cost:['325K','1.3M','2.6M','3.9M','5.2M','6.5M','7.8M',null],fusion:true,fus:['b1battle','r9','bdx'],perk:'+220 max HP'},
+ {id:'b1sec',n:'B1 Security',t:'Battle',r:'Rare',inc:[66,132,264,528,792,1600,2100,2300],bskCost:'2.4M',cost:['150K','600K','1.2M','1.8M','2.4M','3M','3.6M',null],perk:'+200 max HP'},
+ {id:'hovr',n:'HOV-R',t:'Battle',r:'Rare',inc:[62,124,248,496,744,1500,2000,2200],bskCost:'2.24M',cost:['140K','560K','1.12M','1.68M','2.24M','2.8M','3.36M',null],perk:'+200 max HP'},
+ {id:'vectarm',n:'VECT-Arm',t:'Battle',r:'Rare',inc:[27,54,108,216,324,648,864,950],bskCost:'832K',cost:['52K','208K','416K','624K','832K','1.04M','1.25M',null],perk:'+200 max HP'},
+ {id:'navex',n:'NAV-EX',t:'Battle',r:'Rare',inc:[18,36,72,144,216,432,576,633],bskCost:'576K',cost:['36K','144K','288K','432K','576K','720K','864K',null],perk:'+200 max HP'},
+ {id:'sa5',n:'SA-5',t:'Protocol',r:'Rare',inc:[14,28,56,112,168,336,448,null],bskCost:'2.88M',perk:'12.0 credit mult'},
  /* Epic */
- {id:'nul',n:'N-UL',t:'Worker',r:'Epic',inc:[720,1440,2880,5760,24480,37440,57600],bskCost:'1.7B',cost:['13.6M','54.4M','108.8M','217.6M','1.7B','4.07B','10.2B'],fusion:true,fus:['gunrunner','bb','b1heavy'],perk:'60% Crafting Speed'},
- {id:'gunrunner',n:'Gunrunner',t:'Worker',r:'Epic',inc:[660,1300,2600,5300,22400,34300,52800],bskCost:'787.5M',cost:['6.3M','25.2M','50.4M','75.6M','787.5M','1.89B','4.72B'],perk:'1.4 craft speed'},
- {id:'amp',n:'AMP Walker',t:'Worker',r:'Epic',inc:[570,1100,2300,4600,19400,29600,45600],bskCost:'675M',cost:['5.4M','21.6M','43.2M','64.8M','675M','1.62B','4.05B'],perk:'1.4 craft speed'},
- {id:'sentri',n:'SEN-TRI',t:'Worker',r:'Epic',inc:[510,1000,2000,4100,17300,26500,40800],bskCost:'600M',cost:['4.8M','19.2M','38.4M','57.6M','600M','1.44B','3.6B'],perk:'1.4 craft speed'},
- {id:'optipod',n:'Opti-Pod',t:'Worker',r:'Epic',inc:[390,780,1600,3100,13300,20300,31200],bskCost:'450M',cost:['3.6M','14.4M','28.8M','43.2M','450M','1.08B','2.7B'],perk:'1.4 craft speed'},
- {id:'lo',n:'LO',t:'Worker',r:'Epic',inc:[240,480,960,1900,8200,12500,19200],bskCost:'262.5M',cost:['2.1M','8.4M','16.8M','33.6M','262.5M','630M','1.57B'],perk:'1.4 craft speed'},
- {id:'groundmech',n:'Groundmech',t:'Worker',r:'Epic',inc:[120,240,480,960,4100,6200,9600],bskCost:'112.5M',cost:['900K','3.6M','7.2M','10.8M','112.5M','270M','675M'],perk:'1.4 craft speed'},
- {id:'scrpr',n:'SCRP-R',t:'Astromech',r:'Epic',inc:[720,1440,2880,5760,24480,37440,57600],bskCost:'1.7B',cost:['13.6M','54.4M','108.8M','217.6M','1.7B','4.07B','10.2B'],fusion:true,fus:['gonk','r6','groundmech'],perk:'+3 Pickaxe Level'},
- {id:'r2',n:'R2',t:'Astromech',r:'Epic',inc:[360,720,1400,2900,12200,18700,28800],bskCost:'412.5M',cost:['3.3M','13.2M','26.4M','39.6M','412.5M','990M','2.48B'],perk:'+7 pickaxe'},
- {id:'trakr',n:'TRAK-R',t:'Astromech',r:'Epic',inc:[330,660,1300,2600,11200,17200,26400],bskCost:'375M',cost:['3M','12M','24M','36M','375M','900M','2.25B'],perk:'+7 pickaxe'},
- {id:'r6',n:'R6',t:'Astromech',r:'Epic',inc:[300,600,1200,2400,10200,15600,24000],bskCost:'337.5M',cost:['2.7M','10.8M','21.6M','32.4M','337.5M','810M','2.02B'],perk:'+7 pickaxe'},
- {id:'utiltec',n:'Util-Tec (Ulti-Tech)',t:'Astromech',r:'Epic',inc:[210,420,840,1700,7100,10900,16800],bskCost:'225M',cost:['1.8M','7.2M','14.4M','21.6M','225M','540M','1.35B'],perk:'+7 pickaxe'},
- {id:'orbwalker',n:'ORB-Walker',t:'Astromech',r:'Epic',inc:[180,360,720,1400,6100,9400,14400],bskCost:'187.5M',cost:['1.5M','6M','12M','18M','187.5M','450M','1.12B'],perk:'+7 pickaxe'},
- {id:'bb',n:'BB',t:'Astromech',r:'Epic',inc:[150,300,600,1200,5100,7800,12000],bskCost:'150M',cost:['1.2M','4.8M','9.6M','14.4M','150M','360M','900M'],perk:'+7 pickaxe'},
- {id:'optar',n:'OPT-AR',t:'Battle',r:'Epic',inc:[720,1440,2880,5760,24480,37440,57600],bskCost:'1.7B',cost:['13.6M','54.4M','108.8M','217.6M','1.7B','4.07B','10.2B'],fusion:true,fus:['r2','r2','b2super'],perk:'+60 Max Health'},
- {id:'armcore',n:'ARM-CORE',t:'Battle',r:'Epic',inc:[690,1380,2760,5520,null,35880,55200],bskCost:'1.64B',cost:['13.14M','52.57M','105.14M','210.28M','1.64B','3.94B','9.93B'],fusion:true,fus:['arg','arg','b2heavy'],perk:'+60 Max Health'},
- {id:'b1heavy',n:'B1 Heavy',t:'Battle',r:'Epic',inc:[630,1300,2500,4800,20400,31200,48000],bskCost:'750M',cost:['6M','24M','48M','72M','750M','1.8B','4.5B'],perk:'+220 max HP'},
- {id:'strikeorb',n:'Strike-Orb',t:'Battle',r:'Epic',inc:[540,1100,2200,4300,18400,28100,43200],bskCost:'637.5M',cost:['5.1M','20.4M','40.8M','61.2M','637.5M','1.53B','3.83B'],perk:'+220 max HP'},
- {id:'b2heavy',n:'B2 Heavy',t:'Battle',r:'Epic',inc:[480,960,1900,3800,16300,25000,38400],bskCost:'562.5M',cost:['4.5M','18M','36M','54M','562.5M','1.35B','3.38B'],perk:'+220 max HP'},
- {id:'lngshot',n:'LNG-Shot',t:'Battle',r:'Epic',inc:[450,900,1800,3600,15300,23400,36000],bskCost:'525M',cost:['4.2M','16.8M','33.6M','50.4M','525M','1.26B','3.15B'],perk:'+220 max HP'},
- {id:'b2super',n:'B2 Super',t:'Battle',r:'Epic',inc:[420,840,1700,3400,14300,21800,33600],bskCost:'487.5M',cost:['3.9M','15.6M','31.2M','46.8M','487.5M','1.17B','2.92B'],perk:'+220 max HP'},
- {id:'haulr',n:'Haul-R',t:'Battle',r:'Epic',inc:[270,540,1100,2200,9200,14000,21600],bskCost:'300M',cost:['2.4M','9.6M','19.2M','28.8M','300M','720M','1.8B'],perk:'+220 max HP'},
- {id:'lom',n:'LOM',t:'Protocol',r:'Epic',inc:[105,210,420,840,3600,5500,8400],bskCost:'875M',perk:'14.0 credit mult'},
+ {id:'nul',n:'N-UL',t:'Worker',r:'Epic',inc:[1100,2200,4300,8600,36700,56200,86400,null],bskCost:'1.7B',cost:['13.6M','54.4M','108.8M','217.6M','1.7B','4.07B','10.2B',null],fusion:true,fus:['gunrunner','bb','b1heavy'],perk:'1.6 craft speed'},
+ {id:'gunrunner',n:'Gunrunner',t:'Worker',r:'Epic',inc:[660,1300,2600,5300,22400,34300,52800,58100],bskCost:'787.5M',cost:['6.3M','25.2M','50.4M','75.6M','787.5M','1.89B','4.72B',null],perk:'1.4 craft speed'},
+ {id:'amp',n:'AMP Walker',t:'Worker',r:'Epic',inc:[570,1100,2300,4600,19400,29600,45600,50200],bskCost:'675M',cost:['5.4M','21.6M','43.2M','64.8M','675M','1.62B','4.05B',null],perk:'1.4 craft speed'},
+ {id:'sentri',n:'SEN-TRI',t:'Worker',r:'Epic',inc:[510,1000,2000,4100,17300,26500,40800,44900],bskCost:'600M',cost:['4.8M','19.2M','38.4M','57.6M','600M','1.44B','3.6B',null],perk:'1.4 craft speed'},
+ {id:'optipod',n:'Opti-Pod',t:'Worker',r:'Epic',inc:[390,780,1600,3100,13300,20300,31200,null],bskCost:'450M',cost:['3.6M','14.4M','28.8M','43.2M','450M','1.08B','2.7B',null],perk:'1.4 craft speed'},
+ {id:'lo',n:'LO',t:'Worker',r:'Epic',inc:[240,480,960,1900,8200,12500,19200,null],bskCost:'262.5M',cost:['2.1M','8.4M','16.8M','33.6M','262.5M','630M','1.57B',null],perk:'1.4 craft speed'},
+ {id:'groundmech',n:'Groundmech',t:'Worker',r:'Epic',inc:[120,240,480,960,4100,6200,9600,null],bskCost:'112.5M',cost:['900K','3.6M','7.2M','10.8M','112.5M','270M','675M',null],perk:'1.4 craft speed'},
+ {id:'scrpr',n:'SCRP-R',t:'Astromech',r:'Epic',inc:[1100,2200,4300,8600,36700,56200,86400,null],bskCost:'1.7B',cost:['13.6M','54.4M','108.8M','217.6M','1.7B','4.07B','10.2B',null],fusion:true,fus:['gonk','r6','groundmech'],perk:'+8 pickaxe'},
+ {id:'r2',n:'R2',t:'Astromech',r:'Epic',inc:[360,720,1400,2900,12200,18700,28800,31700],bskCost:'412.5M',cost:['3.3M','13.2M','26.4M','39.6M','412.5M','990M','2.48B',null],perk:'+7 pickaxe'},
+ {id:'trakr',n:'TRAK-R',t:'Astromech',r:'Epic',inc:[330,660,1300,2600,11200,17200,26400,null],bskCost:'375M',cost:['3M','12M','24M','36M','375M','900M','2.25B',null],perk:'+7 pickaxe'},
+ {id:'r6',n:'R6',t:'Astromech',r:'Epic',inc:[300,600,1200,2400,10200,15600,24000,null],bskCost:'337.5M',cost:['2.7M','10.8M','21.6M','32.4M','337.5M','810M','2.02B',null],perk:'+7 pickaxe'},
+ {id:'utiltec',n:'Util-Tec (Ulti-Tech)',t:'Astromech',r:'Epic',inc:[210,420,840,1700,7100,10900,16800,18500],bskCost:'225M',cost:['1.8M','7.2M','14.4M','21.6M','225M','540M','1.35B',null],perk:'+7 pickaxe'},
+ {id:'orbwalker',n:'ORB-Walker',t:'Astromech',r:'Epic',inc:[180,360,720,1400,6100,9400,14400,null],bskCost:'187.5M',cost:['1.5M','6M','12M','18M','187.5M','450M','1.12B',null],perk:'+7 pickaxe'},
+ {id:'bb',n:'BB',t:'Astromech',r:'Epic',inc:[150,300,600,1200,5100,7800,12000,null],bskCost:'150M',cost:['1.2M','4.8M','9.6M','14.4M','150M','360M','900M',null],perk:'+7 pickaxe'},
+ {id:'optar',n:'OPT-AR',t:'Battle',r:'Epic',inc:[1100,2200,4300,8600,36700,56200,86400,null],bskCost:'1.65B',cost:['13.6M','54.4M','108.8M','217.6M','1.65B','4.07B','10.2B',null],fusion:true,fus:['r2','r2','b2super'],perk:'+240 max HP'},
+ {id:'armcore',n:'ARM-CORE',t:'Battle',r:'Epic',inc:[1000,2100,4100,8300,35200,53800,82800,null],bskCost:'1.65B',cost:['13.14M','52.57M','105.14M','210.28M','1.65B','3.94B','9.93B',null],fusion:true,fus:['arg','arg','b2heavy'],perk:'+240 max HP'},
+ {id:'b1heavy',n:'B1 Heavy',t:'Battle',r:'Epic',inc:[630,1300,2500,4800,20400,31200,48000,null],bskCost:'750M',cost:['6M','24M','48M','72M','750M','1.8B','4.5B',null],perk:'+220 max HP'},
+ {id:'strikeorb',n:'Strike-Orb',t:'Battle',r:'Epic',inc:[540,1100,2200,4300,18400,28100,43200,47500],bskCost:'637.5M',cost:['5.1M','20.4M','40.8M','61.2M','637.5M','1.53B','3.83B',null],perk:'+220 max HP'},
+ {id:'b2heavy',n:'B2 Heavy',t:'Battle',r:'Epic',inc:[480,960,1900,3800,16300,25000,38400,null],bskCost:'562.5M',cost:['4.5M','18M','36M','54M','562.5M','1.35B','3.38B',null],perk:'+220 max HP'},
+ {id:'lngshot',n:'LNG-Shot',t:'Battle',r:'Epic',inc:[450,900,1800,3600,15300,23400,36000,null],bskCost:'525M',cost:['4.2M','16.8M','33.6M','50.4M','525M','1.26B','3.15B',null],perk:'+220 max HP'},
+ {id:'b2super',n:'B2 Super',t:'Battle',r:'Epic',inc:[420,840,1700,3400,14300,21800,33600,37000],bskCost:'487.5M',cost:['3.9M','15.6M','31.2M','46.8M','487.5M','1.17B','2.92B',null],perk:'+220 max HP'},
+ {id:'haulr',n:'Haul-R',t:'Battle',r:'Epic',inc:[270,540,1100,2200,9200,14000,21600,23800],bskCost:'300M',cost:['2.4M','9.6M','19.2M','28.8M','300M','720M','1.8B',null],perk:'+220 max HP'},
+ {id:'lom',n:'LOM',t:'Protocol',r:'Epic',inc:[105,210,420,840,3600,5500,8400,null],bskCost:'875M',perk:'14.0 credit mult'},
  /* Legendary */
- {id:'fus3',n:'FUS-3',t:'Worker',r:'Legendary',inc:[1600,3200,6400,12800,38400,96000,240000],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T'],fusion:true,fus:['bu4d','bu4d','r7'],perk:'80% Crafting Speed'},
- {id:'monowlkr',n:'Mono-WLKR',t:'Worker',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B'],perk:'1.6 craft speed'},
- {id:'rotor',n:'RO-TOR',t:'Worker',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000],bskCost:'28.8B',cost:['72M','288M','576M','1.15B','28.8B','172.8B','1.04T'],fusion:true,fus:['pit','b1battle','bb9'],perk:'80% Crafting Speed'},
- {id:'mechadroid',n:'Mecha-Droid',t:'Worker',r:'Legendary',inc:[1200,2500,5000,9900,29900,74600,186600],bskCost:'11.6B',cost:['29M','116M','232M','348M','11.6B','69.6B','420.5B'],perk:'1.6 craft speed'},
- {id:'protoroller',n:'Proto-Roller',t:'Worker',r:'Legendary',inc:[972,1900,3900,7800,23300,58300,145800],bskCost:'8.8B',cost:['22M','88M','176M','264M','8.8B','52.8B',null],perk:'1.6 craft speed'},
- {id:'qikbit',n:'QIK-BIT',t:'Astromech',r:'Legendary',inc:[1600,3200,6400,12800,38400,96000,240000],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T'],fusion:true,fus:['groundmech','groundmech','bb9'],perk:'+4 Pickaxe Level'},
- {id:'r7',n:'R7',t:'Astromech',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B'],perk:'+8 pickaxe'},
- {id:'bb9',n:'BB9',t:'Astromech',r:'Legendary',inc:[1300,2600,5200,10400,31200,78000,195000],bskCost:'11.2B',cost:['28M','112M','224M','336M','11.2B','67.2B','406B'],perk:'+8 pickaxe'},
- {id:'orbxl',n:'ORB-XL',t:'Battle',r:'Legendary',inc:[1600,3200,6400,12800,38400,96000,240000],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T'],fusion:true,fus:['cb','gunrunner','b2rp'],perk:'+80 Max Health'},
- {id:'optistrk',n:'Opti-STRK',t:'Battle',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B'],perk:'+240 max HP'},
- {id:'b2rp',n:'B2-RP',t:'Battle',r:'Legendary',inc:[1300,2600,5200,10400,31300,78200,195600],bskCost:'12.4B',cost:['31M',null,'248M','372M','12.4B','74.4B','449.5B'],perk:'+240 max HP'},
- {id:'cyclograv',n:'Cyclo-Grav',t:'Battle',r:'Legendary',inc:[1300,2500,5000,10100,30200,75600,189000],bskCost:'12B',cost:['30M',null,'240M','360M','12B','72B','435B'],perk:'+240 max HP'},
- {id:'pz',n:'PZ',t:'Protocol',r:'Legendary',inc:[900,1800,3600,7200,21600,54000,135000],bskCost:'14.8B',perk:'16.0 credit mult'},
+ {id:'fus3',n:'FUS-3',t:'Worker',r:'Legendary',inc:[2400,4800,9600,19200,57600,144000,360000,null],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T',null],fusion:true,fus:['bu4d','bu4d','r7'],perk:'1.8 craft speed'},
+ {id:'rotor',n:'RO-TOR',t:'Worker',r:'Legendary',inc:[2300,4500,9000,18000,54000,135000,337500,null],bskCost:'28.8B',cost:['72M','288M','576M','1.15B','28.8B','172.8B','1.04T',null],fusion:true,fus:['pit','b1battle','bb9'],perk:'1.8 craft speed'},
+ {id:'monowlkr',n:'Mono-WLKR',t:'Worker',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000,247500],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B',null],perk:'1.6 craft speed'},
+ {id:'mechadroid',n:'Mecha-Droid',t:'Worker',r:'Legendary',inc:[1200,2500,5000,9900,29900,74600,186600,null],bskCost:'11.6B',cost:['29M','116M','232M','348M','11.6B','69.6B','420.5B',null],perk:'1.6 craft speed'},
+ {id:'protoroller',n:'Proto-Roller',t:'Worker',r:'Legendary',inc:[972,1900,3900,7800,23300,58300,145800,null],bskCost:'8.8B',cost:['22M','88M','176M','264M','8.8B','52.8B',null,null],perk:'1.6 craft speed'},
+ {id:'qikbit',n:'QIK-BIT',t:'Astromech',r:'Legendary',inc:[2400,4800,9600,19200,57600,144000,360000,null],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T',null],fusion:true,fus:['groundmech','groundmech','bb9'],perk:'+9 pickaxe'},
+ {id:'r7',n:'R7',t:'Astromech',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000,247500],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B',null],perk:'+8 pickaxe'},
+ {id:'bb9',n:'BB9',t:'Astromech',r:'Legendary',inc:[1300,2600,5200,10400,31200,78000,195000,214500],bskCost:'11.2B',cost:['28M','112M','224M','336M','11.2B','67.2B','406B',null],perk:'+8 pickaxe'},
+ {id:'orbxl',n:'ORB-XL',t:'Battle',r:'Legendary',inc:[2400,4800,9600,19200,57600,144000,360000,null],bskCost:'32B',cost:['80M','320M','640M','1.28B','32B','192B','1.16T',null],fusion:true,fus:['cb','gunrunner','b2rp'],perk:'+260 max HP'},
+ {id:'optistrk',n:'Opti-STRK',t:'Battle',r:'Legendary',inc:[1500,3000,6000,12000,36000,90000,225000,247500],bskCost:'14.8B',cost:['37M','148M','296M','444M','14.8B','88.8B','536.5B',null],perk:'+240 max HP'},
+ {id:'b2rp',n:'B2-RP',t:'Battle',r:'Legendary',inc:[1300,2600,5200,10400,31300,78200,195600,null],bskCost:'12.4B',cost:['31M',null,'248M','372M','12.4B','74.4B','449.5B',null],perk:'+240 max HP'},
+ {id:'cyclograv',n:'Cyclo-Grav',t:'Battle',r:'Legendary',inc:[1300,2500,5000,10100,30200,75600,189000,207900],bskCost:'12B',cost:['30M',null,'240M','360M','12B','72B','435B',null],perk:'+240 max HP'},
+ {id:'pz',n:'PZ',t:'Protocol',r:'Legendary',inc:[900,1800,3600,7200,21600,54000,135000,null],bskCost:'14.8B',perk:'16.0 credit mult'},
  /* Mythic */
- {id:'riv3t',n:'RIV-3T',t:'Worker',r:'Mythic',inc:[8400,16800,33600,67200,134400,369600,1050000],bskCost:'288B',cost:['360M','1.44B','2.88B','8.63B','288B','1.68T','10.07T'],fusion:true,fus:['ric','ig','kx'],perk:'100% Crafting Speed'},
- {id:'lowmo',n:'LOW-MO',t:'Worker',r:'Mythic',inc:[7800,null,null,62400,null,343200,975000],bskCost:'272B',cost:['340M','1.36B','2.7B','8.16B','272B','1.6T',null],fusion:true,fus:['alt','alt','loadlifter'],perk:'100% Crafting Speed'},
- {id:'lugg',n:'LUG-G',t:'Worker',r:'Mythic',inc:[7600,15200,30400,60800,121600,334400,950000],bskCost:'256B',cost:['320M','1.28B','2.55B','7.68B','256B','1.5T','8.96T'],fusion:true,fus:['id10','r5','loadlifter'],perk:'100% Crafting Speed'},
- {id:'loadlifter',n:'Loadlifter',t:'Worker',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T'],perk:'1.8 craft speed'},
- {id:'lep',n:'LEP',t:'Worker',r:'Mythic',inc:[6500,13000,26000,52000,104000,286000,812500],bskCost:'201.6B',cost:['252M','1.01B','2.02B','6.05B','201.6B','1.18T','7.06T'],perk:'1.8 craft speed'},
- {id:'ric1200',n:'RIC-1200',t:'Worker',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T'],perk:'1.8 craft speed'},
- {id:'ric',n:'RIC',t:'Worker',r:'Mythic',inc:[5100,10200,20400,40800,81600,224400,637500],bskCost:'163.2B',cost:['204M','816M','1.63B','4.9B','163.2B','958.8B','5.71T'],perk:'1.8 craft speed'},
- {id:'snowmouse',n:'Snow Mouse',t:'Worker',r:'Mythic',inc:[4400,8800,17600,35200,70400,193600,550000],bskCost:'144B',cost:['180M','720M','1.42B','4.32B','144B','846B','5.04T'],perk:'1.8 craft speed'},
- {id:'axipod',n:'AXI-POD',t:'Astromech',r:'Mythic',inc:[8000,16000,32000,64000,128000,352000,1000000],bskCost:'288B',cost:['360M','1.44B','2.89B','8.63B','288B','1.68T','10.07T'],fusion:true,fus:['bdx','r7','ric'],perk:'+5 Pickaxe Level'},
- {id:'motrak',n:'MO-TRAK',t:'Astromech',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T'],perk:'+9 pickaxe'},
- {id:'tritek',n:'TRI-TEK',t:'Astromech',r:'Mythic',inc:[6500,13000,26000,52000,104000,286000,812500],bskCost:'201.6B',cost:['252M','1.01B','2.02B','6.05B','201.6B','1.18T','7.06T'],perk:'+9 pickaxe'},
- {id:'drftr',n:'DRFT-R',t:'Astromech',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T'],perk:'+9 pickaxe'},
- {id:'cyclens',n:'CYCLENS',t:'Astromech',r:'Mythic',inc:[4400,8800,17600,35200,70400,193600,550000],bskCost:'144B',cost:['180M','720M','1.42B','4.32B','144B','846B','5.04T'],perk:'+9 pickaxe'},
- {id:'xonk',n:'X-ONK',t:'Battle',r:'Mythic',inc:[8000,16000,32000,64000,128000,352000,1000000],bskCost:'288B',cost:['360M','1.44B','2.89B','8.63B','288B','1.68T','10.07T'],fusion:true,fus:['gonk','kx','kx'],perk:'+100 Max Health'},
- {id:'srvo',n:'SRV-O',t:'Battle',r:'Mythic',inc:[7600,15200,30400,60800,121600,334400,950000],bskCost:'256B',cost:['320M','1.28B','2.55B','7.68B','256B','1.5T','8.96T'],fusion:true,fus:['b1heavy','b1heavy','ric1200'],perk:'+100 Max Health'},
- {id:'kx',n:'KX',t:'Battle',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T'],perk:'+260 max HP'},
- {id:'ig',n:'IG',t:'Battle',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T'],perk:'+260 max HP'},
- {id:'tda',n:'TDA',t:'Protocol',r:'Mythic',inc:[4000,8000,16000,32000,64000,176000,500000],bskCost:'320B',perk:'18.0 credit mult'},
+ {id:'lowmo',n:'LOW-MO',t:'Worker',r:'Mythic',inc:[12600,25200,50400,100800,201600,554400,1570000,null],bskCost:'272B',cost:['340M','1.36B','2.7B','8.16B','272B','1.6T',null,null],fusion:true,fus:['alt','alt','loadlifter'],perk:'2.0 craft speed'},
+ {id:'riv3t',n:'RIV-3T',t:'Worker',r:'Mythic',inc:[12600,25200,50400,100800,201600,554400,1570000,null],bskCost:'288B',cost:['360M','1.44B','2.88B','8.63B','288B','1.68T','10.07T',null],fusion:true,fus:['ric','ig','kx'],perk:'2.0 craft speed'},
+ {id:'lugg',n:'LUG-G',t:'Worker',r:'Mythic',inc:[11400,22800,45600,91200,182400,501600,1430000,null],bskCost:'256B',cost:['320M','1.28B','2.55B','7.68B','256B','1.5T','8.96T',null],fusion:true,fus:['id10','r5','loadlifter'],perk:'2.0 craft speed'},
+ {id:'loadlifter',n:'Loadlifter',t:'Worker',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000,990000],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T',null],perk:'1.8 craft speed'},
+ {id:'lep',n:'LEP',t:'Worker',r:'Mythic',inc:[6500,13000,26000,52000,104000,286000,812500,893800],bskCost:'201.6B',cost:['252M','1.01B','2.02B','6.05B','201.6B','1.18T','7.06T',null],perk:'1.8 craft speed'},
+ {id:'ric1200',n:'RIC-1200',t:'Worker',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000,797500],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T',null],perk:'1.8 craft speed'},
+ {id:'ric',n:'RIC',t:'Worker',r:'Mythic',inc:[5100,10200,20400,40800,81600,224400,637500,701300],bskCost:'163.2B',cost:['204M','816M','1.63B','4.9B','163.2B','958.8B','5.71T',null],perk:'1.8 craft speed'},
+ {id:'snowmouse',n:'Snow Mouse',t:'Worker',r:'Mythic',inc:[4400,8800,17600,35200,70400,193600,550000,605000],bskCost:'144B',cost:['180M','720M','1.42B','4.32B','144B','846B','5.04T',null],perk:'1.8 craft speed'},
+ {id:'axipod',n:'AXI-POD',t:'Astromech',r:'Mythic',inc:[12000,24000,48000,96000,192000,528000,1500000,null],bskCost:'288B',cost:['360M','1.44B','2.89B','8.63B','288B','1.68T','10.07T',null],fusion:true,fus:['bdx','r7','ric'],perk:'+10 pickaxe'},
+ {id:'motrak',n:'MO-TRAK',t:'Astromech',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000,null],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T',null],perk:'+9 pickaxe'},
+ {id:'tritek',n:'TRI-TEK',t:'Astromech',r:'Mythic',inc:[6500,13000,26000,52000,104000,286000,812500,null],bskCost:'201.6B',cost:['252M','1.01B','2.02B','6.05B','201.6B','1.18T','7.06T',null],perk:'+9 pickaxe'},
+ {id:'drftr',n:'DRFT-R',t:'Astromech',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000,797500],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T',null],perk:'+9 pickaxe'},
+ {id:'cyclens',n:'CYCLENS',t:'Astromech',r:'Mythic',inc:[4400,8800,17600,35200,70400,193600,550000,null],bskCost:'144B',cost:['180M','720M','1.42B','4.32B','144B','846B','5.04T',null],perk:'+9 pickaxe'},
+ {id:'xonk',n:'X-ONK',t:'Battle',r:'Mythic',inc:[12000,24000,48000,96000,192000,528000,1500000,1650000],bskCost:'288B',cost:['360M','1.44B','2.89B','8.63B','288B','1.68T','10.07T',null],fusion:true,fus:['gonk','kx','kx'],perk:'+280 max HP'},
+ {id:'srvo',n:'SRV-O',t:'Battle',r:'Mythic',inc:[11400,22800,45600,91200,182400,501600,1430000,null],bskCost:'256B',cost:['320M','1.28B','2.55B','7.68B','256B','1.5T','8.96T',null],fusion:true,fus:['b1heavy','b1heavy','ric1200'],perk:'+280 max HP'},
+ {id:'kx',n:'KX',t:'Battle',r:'Mythic',inc:[7200,14400,28800,57600,115200,316800,900000,990000],bskCost:'240B',cost:['300M','1.2B','2.4B','7.2B','240B','1.41T','8.4T',null],perk:'+260 max HP'},
+ {id:'ig',n:'IG',t:'Battle',r:'Mythic',inc:[5800,11600,23200,46400,92800,255200,725000,797500],bskCost:'182.4B',cost:['228M','912M','1.82B','5.47B','182.4B','1.07T','6.38T',null],perk:'+260 max HP'},
+ {id:'tda',n:'TDA',t:'Protocol',r:'Mythic',inc:[4000,8000,16000,32000,64000,176000,500000,null],bskCost:'320B',perk:'18.0 credit mult'},
  /* Iconic */
  {id:'do',n:'D-O',t:'Worker',r:'Iconic',iconic:true,perk:'50% Fusion Time'},
  {id:'djr3x',n:'DJ R-3X',t:'Worker',r:'Iconic',iconic:true,perk:'×2 World Quest Rewards'},
@@ -130,10 +130,10 @@ const DROIDS = [
 ];
 
 /* Crédits requis par renaissance (identiques pour les 5 cycles) */
-const RB_CREDITS = {1:'10K',2:'150K',3:'975K',4:'2.95M',5:'5.35M',6:'9.85M',7:'14.5M',8:'36M',9:'89M',10:'220M',11:'550M',12:'1.36B',13:'3.40B',14:'8.45B',15:'21B',16:'52B',17:'130B',18:'325B',19:'810B',20:'2T',21:'3T',22:'4.5T',23:'6T',24:'9T',25:'13.5T',26:'21T',27:'32T',28:'45T',29:'68T',30:'100T',31:'150T',32:'230T',33:'345T',34:'520T',35:'778T'};
+const RB_CREDITS = {1:'10K',2:'150K',3:'975K',4:'2.95M',5:'5.35M',6:'9.85M',7:'14.5M',8:'36M',9:'89M',10:'220M',11:'550M',12:'1.36B',13:'3.40B',14:'8.45B',15:'21B',16:'52B',17:'130B',18:'325B',19:'810B',20:'2T',21:'3T',22:'4.5T',23:'6T',24:'9T',25:'13.5T',26:'21T',27:'32T',28:'45T',29:'68T',30:'100T',31:'150T',32:'230T',33:'345T',34:'520T',35:'778T',36:'1.19Qa',37:'2.5Qa',38:'4.5Qa',39:'8Qa',40:'15Qa'};
 
 /* Exigences de renaissance : REBIRTHS[cycle][niveau] = [[idDroïde, variante] ×3]
-   Une variante supérieure valide toujours l'exigence. Après la renaissance 35
+   Une variante supérieure valide toujours l'exigence. Après la renaissance 40
    (ou dès la 12 en « super-renaissance »), on passe au cycle suivant (5 → 1). */
 const REBIRTHS = {
  1: {
@@ -172,6 +172,11 @@ const REBIRTHS = {
   33:[['b1heavy',6],['cyclograv',5],['drftr',5]],
   34:[['groundmech',6],['bb',6],['cyclens',5]],
   35:[['bb9',6],['ig',6],['snowmouse',6]],
+  36:[['bdx',7],['2bb',7],['alt',7]],
+  37:[['b1heavy',7],['groundmech',7],['bb',7]],
+  38:[['r2',7],['r6',7],['bb9',7]],
+  39:[['r7',7],['protoroller',7],['ig',7]],
+  40:[['snowmouse',7],['drftr',7],['cyclens',7]],
  },
  2: {
   1:[['id10',0],['mouse',0],['gonk',0]],
@@ -209,6 +214,11 @@ const REBIRTHS = {
   33:[['r2',6],['optistrk',5],['kx',5]],
   34:[['r6',6],['lo',6],['ric',5]],
   35:[['r7',6],['drftr',6],['cyclens',6]],
+  36:[['b1sec',7],['r4',7],['r9',7]],
+  37:[['lo',7],['trakr',7],['orbwalker',7]],
+  38:[['b2super',7],['b2heavy',7],['b2rp',7]],
+  39:[['mechadroid',7],['cyclograv',7],['kx',7]],
+  40:[['ric',7],['loadlifter',7],['lep',7]],
  },
  3: {
   1:[['mouse',0],['pit',0],['gonk',0]],
@@ -246,6 +256,11 @@ const REBIRTHS = {
   33:[['trakr',6],['monowlkr',5],['loadlifter',5]],
   34:[['orbwalker',6],['b2super',6],['lep',5]],
   35:[['protoroller',6],['kx',6],['ric',6]],
+  36:[['arg',7],['senate',7],['bu4d',7]],
+  37:[['strikeorb',7],['amp',7],['utiltec',7]],
+  38:[['haulr',7],['lngshot',7],['optistrk',7]],
+  39:[['monowlkr',7],['bb9',7],['ric1200',7]],
+  40:[['motrak',7],['tritek',7],['ig',7]],
  },
  4: {
   1:[['id10',0],['pit',0],['drk1',0]],
@@ -283,6 +298,11 @@ const REBIRTHS = {
   33:[['b2heavy',6],['bb9',5],['ric1200',5]],
   34:[['strikeorb',6],['amp',6],['motrak',5]],
   35:[['b2rp',6],['loadlifter',6],['lep',6]],
+  36:[['navex',7],['balcore',7],['vectarm',7]],
+  37:[['sentri',7],['optipod',7],['gunrunner',7]],
+  38:[['b1heavy',7],['groundmech',7],['r7',7]],
+  39:[['protoroller',7],['b2rp',7],['snowmouse',7]],
+  40:[['drftr',7],['cyclens',7],['kx',7]],
  },
  5: {
   1:[['id10',0],['mouse',0],['gonk',0]],
@@ -320,6 +340,11 @@ const REBIRTHS = {
   33:[['utiltec',6],['r7',5],['tritek',5]],
   34:[['haulr',6],['lngshot',6],['ig',5]],
   35:[['mechadroid',6],['ric1200',6],['motrak',6]],
+  36:[['mouse',7],['rollr',7],['hovr',7]],
+  37:[['bb',7],['r2',7],['r6',7]],
+  38:[['lo',7],['trakr',7],['mechadroid',7]],
+  39:[['cyclograv',7],['optistrk',7],['ric',7]],
+  40:[['loadlifter',7],['lep',7],['ric1200',7]],
  },
 };
 

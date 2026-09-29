@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.20.0 — 2026-09-29
+
+- Kyber update (game patch v1.32, September 26): Kyber becomes the eighth variant, above Stellar, with its KYB pill and colour on every card. Rebirths 36 to 40 are added to all five cycles (1.19Qa to 15Qa credits), each asking for three Kyber-tier droids. The unified counter follows the game at x/673 (83 droids × 8 variants + 9 Iconics). Existing registries gain the Kyber slot automatically. Kyber income is documented for about half the droids; Kyber costs are not documented yet and show as "—".
+- Fusion droids: income updated to the values raised by game patch v1.31 (September 18, about +50%). The main data source now lists them and takes precedence over the wiki, which had kept the old figures; their perks follow the main source wording like every other droid.
+- FAQ (English and French): new entry on the Kyber variant; the Galactic sources entry notes that the Galactic timer was removed in v1.32 (Galactic and Stellar Legendaries now come from Daily Quests); counts and rebirth ranges updated across the content pages, llms.txt and the README.
+- Fixed the daily data-watch pipeline, blocked since September 27: the generator did not know the Kyber tier. Value-list columns are now located by their header, so the next tier will not break it again. The rebirth cross-check against the wiki also understands the Stellar and Kyber tiers and two spelling differences.
+
 ## 1.19.1 — 2026-09-15
 
 - Game data: the four Protocol droids (SA-5, LOM, PZ, TDA) now carry their income per variant and Beskar cost from the main source, which also spells their companion perk as a multiplier ("12.0 credit mult" up to "18.0 credit mult"); cards show income and cost like any other droid. Their other variant costs are still undocumented and show as "—".

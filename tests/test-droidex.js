@@ -10,6 +10,22 @@ const html = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
 const bundle = ['version.js', 'i18n.js', 'data.js', 'app.js', 'sync.js']
   .map(f => fs.readFileSync(path.join(SITE, f), 'utf8')).join('\n;\n');
 
+/* Dimensions du jeu DÉRIVÉES de data.js, jamais figées : chaque palier ou
+   niveau ajouté par un patch (Stellar, Kyber…) ne doit pas casser le cron.
+   TIER_N = variantes par droïde, TOTAL = compteur unifié du Droidex du jeu. */
+const GAME = (() => {
+  const ctx = {};
+  require('vm').runInNewContext(fs.readFileSync(path.join(SITE, 'data.js'), 'utf8') +
+    ';this.DROIDS = DROIDS; this.REBIRTHS = REBIRTHS;', ctx);
+  const std = ctx.DROIDS.filter(d => !d.iconic);
+  const TIER_N = std[0].inc.length;
+  return { TIER_N, TOTAL: std.length * TIER_N + (ctx.DROIDS.length - std.length),
+           MAX_RB: Object.keys(ctx.REBIRTHS[1]).length, DROIDS: ctx.DROIDS };
+})();
+const { TIER_N, TOTAL, MAX_RB } = GAME;
+const counter = n => String(n).padStart(3, '0') + '/' + TOTAL;
+const zeros = k => Array(k).fill(0);
+
 let failures = 0;
 function assert(cond, msg) {
   if (cond) console.log('  ✓ ' + msg);
@@ -63,7 +79,7 @@ const setTarget = (w, rb) => {
     assert(cards.length === 92, '92 droïdes rendus (obtenu : ' + cards.length + ')');
     assert(w.document.getElementById('rbSelect').value === '1', 'renaissance par défaut = 1');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '000/590', 'progression "000/590" (obtenu : "' + label + '")');
+    assert(label === counter(0), 'progression "' + counter(0) + '" (obtenu : "' + label + '")');
     const segs = w.document.getElementById('progressSegs');
     assert(segs && segs.children.length === 10, '10 segments de progression rendus');
     assert([...segs.children].every(s => !s.classList.contains('on')), 'aucun segment allumé à vide');
@@ -155,7 +171,7 @@ const setTarget = (w, rb) => {
     const seed = JSON.stringify({ owned: { r6: [true, true, false, false, false], bb8: true }, inBase: { r6: true, bb8: true }, targetRB: 9 });
     const { window: w } = boot(seed);
     const s = JSON.parse(JSON.stringify(w.__test.getState()));
-    assert(JSON.stringify(s.owned.r6) === '[1,2,0,0,0,0,0]', 'r6 [true,true,…] + inBase → [1,2,0,0,0,0,0] + padding Stellar (obtenu : ' + JSON.stringify(s.owned.r6) + ')');
+    assert(JSON.stringify(s.owned.r6) === JSON.stringify([1, 2, ...zeros(TIER_N - 2)]), 'r6 [true,true,…] + inBase → [1,2,0…] paddé à ' + TIER_N + ' variantes (obtenu : ' + JSON.stringify(s.owned.r6) + ')');
     assert(s.inBase.r6 === undefined, 'inBase.r6 supprimé après promotion');
     assert(s.owned.bb8 === true && s.inBase.bb8 === true, 'iconique bb8 inchangé (owned + inBase conservés)');
   }
@@ -171,7 +187,7 @@ const setTarget = (w, rb) => {
     card = findCard(w, 'BB-8');
     assert(card.querySelector('.base-toggle').classList.contains('on'), 'toggle en base OK');
     const label = w.document.getElementById('progressLabel').textContent;
-    assert(label === '001/590', 'progression 001/562 (obtenu : "' + label + '")');
+    assert(label === counter(1), 'progression ' + counter(1) + ' (obtenu : "' + label + '")');
   }
 
   /* ---- 8. Filtres et recherche ---- */
@@ -228,10 +244,10 @@ const setTarget = (w, rb) => {
   }
 
   /* ---- 11. Cycles de renaissance et données étendues ---- */
-  console.log('\n[11] Cycles et 35 niveaux de renaissance');
+  console.log('\n[11] Cycles et ' + MAX_RB + ' niveaux de renaissance');
   {
     const { window: w } = boot(savedJson);
-    assert(w.document.getElementById('rbSelect').options.length === 35, 'sélecteur RB : 35 niveaux');
+    assert(MAX_RB >= 40 && w.document.getElementById('rbSelect').options.length === MAX_RB, 'sélecteur RB : ' + MAX_RB + ' niveaux (≥ 40 depuis la MàJ Kyber)');
     setTarget(w, 30);
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('100T'), 'crédits RB30 : 100T');
     setTarget(w, 35);
@@ -294,7 +310,9 @@ const setTarget = (w, rb) => {
     const sort = w.document.getElementById('sortSelect');
     sort.value = 'income'; sort.dispatchEvent(new w.Event('change', { bubbles: true }));
     const first = w.document.querySelector('.droid .droid-name').textContent;
-    assert(first === 'RIV-3T', 'tri par revenu : RIV-3T (8.4K/s, fusion Mythique) en tête (obtenu : ' + first + ')');
+    const best = Math.max(...GAME.DROIDS.filter(d => d.inc).map(d => d.inc[4] || 0));
+    const tops = GAME.DROIDS.filter(d => d.inc && d.inc[4] === best).map(d => d.n);
+    assert(tops.includes(first), 'tri par revenu : un droïde au meilleur revenu Beskar en tête (' + tops.join('/') + ', obtenu : ' + first + ')');
     const ver = w.document.getElementById('appVersion').textContent;
     assert(/^DROIDEX V\d+\.\d+\.\d+$/.test(ver), 'version affichée dans le footer (obtenu : "' + ver + '")');
   }
@@ -313,8 +331,9 @@ const setTarget = (w, rb) => {
     const { window: w } = boot(seed);
     w.document.getElementById('superRebirthBtn').click();
     const st = w.__test.getState();
-    assert(JSON.stringify(st.owned.strikeorb) === '[1,1,1,0,0,1,0]', 'variantes en base → possédé, Galactique compris (Strike-Orb)');
-    assert(JSON.stringify(st.owned.mouse) === '[1,0,0,0,0,0,0]', 'variantes en base → possédé (Mouse, paddée à 7)');
+    const soAfter = JSON.stringify([1, 1, 1, 0, 0, 1, ...zeros(TIER_N - 6)]);
+    assert(JSON.stringify(st.owned.strikeorb) === soAfter, 'variantes en base → possédé, Galactique compris (Strike-Orb)');
+    assert(JSON.stringify(st.owned.mouse) === JSON.stringify([1, ...zeros(TIER_N - 1)]), 'variantes en base → possédé (Mouse, paddée à ' + TIER_N + ')');
     assert(st.owned.bb8 === true, 'iconique : possédé (Droidex) conservé');
     assert(!st.inBase.bb8, 'iconique : plus en base');
     assert(st.flawless.mouse === true, 'flawless conservé');
@@ -322,7 +341,7 @@ const setTarget = (w, rb) => {
     assert(st.targetRB === 1 && w.document.getElementById('rbSelect').value === '1', 'renaissance visée revenue à 1');
     assert(st.targetCycle === 2 && w.document.getElementById('cycleSelect').value === '2', 'cycle visé passé à 2');
     const saved = JSON.parse(w.localStorage.getItem('droidex-tracker-v1'));
-    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === '[1,1,1,0,0,1,0]', 'transition persistée dans localStorage');
+    assert(saved && saved.targetCycle === 2 && JSON.stringify(saved.owned.strikeorb) === soAfter, 'transition persistée dans localStorage');
     const cyc = w.document.getElementById('cycleSelect');
     cyc.value = '5';
     cyc.dispatchEvent(new w.Event('change', { bubbles: true }));
@@ -386,7 +405,7 @@ const setTarget = (w, rb) => {
     assert(vl.includes('<th>Galactic</th>'), 'value list : colonne Galactic');
     assert(vl.includes('<th>Stellar</th>'), 'value list : colonne Stellar');
     // maillage interne éditorial (v1.16.4) : liens descriptifs dans le contenu
-    assert(vl.includes('seo-see-also') && vl.includes('rebirth requirements for all 35 levels and 5 cycles'),
+    assert(vl.includes('seo-see-also') && vl.includes('rebirth requirements for all ' + MAX_RB + ' levels and 5 cycles'),
       'value list : bloc « pour aller plus loin » avec ancres descriptives');
     // un tableau de revenus ET un tableau de coûts par rareté (5 raretés
     // standard ; les Iconiques ne s'achètent pas, donc pas de tableau de coûts)
@@ -415,8 +434,9 @@ const setTarget = (w, rb) => {
     const rb = read('rebirth-requirements/index.html');
     assert(rb.includes('32T') && rb.includes('Cycle 4'), 'rebirths : crédits max + 4 cycles');
     assert(rb.includes('100T'), 'rebirths : RB30 (100T) présent');
+    assert(rb.includes('<td>40</td>') && rb.includes('15Qa'), 'rebirths : RB40 (15Qa) présent');
     // v1.14.0 : titles/meta orientés CTR (les cycles sont le sujet différenciant)
-    assert(rb.includes('All 35 Levels &amp; Cycles 2-5'), 'rebirths : title ciblé sur les cycles 2-5');
+    assert(rb.includes('All ' + MAX_RB + ' Levels &amp; Cycles 2-5'), 'rebirths : title ciblé sur les cycles 2-5');
     assert(rb.includes('Super Rebirth cycles 2 to 5'), 'rebirths : description nommant les cycles 2 à 5');
     const faq = read('faq/index.html');
     assert(faq.includes('"@type": "FAQPage"') || faq.includes('"@type":"FAQPage"'), 'FAQ : JSON-LD FAQPage');
@@ -427,6 +447,13 @@ const setTarget = (w, rb) => {
     assert(faq.includes('Flawless Charm'), 'FAQ : Flawless Charm (doublement des chances)');
     assert(faq.includes('How do I get Galactic droids'), 'FAQ : entrée sur l\'obtention des Galactiques');
     assert(faq.includes('What is the Stellar variant'), 'FAQ : entrée dédiée à la variante Stellar');
+    assert(faq.includes('What is the Kyber variant') && read('fr/faq/index.html').includes('variante Kyber'),
+      'FAQ EN+FR : entrée dédiée à la variante Kyber');
+    assert(vl.includes('<th>Kyber</th>'), 'value list : colonne Kyber');
+    // la veille ne doit plus dépendre de la position des colonnes de la source
+    const gen = fs.readFileSync(path.join(__dirname, '..', 'tools', 'update-gamedata.py'), 'utf8');
+    assert(gen.includes("head.index('Beskar Cost')") && gen.includes("'KYBER': 7"),
+      'générateur : colonnes repérées par en-tête + palier KYBER');
     assert(faq.includes('Flawless Odds, Galactic Droids'), 'FAQ : title orienté requêtes (Flawless, Galactic)');
     const st = read('stats/index.html');
     assert(st.includes('In game right now') && st.includes('stats.js'), 'stats : tuiles statiques + script d\'hydratation');
@@ -447,11 +474,11 @@ const setTarget = (w, rb) => {
     const stfr = read('fr/stats/index.html');
     assert(stfr.includes('En jeu en ce moment'), 'FR : page stats traduite');
     const rbfr = read('fr/rebirth-requirements/index.html');
-    assert(rbfr.includes('les 35 niveaux et cycles 2-5'), 'FR : title rebirths ciblé cycles');
+    assert(rbfr.includes('les ' + MAX_RB + ' niveaux et cycles 2-5'), 'FR : title rebirths ciblé cycles');
     // v1.14.0 : signaux d'entité — « Droidex » est disputé par des sites tiers,
     // le sameAs ancre l'entité sur notre GitHub et notre compte X
     const home = read('index.html');
-    assert(/name="description" content="[^"]*Galactic/.test(home), 'home : meta description à jour (Galactic)');
+    assert(/name="description" content="[^"]*Kyber/.test(home), 'home : meta description à jour (Kyber)');
     assert(home.includes('"sameAs"') && home.includes('x.com/Nackz_X'), 'home : JSON-LD sameAs (GitHub + X)');
     assert(rb.includes('"sameAs"') && faq.includes('"sameAs"'), 'pages SEO : sameAs dans le JSON-LD');
     // v1.18.0 : mesure d'audience anonyme (Umami auto-hébergé, sans cookie) —
@@ -533,15 +560,16 @@ const setTarget = (w, rb) => {
     assert(w.document.getElementById('hintPanel').hidden === true, '30 droïdes distincts au chargement → aide cachée');
   }
 
-  /* ---- 21. Variantes Galactique (6ᵉ) / Stellar (7ᵉ palier) + RB28/RB31 ---- */
-  console.log('\n[21] Variantes Galactique/Stellar et RB28/RB31');
+  /* ---- 21. Variantes Galactique (6ᵉ) / Stellar (7ᵉ) / Kyber (8ᵉ palier) + RB28/RB31/RB36 ---- */
+  console.log('\n[21] Variantes Galactique/Stellar/Kyber et RB28/RB31/RB36');
   {
     const { window: w } = boot();
-    // 7 pastilles par carte : GLC puis STL
+    // une pastille par variante : GLC, STL puis KYB
     const tiers = findCard(w, 'R6').querySelectorAll('.tier');
-    assert(tiers.length === 7, '7 pastilles de variante par carte (obtenu : ' + tiers.length + ')');
+    assert(tiers.length === TIER_N && TIER_N >= 8, TIER_N + ' pastilles de variante par carte (obtenu : ' + tiers.length + ')');
     assert(tiers[5].dataset.t === '5' && tiers[5].textContent.includes('GLC'), '6ᵉ pastille libellée GLC');
     assert(tiers[6].dataset.t === '6' && tiers[6].textContent.includes('STL'), '7ᵉ pastille libellée STL');
+    assert(tiers[7].dataset.t === '7' && tiers[7].textContent.includes('KYB'), '8ᵉ pastille libellée KYB');
     // compteur Flawless à vide (fidèle à l'écran du jeu : « ✦ x/62 (×0.0x) »)
     const fc = w.document.getElementById('flawlessCount');
     assert(fc && fc.textContent === '✦ 0/83 (×0.00)', 'compteur Flawless "✦ 0/79 (×0.00)" (obtenu : "' + (fc && fc.textContent) + '")');
@@ -554,8 +582,8 @@ const setTarget = (w, rb) => {
     assert(badge && badge.textContent === '✓ RB28·GLC', 'badge "✓ RB28·GLC" (obtenu : "' + (badge && badge.textContent) + '")');
     assert(badge.classList.contains('ready') && !badge.classList.contains('done'), 'badge RB28 vert non barré');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('45T'), 'crédits RB28 : 45T');
-    assert(w.document.getElementById('progressLabel').textContent === '001/590',
-      'Galactique possédé : compteur unifié passé à 001/590 (590 depuis les droïdes Protocol)');
+    assert(w.document.getElementById('progressLabel').textContent === counter(1),
+      'Galactique possédé : compteur unifié passé à ' + counter(1));
     assert(w.document.getElementById('collectionBonus').textContent.includes('+1%'),
       'droïde possédé en Galactique seul → compte comme distinct (+1%)');
     // SEN-TRI Stellar en base → badge RB31 vert, compteur unifié à 002/442
@@ -565,8 +593,20 @@ const setTarget = (w, rb) => {
     const badge31 = [...findCard(w, 'SEN-TRI').querySelectorAll('.req-badge')].find(b => b.textContent.includes('RB31'));
     assert(badge31 && badge31.textContent === '✓ RB31·STL', 'badge "✓ RB31·STL" (obtenu : "' + (badge31 && badge31.textContent) + '")');
     assert(w.document.getElementById('rbCreditsBig').textContent.includes('150T'), 'crédits RB31 : 150T');
-    assert(w.document.getElementById('progressLabel').textContent === '002/590',
-      'Stellar possédé : compteur unifié passé à 002/562');
+    assert(w.document.getElementById('progressLabel').textContent === counter(2),
+      'Stellar possédé : compteur unifié passé à ' + counter(2));
+    // BDX Explorer Kyber en base → badge RB36 vert (cycle 1 : bdx, 2bb, a-lt en Kyber)
+    findCard(w, 'BDX Explorer').querySelector('.tier[data-t="7"]').click();  // 0 → 1
+    findCard(w, 'BDX Explorer').querySelector('.tier[data-t="7"]').click();  // 1 → 2 en base
+    setTarget(w, 36);
+    const badge36 = [...findCard(w, 'BDX Explorer').querySelectorAll('.req-badge')].find(b => b.textContent.includes('RB36'));
+    assert(badge36 && badge36.textContent === '✓ RB36·KYB', 'badge "✓ RB36·KYB" (obtenu : "' + (badge36 && badge36.textContent) + '")');
+    assert(/Qa/.test(w.document.getElementById('rbCreditsBig').textContent), 'crédits RB36 en quadrillions (Qa)');
+    // un Kyber valide une exigence inférieure : BDX Kyber en base satisfait toute exigence BDX antérieure
+    const lower = [...findCard(w, 'BDX Explorer').querySelectorAll('.req-badge')].filter(b => !b.textContent.includes('RB36'));
+    assert(lower.every(b => !b.classList.contains('warn')), 'BDX Kyber en base : aucune exigence inférieure en ⚠');
+    assert(w.document.getElementById('progressLabel').textContent === counter(3),
+      'Kyber possédé : compteur unifié passé à ' + counter(3));
     // toggle ✦ sur SEN-TRI → compteur Flawless et multiplicateur du jeu
     findCard(w, 'SEN-TRI').querySelector('.icon-btn.flaw').click();
     assert(w.document.getElementById('flawlessCount').textContent === '✦ 1/83 (×0.01)',
@@ -665,7 +705,7 @@ const setTarget = (w, rb) => {
     const home = fs.readFileSync(path.join(SITE, 'index.html'), 'utf8');
     const visible = home.replace(/<noscript>[\s\S]*?<\/noscript>/, '');
     assert(visible.includes('id="about"'), 'home : section #about statique hors noscript');
-    assert(/id="about"[\s\S]*590[\s\S]*Stellar/.test(visible), 'about : chiffres clés indexables (590, Stellar)');
+    assert(new RegExp('id="about"[\\s\\S]*' + TOTAL + '[\\s\\S]*Kyber').test(visible), 'about : chiffres clés indexables (' + TOTAL + ', Kyber)');
     assert(/id="about"[\s\S]*href="value-list\/"[\s\S]*href="rebirth-requirements\/"/.test(visible),
       'about : liens internes vers les pages de contenu');
     // rendu + bascule FR via l'i18n de l'app
@@ -714,15 +754,15 @@ const setTarget = (w, rb) => {
       'chaque recette de fusion référence 3 ids de droïdes existants');
     // carte WHL-EX : 7 pastilles + ligne de recette avec les noms d'affichage
     const whlex = findCard(w, 'WHL-EX');
-    assert(whlex && whlex.querySelectorAll('.tier').length === 7, 'WHL-EX : carte à 7 pastilles de variante');
+    assert(whlex && whlex.querySelectorAll('.tier').length === TIER_N, 'WHL-EX : carte à ' + TIER_N + ' pastilles de variante');
     const fline = whlex.querySelector('.fusion-line');
     assert(fline && fline.textContent === '⚗ Mouse + Mouse + ARG',
       'WHL-EX : recette "⚗ Mouse + Mouse + ARG" (obtenu : "' + (fline && fline.textContent) + '")');
     assert(!findCard(w, 'Gonk').querySelector('.fusion-line'), 'Gonk : pas de ligne de fusion');
     // un tap sur une variante fusion incrémente le compteur unifié
     findCard(w, 'X-ONK').querySelector('.tier[data-t="0"]').click();
-    assert(w.document.getElementById('progressLabel').textContent === '001/590',
-      'X-ONK Basic possédé : compteur unifié à 001/590');
+    assert(w.document.getElementById('progressLabel').textContent === counter(1),
+      'X-ONK Basic possédé : compteur unifié à ' + counter(1));
     // D-O : 9ᵉ Iconique, toggles possédé/en base comme les autres
     const doCard = findCard(w, 'D-O');
     assert(doCard && doCard.querySelector('.iconic-own') && !doCard.querySelector('.tier'),
@@ -750,22 +790,24 @@ const setTarget = (w, rb) => {
     });
     assert(/\{id:'c3po',n:'C-3PO',t:'Protocol'/.test(dataSrc), 'data.js : C-3PO reclassé Protocol');
     // depuis le 15/09/2026 tycoon-tools documente les 4 Protocol (revenus ×7, coût Beskar, perk « N credit mult »)
-    assert(/\{id:'tda'[^}]*r:'Mythic'[^}]*inc:\[\d+(,\d+){6}\][^}]*bskCost:'[^']+'[^}]*perk:'[^']+credit mult'/.test(dataSrc),
-      'data.js : TDA Mythique, 7 revenus, coût Beskar et perk de la source');
-    // carte : 7 pastilles, revenus Basic → Beskar + coût Beskar + perk, icône de classe
+    const tdaData = GAME.DROIDS.find(d => d.id === 'tda');
+    assert(tdaData && tdaData.r === 'Mythic' && tdaData.inc.length === TIER_N && tdaData.inc.slice(0, 5).every(n => n > 0) &&
+      tdaData.bskCost && /credit mult/.test(tdaData.perk || ''),
+      'data.js : TDA Mythique, ' + TIER_N + ' revenus (Basic→Beskar documentés), coût Beskar et perk de la source');
+    // carte : une pastille par variante, revenus Basic → Beskar + coût Beskar + perk, icône de classe
     const tda = findCard(w, 'TDA');
-    assert(tda && tda.querySelectorAll('.tier').length === 7, 'TDA : carte à 7 pastilles de variante');
+    assert(tda && tda.querySelectorAll('.tier').length === TIER_N, 'TDA : carte à ' + TIER_N + ' pastilles de variante');
     const vl = tda && tda.querySelector('.value-line');
     assert(vl && !vl.textContent.includes('null') && /\/s → .+\/s · BSK .+ · .+credit mult/.test(vl.textContent),
       'TDA : value-line revenus + BSK + perk (obtenu : "' + (vl && vl.textContent) + '")');
     // garde conservée pour un futur droïde aux stats inconnues (inc tout null) : seul le perk, jamais « null/s »
-    const ghost = w.renderDroid({ id: 'ghost', n: 'GHOST', t: 'Protocol', r: 'Rare', inc: [null, null, null, null, null, null, null], perk: 'Ghost Perk' });
+    const ghost = w.renderDroid({ id: 'ghost', n: 'GHOST', t: 'Protocol', r: 'Rare', inc: Array(TIER_N).fill(null), perk: 'Ghost Perk' });
     const gvl = ghost.querySelector('.value-line');
     assert(gvl && gvl.textContent === 'Ghost Perk', 'droïde sans revenus documentés : value-line = perk seul (obtenu : "' + (gvl && gvl.textContent) + '")');
     assert(tda.querySelector('.type-ico.t-protocol'), 'TDA : icône de classe Protocol');
     // tap → compteur unifié 590 et distincts sur 92
     tda.querySelector('.tier[data-t="0"]').click();
-    assert(w.document.getElementById('progressLabel').textContent === '001/590', 'TDA Basic possédé : compteur unifié à 001/590');
+    assert(w.document.getElementById('progressLabel').textContent === counter(1), 'TDA Basic possédé : compteur unifié à ' + counter(1));
     // filtre Protocol actif → seuls les 5 Protocol restent visibles
     w.document.querySelector('#filtersSide [data-filter="Protocol"]').click();
     const visible = w.document.querySelectorAll('#list .droid');

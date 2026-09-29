@@ -98,7 +98,7 @@ FUSION_RECIPES = {
  'xonk':   ['gonk', 'kx', 'kx'],
 }
 TIER_WORDS = {'BASE': 0, 'GOLD': 1, 'DIAMOND': 2, 'RAINBOW': 3, 'BESKAR': 4, 'GALACTIC': 5,
-              'STELLAR': 6}
+              'STELLAR': 6, 'KYBER': 7}
 RARITY_ORDER = ['Common', 'Rare', 'Epic', 'Legendary', 'Mythic', 'Iconic']
 TYPE_ORDER = {'Worker': 0, 'Astromech': 1, 'Battle': 2, 'Protocol': 3}
 
@@ -134,8 +134,14 @@ def parse_income(s):
 
 def parse_values():
     raw = fetch(f'{BASE}/value-list/')
+    rows = re.findall(r'<tr.*?</tr>', tables_of(raw)[0], re.S)
+    # colonnes repérées par leur en-tête : chaque nouveau palier s'insère
+    # AVANT « Beskar Cost » (vécu : Stellar 15/08, Kyber 26/09/2026)
+    head = cells_of(rows[0])
+    tiers = [head.index(t) for t in WIKI_TABS]
+    bsk_col = head.index('Beskar Cost')
     vals = {}
-    for r in re.findall(r'<tr.*?</tr>', tables_of(raw)[0], re.S)[1:]:
+    for r in rows[1:]:
         c = cells_of(r)
         if c[0] not in NAME2ID:
             sys.exit(f'✗ Droïde inconnu dans la value list : {c[0]!r} — '
@@ -143,8 +149,8 @@ def parse_values():
         vals[NAME2ID[c[0]]] = {
             'rarity': c[1].capitalize(), 'type': c[2].capitalize(),
             'perk': None if c[3] in ('—', '') else c[3],
-            'inc': check_income(NAME2ID[c[0]], [parse_income(x) for x in c[4:11]]),
-            'beskarCost': None if c[11] in ('—', '') else c[11],
+            'inc': check_income(NAME2ID[c[0]], [parse_income(c[i]) for i in tiers]),
+            'beskarCost': None if c[bsk_col] in ('—', '') else c[bsk_col],
         }
     return vals
 
@@ -168,7 +174,7 @@ def check_income(did, inc):
 
 # « Coût par variante » : seconde source, sous contrôle.
 #
-# tycoon-tools donne les revenus des six variantes mais un seul coût, celui du
+# tycoon-tools donne les revenus de toutes les variantes mais un seul coût, celui du
 # Beskar (colonne « Beskar Cost », vérifié le 29/07/2026). Or les joueurs
 # cherchent le prix de CHAQUE palier. Le wiki dédié le publie, un onglet par
 # variante, pour les 62 droïdes standard : il est source de données pour ce
@@ -176,7 +182,7 @@ def check_income(did, inc):
 # faux ce jour-là), chaque valeur est confrontée au multiple attendu de sa
 # rareté avant d'être publiée.
 WIKI_API = 'https://star-wars-droid-tycoon.fandom.com/api.php'
-WIKI_TABS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic', 'Stellar']
+WIKI_TABS = ['Base', 'Gold', 'Diamond', 'Rainbow', 'Beskar', 'Galactic', 'Stellar', 'Kyber']
 # graphies du wiki qui diffèrent de celles de tycoon-tools
 WIKI_ALIAS = {'MONO-WALKER': 'monowlkr', 'OPTI-STRIKE': 'optistrk',
               'UTIL-TECH': 'utiltec', 'TRI-TREK': 'tritek', 'B-U4D': 'bu4d'}
@@ -220,7 +226,7 @@ def fetch_wiki_droidex():
 
 
 def parse_variant_costs(text):
-    """{id: [coût Basic … coût Stellar]} d'après la page Droidex du wiki."""
+    """{id: [coût Basic … coût Kyber]} d'après la page Droidex du wiki."""
     parts = re.split(r'\n\|-\|\s*([A-Za-z ]+)=', text)
     chunks = {'Base': parts[0]}
     for i in range(1, len(parts) - 1, 2):
@@ -253,9 +259,9 @@ def _amount(s):
 
 def parse_fusion_stats(text):
     """Stats des droïdes fusion (v1.27) d'après la même page Droidex du wiki :
-    ils sont absents de tycoon-tools (70 droïdes au 01/09/2026), le wiki est
-    donc leur SEULE source — rareté, classe, perk, revenus et coûts par
-    variante. Leurs lignes portent une astérisque après le nom ([[WHL-EX]]*),
+    absents de tycoon-tools jusqu'en septembre 2026, le wiki était leur seule
+    source — rareté, classe, perk, revenus et coûts par variante. Depuis que
+    tycoon-tools les liste, main() ne garde du wiki que les coûts et les trous. Leurs lignes portent une astérisque après le nom ([[WHL-EX]]*),
     que le parseur de coûts standard ne matche pas. Retourne (vals, costs) au
     format des structures principales ; les revenus passent par check_income
     et les coûts par check_variant_costs comme le reste."""
@@ -386,7 +392,8 @@ def parse_rebirths():
         for r in re.findall(r'<tr.*?</tr>', t, re.S)[1:]:
             c = cells_of(r)
             rb = int(c[0].split('→')[1].strip())
-            credits[rb] = re.sub(r'\.00([MBT])', r'\1', c[1]).replace('.50', '.5')
+            # « Qa » (quadrillion) apparu avec les RB36-40 Kyber (26/09/2026)
+            credits[rb] = re.sub(r'\.00([MBT]|Qa)', r'\1', c[1]).replace('.50', '.5')
             if ci == 1 and c[2] not in ('—', ''):
                 unlocks[rb] = c[2].title()
             toks, reqs, i = c[3].split(), [], 0
@@ -460,21 +467,21 @@ def generate(vals, rebirths, unlocks, credits, checked_date):
    - Wiki : https://star-wars-droid-tycoon.fandom.com/wiki/
    - Événements / Iconiques : https://droidtycoonguide.com/events/
 
-   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellar] (null = non documenté)
+   inc: revenus crédits/s par variante [Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellar, Kyber] (null = non documenté)
    bskCost: coût du droïde en Beskar (tycoon-tools)
-   cost: coût du droïde dans chacune des 7 variantes, même ordre que inc —
+   cost: coût du droïde dans chacune des 8 variantes, même ordre que inc —
    tycoon-tools ne publie que celui du Beskar, cette série est donc recoupée sur
    le wiki dédié (seul champ venu d'une autre source, et seulement si son
    rapport au coût Beskar est celui de son couple rareté/variante)
    perk: bonus passif (termes du jeu)
    fusion/fus: droïde obtenable uniquement par Droid Fusion (patch v1.27 du
-   22/08/2026) — fus liste les 3 ids consommés par la recette ; toutes les
-   stats de ces droïdes viennent du wiki dédié (absents de tycoon-tools)
+   22/08/2026) — fus liste les 3 ids consommés par la recette ; stats de
+   tycoon-tools, coûts hors Beskar du wiki dédié comme pour les autres
    Les Iconiques rapportent +15%/s (pas de variantes).
    ========================================================================= */
 
 /* Les libellés de variantes et de raretés (dépendants de la langue) sont dans i18n.js.
-   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic, 6=Stellar. */
+   Index des variantes : 0=Basic, 1=Or/Gold, 2=Diamant/Diamond, 3=Arc-en-ciel/Rainbow, 4=Beskar, 5=Galactique/Galactic, 6=Stellar, 7=Kyber. */
 
 const DROIDS = [""")
     for rar in RARITY_ORDER:
@@ -521,7 +528,7 @@ def main():
     # que la source est en retard. setdefault → la source primera dès qu'elle
     # le référencera (perk relevé en jeu par Julien le 18/07/2026).
     vals.setdefault('c3po', {'rarity': 'Iconic', 'type': 'Worker',
-                             'perk': '+25% workers', 'inc': [None] * 7, 'beskarCost': None})
+                             'perk': '+25% workers', 'inc': [None] * len(WIKI_TABS), 'beskarCost': None})
     # tycoon-tools liste désormais C-3P0 mais sans perk : le relevé en jeu
     # (+25% workers, 18/07/2026) prime tant que la source ne le documente pas.
     if not vals['c3po'].get('perk'):
@@ -530,7 +537,7 @@ def main():
     # tycoon-tools, perk relevé sur le wiki dédié — même doctrine que C-3PO,
     # la source primera dès qu'elle le référencera.
     vals.setdefault('do', {'rarity': 'Iconic', 'type': 'Worker',
-                           'perk': 'Half Fusion Time', 'inc': [None] * 7, 'beskarCost': None})
+                           'perk': 'Half Fusion Time', 'inc': [None] * len(WIKI_TABS), 'beskarCost': None})
     # Droïdes Protocol — 4ᵉ classe du patch v1.30 (12/09/2026), obtenus
     # uniquement via les World Mission Crates. Absents de tycoon-tools ;
     # rareté, classe et perk companion (Credit Multiplier, échelonné par
@@ -542,7 +549,7 @@ def main():
                            ('pz', 'Legendary', '800% Credit Multiplier'),
                            ('tda', 'Mythic', '1000% Credit Multiplier')):
         vals.setdefault(did, {'rarity': rar, 'type': 'Protocol', 'perk': perk,
-                              'inc': [None] * 7, 'beskarCost': None})
+                              'inc': [None] * len(WIKI_TABS), 'beskarCost': None})
     # C-3PO reclassé Protocol par ce même patch (notes officielles + wiki) :
     # tycoon-tools le laisse en Worker → exception assumée à « la source prime ».
     vals['c3po']['type'] = 'Protocol'
@@ -554,7 +561,7 @@ def main():
     # Le wiki injoignable ne doit PAS vider la colonne : on repart alors des
     # valeurs déjà publiées dans data.js (sinon le cron « corrigerait » chaque
     # panne du wiki en supprimant des données justes).
-    # (padding : un data.js d'avant le palier Stellar n'a que 6 coûts par série)
+    # (padding : un data.js d'avant un nouveau palier a une série plus courte)
     previous = {did: ([c or None for c in re.findall(r"'([^']*)'|null", series)] +
                       [None] * len(WIKI_TABS))[:len(WIKI_TABS)]
                 for did, series in re.findall(r"\{id:'([^']+)'.*?cost:\[([^\]]*)\]", current)}
@@ -573,8 +580,17 @@ def main():
         missing = sorted(set(FUSION_RECIPES) - set(fus_vals))
         if missing:
             print(f'  ⚠ droïde(s) fusion sans stats (wiki muet, jamais publiés) : {", ".join(missing)}')
-        print(f'  {len(fus_vals)} droïdes fusion lus sur le wiki dédié (leur seule source)')
-        vals.update(fus_vals)
+        print(f'  {len(fus_vals)} droïdes fusion lus sur le wiki dédié')
+        # tycoon-tools liste désormais les droïdes fusion : doctrine setdefault,
+        # la source principale prime en bloc (vécu : buff fusion du patch v1.31,
+        # 18/09/2026 — revenus ×1,5 chez elle, le wiki resté sur les anciens).
+        # Pas de comblement des revenus par le wiki : ses valeurs périmées
+        # côtoieraient les nouvelles. Seuls perk et coût Beskar manquants.
+        for did, w in fus_vals.items():
+            t = vals.setdefault(did, w)
+            if t is not w:
+                t['perk'] = t['perk'] or w['perk']
+                t['beskarCost'] = t['beskarCost'] or w['beskarCost']
         all_costs.update(fus_costs)
         # cases encore vides sur la page Droidex : repli sur la page du droïde
         # (une requête par droïde à trou), validé ensuite par

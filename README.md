@@ -2,7 +2,7 @@
 
 Community collection tracker for **Star Wars: Droid Tycoon**, the Fortnite mode created by FOAD/Blzn Studios (released May 1st, 2026).
 
-The game features a Droidex of 200+ collectible droids across 7 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar) and 35 Rebirth levels across the 5 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
+The game features a Droidex of 200+ collectible droids across 8 variants (Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar, Kyber) and 40 Rebirth levels across the 5 cycles, each requiring 3 specific droids **physically present in your base**, plus credits. Standing at the Sandcrawler shop, the game gives you no way to know what you already own — this tracker fills that gap.
 
 > 📱 Designed to be used on your phone, next to the console. Installable as an app (PWA). English by default, French available from the in-app language selector.
 
@@ -20,10 +20,10 @@ The game features a Droidex of 200+ collectible droids across 7 variants (Basic,
 - **Requirement badges** on each droid (e.g. "RB9·GLD"): struck through only once the rebirth is behind you — never a future requirement, even when satisfied.
 - **Super Rebirth button**: applies the in-game reset semantics in one tap — droids in your base drop back to "owned (Droidex)", Iconic droids leave the base (unlock kept), the targeted rebirth returns to 1 and the cycle advances.
 - **"Keep" tag** as long as a future rebirth depends on the droid; orange outline when action is needed.
-- **Value data on every droid**: income per second and credit cost at each of the seven variants, plus the passive perk. No other value list publishes the cost of every variant — our main source only gives the Beskar one, so the rest is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
+- **Value data on every droid**: income per second and credit cost at each of the eight variants, plus the passive perk. No other value list publishes the cost of every variant — our main source only gives the Beskar one, so the rest is cross-checked from the dedicated wiki. A "sort by income" mode helps decide what to buy at the Sandcrawler.
 - **Flawless ✦ and wishlist ★ toggles** on every droid, with a Wishlist filter.
 - **Collection bonus counter**: each distinct droid owned grants +1% income; the header shows where you stand.
-- **Game-faithful counters**: one unified x/590 total across all seven variants, exactly like the in-game Droidex screen, plus the Flawless ✦ counter with its income multiplier — and RB·GLC / RB·STL badges tell you which droids rebirths 28 and 31+ need.
+- **Game-faithful counters**: one unified x/673 total across all eight variants, exactly like the in-game Droidex screen, plus the Flawless ✦ counter with its income multiplier — and RB·GLC / RB·STL / RB·KYB badges tell you which droids rebirths 28 and 31+ need.
 - **Fusion droids** (Droid Fusion update, v1.27): the 17 fusion-exclusive droids are tracked like any other, and each card shows its exact three-droid fusion recipe (⚗ Mouse + Mouse + ARG…).
 - **Live player counter**: "● 12.5K in game" in the header — concurrent players on the island, straight from Epic's official Ecosystem API, refreshed every 5 minutes (hidden gracefully when offline). A full [stats page](https://droidex.nackz.dev/stats/) adds daily peaks, retention and charts.
 - **Filters**: All / Keep / Missing required / In base / Wishlist / Worker / Astromech / Battle / Protocol, plus search.
@@ -221,7 +221,7 @@ Accounts are optional. When one is created, PocketBase stores the Google email, 
 
 ## Game data and known limitations
 
-The data (92 tracked droids including 9 Iconics, the 17 fusion droids and the 4 Protocol droids, rebirth requirements for the 5 cycles × 35 levels, credit costs, per-variant income and cost, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-08-20:
+The data (92 tracked droids including 9 Iconics, the 17 fusion droids and the 4 Protocol droids, rebirth requirements for the 5 cycles × 40 levels, credit costs, per-variant income and cost, and perks) is maintained in [`site/data.js`](site/data.js) from community sources, cross-checked on 2026-08-20:
 
 - [Rebirth requirements and value list (tycoon-tools)](https://tycoon-tools.com/droid-tycoon/) — its cycle-1 table matched 23/23 of our previously play-validated requirements
 - [Complete Droidex (Insider Gaming)](https://insider-gaming.com/fortnite-star-wars-droid-tycoon-droidex-all-droids/)
@@ -231,7 +231,7 @@ The data (92 tracked droids including 9 Iconics, the 17 fusion droids and the 4 
 **Known uncertainties:**
 
 - Rebirth cycles **2–5** (super-rebirth) come from tycoon-tools (cross-checked daily against the dedicated wiki) and have not yet been verified in game by us.
-- Stellar income values are only documented for about half the standard droids so far; missing cells show as "—" and fill in at every data refresh.
+- Kyber income values are only documented for about half the droids so far, and Kyber costs not at all yet; missing cells show as "—" and fill in at every data refresh.
 - Some classifications changed vs. earlier community sources and now follow the tycoon-tools value list: CB-23 is Iconic, Proto-Roller is Legendary, DRFT-R is an Astromech, DJ R-3X is a Worker.
 - The game is updated frequently. If you spot a discrepancy, open an issue or a PR against `site/data.js`.
 

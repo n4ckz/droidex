@@ -173,34 +173,34 @@ const STR = {
    FR encore indexées par Google sont nos seules portes vers les 7 élaguées. */
 const SEE_ALSO = {
   'value-list': {
-    en: (rel) => `To put these numbers to use, check the <a href="../rebirth-requirements/">rebirth requirements for all 35 levels and 5 cycles</a> — ` +
-      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 590 droid variants</a>. ` +
+    en: (rel) => `To put these numbers to use, check the <a href="../rebirth-requirements/">rebirth requirements for all 40 levels and 5 cycles</a> — ` +
+      `each level asks for three droids at a minimum variant — and track what you already own in <a href="${rel}">Droidex, the free tracker covering all 673 droid variants</a>. ` +
       `Flawless odds per variant are detailed in the <a href="../faq/">Droid Tycoon FAQ</a>.`,
-    fr: (rel) => `Pour exploiter ces chiffres, consultez les <a href="../rebirth-requirements/">exigences des 35 niveaux de renaissance sur les 5 cycles</a> — ` +
-      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 590 variantes de droïdes</a>. ` +
+    fr: (rel) => `Pour exploiter ces chiffres, consultez les <a href="../rebirth-requirements/">exigences des 40 niveaux de renaissance sur les 5 cycles</a> — ` +
+      `chaque niveau demande trois droïdes à une variante minimale — et suivez ce que vous possédez déjà dans <a href="${rel}">Droidex, le tracker gratuit des 673 variantes de droïdes</a>. ` +
       `Les chances de Flawless par variante sont détaillées dans la <a href="../faq/">FAQ Droid Tycoon</a>.`,
   },
   'rebirth-requirements': {
-    en: (rel) => `Before buying a required droid, look up its price in the <a href="../value-list/">value list — income and cost of every variant, Basic to Stellar</a>, ` +
+    en: (rel) => `Before buying a required droid, look up its price in the <a href="../value-list/">value list — income and cost of every variant, Basic to Kyber</a>, ` +
       `and follow your own progress toward each level in <a href="${rel}">Droidex, the free Droid Tycoon collection tracker</a>. ` +
       `What a Super Rebirth keeps or resets is covered in the <a href="../faq/">FAQ</a>.`,
-    fr: (rel) => `Avant d'acheter un droïde requis, vérifiez son prix dans la <a href="../value-list/">liste des valeurs — revenus et coût de chaque variante, de Basic à Stellaire</a>, ` +
+    fr: (rel) => `Avant d'acheter un droïde requis, vérifiez son prix dans la <a href="../value-list/">liste des valeurs — revenus et coût de chaque variante, de Basic à Kyber</a>, ` +
       `et suivez votre propre progression vers chaque niveau dans <a href="${rel}">Droidex, le tracker de collection Droid Tycoon gratuit</a>. ` +
       `Ce qu'une Super-renaissance conserve ou réinitialise est détaillé dans la <a href="../faq/">FAQ</a>.`,
   },
   stats: {
     en: (rel) => `These numbers accompany <a href="${rel}">Droidex, the free Star Wars: Droid Tycoon collection tracker</a> — ` +
-      `see also the <a href="../value-list/">value list with the income and cost of all seven droid variants</a> ` +
-      `and the <a href="../rebirth-requirements/">rebirth requirements for all 35 levels</a>.`,
+      `see also the <a href="../value-list/">value list with the income and cost of all eight droid variants</a> ` +
+      `and the <a href="../rebirth-requirements/">rebirth requirements for all 40 levels</a>.`,
     fr: (rel) => `Ces statistiques accompagnent <a href="${rel}">Droidex, le tracker de collection Star Wars: Droid Tycoon gratuit</a> — ` +
-      `voir aussi la <a href="../value-list/">liste des valeurs : revenus et coût des sept variantes de droïdes</a> ` +
-      `et les <a href="../rebirth-requirements/">exigences des 35 niveaux de renaissance</a>.`,
+      `voir aussi la <a href="../value-list/">liste des valeurs : revenus et coût des huit variantes de droïdes</a> ` +
+      `et les <a href="../rebirth-requirements/">exigences des 40 niveaux de renaissance</a>.`,
   },
   faq: {
-    en: (rel) => `Going further: the <a href="../rebirth-requirements/">full rebirth requirements for levels 1-35 across the 5 cycles</a>, ` +
+    en: (rel) => `Going further: the <a href="../rebirth-requirements/">full rebirth requirements for levels 1-40 across the 5 cycles</a>, ` +
       `the <a href="../value-list/">value list — income and cost of every droid variant</a>, ` +
       `and <a href="${rel}">the Droidex tracker itself — free, no account needed</a>.`,
-    fr: (rel) => `Pour aller plus loin : les <a href="../rebirth-requirements/">exigences complètes des renaissances 1-35 sur les 5 cycles</a>, ` +
+    fr: (rel) => `Pour aller plus loin : les <a href="../rebirth-requirements/">exigences complètes des renaissances 1-40 sur les 5 cycles</a>, ` +
       `la <a href="../value-list/">liste des valeurs — revenus et coût de chaque variante</a>, ` +
       `et <a href="${rel}">le tracker Droidex lui-même — gratuit, sans compte obligatoire</a>.`,
   },
@@ -289,12 +289,13 @@ ${bodyHtml}
 const VL_TEXT = {
   en: {
     title: 'Droid Tycoon Value List — Income & Cost of Every Variant | Droidex',
-    description: 'Income per second and cost of every Star Wars: Droid Tycoon droid at each variant: Basic, Gold, Diamond, Rainbow, Beskar, Galactic and Stellar.',
+    description: 'Income per second and cost of every Star Wars: Droid Tycoon droid at each variant: Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar and Kyber.',
     h1: 'Droid Tycoon value list',
     intro: `<p class="seo-intro">This value list gives, for every ` +
-      `droid in Star Wars: Droid Tycoon, both the income per second and the credit cost at each of the seven variants: ` +
-      `Basic, Gold, Diamond, Rainbow, Beskar, Galactic and Stellar ` +
-      `(the newest tier, added in the Stellar update of August 15, 2026). Every rarity has one table for income and one for cost, ` +
+      `droid in Star Wars: Droid Tycoon, both the income per second and the credit cost at each of the eight variants: ` +
+      `Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar and Kyber ` +
+      `(the newest tier, added in the Kyber update of September 26, 2026 — its income is documented for about half ` +
+      `the droids so far and its costs not yet, so those cells show "—" until the next data refresh). Every rarity has one table for income and one for cost, ` +
       `so you can see what a Diamond or Beskar copy of a droid actually costs before committing to it. Numbers ` +
       `are cross-checked against community sources (${DATE_ISO}) rather than a single guide, and ` +
       `Droidex's own cycle 1 rebirth requirements have been verified in-game through rebirth 23. Iconic droids have ` +
@@ -309,11 +310,13 @@ const VL_TEXT = {
   },
   fr: {
     title: 'Droid Tycoon : liste des valeurs — revenus et coût de chaque variante | Droidex',
-    description: 'Revenus/s et coût de chaque droïde de Droid Tycoon dans les sept variantes : Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellaire.',
+    description: 'Revenus/s et coût de chaque droïde de Droid Tycoon dans les huit variantes : Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellaire, Kyber.',
     h1: 'Liste des valeurs de Droid Tycoon',
     intro: `<p class="seo-intro">Cette liste des valeurs donne, pour chaque droïde de Star Wars: Droid Tycoon, les ` +
-      `revenus par seconde ET le coût en crédits dans chacune des sept variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
-      `Beskar, Galactique et Stellaire (le palier le plus récent, ajouté par la mise à jour Stellar du 15 août 2026). Chaque rareté ` +
+      `revenus par seconde ET le coût en crédits dans chacune des huit variantes : Basic, Or, Diamant, Arc-en-ciel, ` +
+      `Beskar, Galactique, Stellaire et Kyber (le palier le plus récent, ajouté par la mise à jour Kyber du 26 septembre 2026 — ` +
+      `ses revenus sont documentés pour environ la moitié des droïdes et ses coûts pas encore : ces cases affichent « — » ` +
+      `jusqu'à la prochaine mise à jour des données). Chaque rareté ` +
       `a un tableau de revenus et un tableau de coûts, pour savoir ce que coûte vraiment un exemplaire Diamant ou ` +
       `Beskar avant de s'y engager. Les chiffres sont recoupés entre plusieurs sources communautaires (${DATE_ISO}) plutôt que tirés ` +
       `d'un guide unique, et les exigences de renaissance du cycle 1 de Droidex ont été vérifiées en jeu jusqu'à ` +
@@ -399,40 +402,42 @@ ${rows}
 
 const RB_TEXT = {
   en: {
-    title: 'Droid Tycoon Rebirth Requirements — All 35 Levels & Cycles 2-5 | Droidex',
-    description: 'Required droids and credit cost for every Droid Tycoon rebirth level 1-35 — cycle 1 and the Super Rebirth cycles 2 to 5. The only list covering all five cycles.',
+    title: 'Droid Tycoon Rebirth Requirements — All 40 Levels & Cycles 2-5 | Droidex',
+    description: 'Required droids and credit cost for every Droid Tycoon rebirth level 1-40 — cycle 1 and the Super Rebirth cycles 2 to 5. The only list covering all five cycles.',
     h1: 'Droid Tycoon rebirth requirements',
-    intro: `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 35 rebirth levels, repeated ` +
+    intro: `<p class="seo-intro">Star Wars: Droid Tycoon's progression runs through 40 rebirth levels, repeated ` +
       `across 5 cycles in an endless loop. Each level requires three specific droids placed in your base at a ` +
       `minimum variant, plus a credit cost that is identical across all 5 cycles for the same level, climbing from ` +
-      `10K at rebirth 1 to 778T at rebirth 35. Rebirth 28, added with the Galactic update of mid-July 2026, is the ` +
+      `10K at rebirth 1 to 15Qa (15 quadrillion) at rebirth 40. Rebirth 28, added with the Galactic update of mid-July 2026, is the ` +
       `first level to require a Galactic-tier droid in your base; the Stellar update of August 15, 2026 added ` +
-      `rebirths 31-35, a fifth cycle, and the first Stellar-tier requirements from rebirth 31 onward. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
+      `rebirths 31-35, a fifth cycle, and the first Stellar-tier requirements from rebirth 31 onward; the Kyber ` +
+      `update of September 26, 2026 added rebirths 36-40, each asking for three Kyber-tier droids. From rebirth 12 onward, meeting the requirements lets you trigger a ` +
       `Super Rebirth instead of a normal one: it keeps your Droidex, droidsmith level, cosmetics, unlocked Flawless ` +
       `droids, Nova crystals and Iconic unlocks, but resets your base, its droids, your currencies, rebirth rank, ` +
       `pickaxe level and blueprints, before advancing you straight into the next cycle. This page lists every ` +
       `cycle's requirements in full, cross-checked against community sources (${DATE_ISO}).</p>`,
     jsonName: 'Droidex rebirth requirements — Star Wars: Droid Tycoon',
-    jsonDesc: 'Required droids, minimum variants and credit cost for all 35 rebirth levels across the 5 cycles in Star Wars: Droid Tycoon.',
+    jsonDesc: 'Required droids, minimum variants and credit cost for all 40 rebirth levels across the 5 cycles in Star Wars: Droid Tycoon.',
   },
   fr: {
-    title: 'Droid Tycoon : exigences de renaissance — les 35 niveaux et cycles 2-5 | Droidex',
-    description: 'Droïdes requis et coût de chaque renaissance 1-35 de Droid Tycoon — cycle 1 et cycles 2 à 5 de Super-renaissance. La seule liste couvrant les cinq cycles.',
+    title: 'Droid Tycoon : exigences de renaissance — les 40 niveaux et cycles 2-5 | Droidex',
+    description: 'Droïdes requis et coût de chaque renaissance 1-40 de Droid Tycoon — cycle 1 et cycles 2 à 5 de Super-renaissance. La seule liste couvrant les cinq cycles.',
     h1: 'Exigences de renaissance de Droid Tycoon',
-    intro: `<p class="seo-intro">La progression de Star Wars: Droid Tycoon passe par 35 niveaux de renaissance, ` +
+    intro: `<p class="seo-intro">La progression de Star Wars: Droid Tycoon passe par 40 niveaux de renaissance, ` +
       `répétés sur 5 cycles en boucle infinie. Chaque niveau exige trois droïdes précis placés dans votre base à ` +
       `une variante minimale, plus un coût en crédits identique d'un cycle à l'autre pour un même niveau, qui ` +
-      `grimpe de 10K à la renaissance 1 jusqu'à 778T à la renaissance 35. La renaissance 28, ajoutée par la mise à ` +
+      `grimpe de 10K à la renaissance 1 jusqu'à 15Qa (15 billiards) à la renaissance 40. La renaissance 28, ajoutée par la mise à ` +
       `jour Galactique de mi-juillet 2026, est le premier niveau à exiger un droïde de palier Galactique dans la ` +
       `base ; la mise à jour Stellar du 15 août 2026 a ajouté les renaissances 31 à 35, un cinquième cycle, et les ` +
-      `premières exigences de palier Stellaire dès la renaissance 31. À partir de la renaissance 12, remplir les exigences permet de déclencher une Super-renaissance au ` +
+      `premières exigences de palier Stellaire dès la renaissance 31 ; la mise à jour Kyber du 26 septembre 2026 a ` +
+      `ajouté les renaissances 36 à 40, qui exigent chacune trois droïdes de palier Kyber. À partir de la renaissance 12, remplir les exigences permet de déclencher une Super-renaissance au ` +
       `lieu d'une renaissance normale : elle conserve le Droidex, le niveau de fabricant, les cosmétiques, les ` +
       `Flawless débloqués, les cristaux Nova et les déverrouillages d'Iconiques, mais réinitialise la base, ses ` +
       `droïdes, les devises, le rang de renaissance, le niveau de pioche et les blueprints, avant de passer ` +
       `directement au cycle suivant. Cette page liste l'intégralité des exigences de chaque cycle, recoupées ` +
       `entre sources communautaires (${DATE_ISO}).</p>`,
     jsonName: 'Exigences de renaissance Droidex — Star Wars: Droid Tycoon',
-    jsonDesc: 'Droïdes requis, variantes minimales et coût en crédits des 35 niveaux de renaissance sur les 5 cycles de Star Wars: Droid Tycoon.',
+    jsonDesc: 'Droïdes requis, variantes minimales et coût en crédits des 40 niveaux de renaissance sur les 5 cycles de Star Wars: Droid Tycoon.',
   },
 };
 
@@ -601,13 +606,13 @@ const FAQ = [
     a: {
       en: 'Droidex is a free, open-source collection tracker for Star Wars: Droid Tycoon, the Fortnite creative mode ' +
         "released by FOAD/Blzn Studios on May 1st, 2026. The game gives no way to check what you already own while " +
-        'standing at the in-game Sandcrawler shop, so Droidex fills that gap: it tracks all 69 droids across their ' +
+        'standing at the in-game Sandcrawler shop, so Droidex fills that gap: it tracks all 92 droids across their ' +
         'variants, tells you which specific droids and variants you still need for your targeted rebirth, and which ' +
         'ones you can safely retire from your base. It works as an installable, offline-capable Progressive Web App.',
       fr: 'Droidex est un tracker de collection gratuit et open source pour Star Wars: Droid Tycoon, le mode créatif ' +
         'Fortnite sorti par FOAD/Blzn Studios le 1ᵉʳ mai 2026. Le jeu n\'offre aucun moyen de vérifier ce que vous ' +
         'possédez déjà quand vous êtes devant la boutique du Sandcrawler : Droidex comble ce manque en suivant les ' +
-        '69 droïdes et leurs variantes, en vous disant quels droïdes et quelles variantes manquent encore pour votre ' +
+        '92 droïdes et leurs variantes, en vous disant quels droïdes et quelles variantes manquent encore pour votre ' +
         'renaissance visée, et lesquels peuvent être retirés de la base sans risque. Il s\'installe comme une ' +
         'application (PWA) et fonctionne hors ligne.',
     },
@@ -616,13 +621,13 @@ const FAQ = [
     q: { en: 'How do I track variants (3 states)?', fr: 'Comment suivre les variantes (3 états) ?' },
     a: {
       en: 'Each droid variant in Droidex cycles through three states with a single tap: never owned, owned in your ' +
-        'Droidex (the in-game collection log), and physically placed in your base. Most droids come in seven variants ' +
-        '— Basic, Gold, Diamond, Rainbow, Beskar, Galactic and Stellar — so you tap through each variant independently as you obtain ' +
+        'Droidex (the in-game collection log), and physically placed in your base. Most droids come in eight variants ' +
+        '— Basic, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar and Kyber — so you tap through each variant independently as you obtain ' +
         'and place copies. A handful of Iconic droids have no variants; instead they get two separate toggles, one ' +
         'for ownership and one for being placed in your base.',
       fr: 'Chaque variante de droïde passe par trois états d\'un simple tap : jamais possédée, possédée dans le ' +
         'Droidex (le registre de collection du jeu), et physiquement placée dans la base. La plupart des droïdes ' +
-        'existent en sept variantes — Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique et Stellaire — que l\'on coche ' +
+        'existent en huit variantes — Basic, Or, Diamant, Arc-en-ciel, Beskar, Galactique, Stellaire et Kyber — que l\'on coche ' +
         'indépendamment au fil des obtentions. Les quelques droïdes Iconiques n\'ont pas de variantes : ils ont ' +
         'deux interrupteurs distincts, un pour la possession et un pour la présence en base.',
     },
@@ -645,13 +650,13 @@ const FAQ = [
   {
     q: { en: 'What are rebirth requirements?', fr: 'Que sont les exigences de renaissance ?' },
     a: {
-      en: 'Each rebirth level, from 1 to 35, requires three specific droids placed in your base at a minimum variant, ' +
-        'plus a credit cost that climbs from 10K at rebirth 1 up to 778T at rebirth 35. The 35 levels repeat across 5 ' +
+      en: 'Each rebirth level, from 1 to 40, requires three specific droids placed in your base at a minimum variant, ' +
+        'plus a credit cost that climbs from 10K at rebirth 1 up to 15Qa (15 quadrillion) at rebirth 40. The 40 levels repeat across 5 ' +
         'cycles in a loop, and each cycle can ask for a different trio of droids at the same level even though the ' +
         'credit cost stays identical across cycles. Certain rebirth levels also unlock a new slot for your base, ' +
         'such as an extra Worker or Astromech slot.',
-      fr: 'Chaque niveau de renaissance, de 1 à 35, exige trois droïdes précis placés dans la base à une variante ' +
-        'minimale, plus un coût en crédits qui grimpe de 10K (renaissance 1) à 778T (renaissance 35). Les 35 niveaux ' +
+      fr: 'Chaque niveau de renaissance, de 1 à 40, exige trois droïdes précis placés dans la base à une variante ' +
+        'minimale, plus un coût en crédits qui grimpe de 10K (renaissance 1) à 15Qa, soit 15 billiards (renaissance 40). Les 40 niveaux ' +
         'se répètent sur 5 cycles en boucle, et chaque cycle peut demander un trio de droïdes différent au même ' +
         'niveau, le coût en crédits restant identique d\'un cycle à l\'autre. Certains niveaux débloquent aussi un ' +
         'nouvel emplacement de base, par exemple un slot Worker ou Astromech supplémentaire.',
@@ -662,7 +667,7 @@ const FAQ = [
     a: {
       en: 'Galactic is the sixth variant tier, added above Beskar in the mid-July 2026 game update (the Stellar ' +
         'tier sits above it since the August 15, 2026 update). Since the Stellar update the in-game Droidex counts ' +
-        'all seven variants in one unified total, 590 with the fusion, D-O and Protocol droids, and Droidex mirrors that. ' +
+        'every variant in one unified total, 673 since the Kyber update, and Droidex mirrors that. ' +
         'Rebirth 28 — the first Galactic-gated level in each ' +
         'cycle — requires one specific Galactic droid placed in your base (for example a Galactic ' +
         'Proto-Roller in cycle 1) alongside a Rainbow droid, a Beskar droid and 45T credits. Like every higher ' +
@@ -672,7 +677,7 @@ const FAQ = [
         'shows RB·GLC requirement badges so you know exactly which Galactic droids your next rebirth needs.',
       fr: 'Le Galactique est le sixième palier de variante, ajouté au-dessus du Beskar par la mise à jour de ' +
         'mi-juillet 2026 (le palier Stellaire le surplombe depuis la mise à jour du 15 août 2026). Depuis la mise à ' +
-        'jour Stellar, l\'écran Droidex du jeu compte les sept variantes dans un total unifié — 590 avec les droïdes fusion, D-O et Protocol — et Droidex ' +
+        'jour Stellar, l\'écran Droidex du jeu compte toutes les variantes dans un total unifié — 673 depuis la mise à jour Kyber — et Droidex ' +
         'fait de même. La renaissance 28 — le premier niveau de chaque cycle à exiger du Galactique — exige un ' +
         'droïde Galactique précis placé dans la base (par exemple un Proto-Roller Galactique au cycle 1), aux ' +
         'côtés d\'un droïde Arc-en-ciel, d\'un Beskar et de 45T de crédits. Comme toute variante supérieure, une ' +
@@ -686,27 +691,52 @@ const FAQ = [
   {
     q: { en: 'What is the Stellar variant and how do I get Stellar droids?', fr: 'Qu\'est-ce que la variante Stellaire et comment obtenir des droïdes Stellaires ?' },
     a: {
-      en: 'Stellar is the newest and seventh variant tier, added above Galactic in the Stellar update of August 15, ' +
+      en: 'Stellar is the seventh variant tier, added above Galactic in the Stellar update of August 15, ' +
         '2026 (game patch v1.26). Stellar droids spawn at the Sandcrawler on their own timer and are recorded in ' +
         'the in-game Droidex; dedicated Stellar Astromech missions costing 6T credits and the Stellar Surge from ' +
         'the Cantina Shop are further sources. The same update added rebirth levels 31 to 35 and a fifth rebirth ' +
         'cycle: rebirth 31 is the first level to require Stellar-tier droids in your base, with credit costs ' +
         'climbing from 150T at rebirth 31 to 778T at rebirth 35. The in-game Droidex counts Stellar copies in its ' +
-        'unified variant total (590 with the fusion, D-O and Protocol droids), and Droidex does the same, with RB·STL ' +
+        'unified variant total (673 since the Kyber update), and Droidex does the same, with RB·STL ' +
         'requirement badges; a Stellar copy satisfies any lower variant requirement for the same droid. ' +
         'Stellar income values are documented for nearly every standard droid and are completed at ' +
         'every data refresh.',
-      fr: 'Le Stellaire est le septième et plus récent palier de variante, ajouté au-dessus du Galactique par la ' +
+      fr: 'Le Stellaire est le septième palier de variante, ajouté au-dessus du Galactique par la ' +
         'mise à jour Stellar du 15 août 2026 (patch v1.26). Les droïdes Stellaires apparaissent au Sandcrawler ' +
         'sur leur propre timer et s\'enregistrent dans le Droidex du jeu ; les missions Astromech Stellaires ' +
         'dédiées à 6T de crédits et le Stellar Surge du Cantina Shop sont d\'autres sources. La même mise à jour ' +
         'a ajouté les niveaux de renaissance 31 à 35 et un cinquième cycle : la renaissance 31 est le premier ' +
         'niveau à exiger des droïdes Stellaires dans la base, avec des coûts qui grimpent de 150T (renaissance 31) ' +
         'à 778T (renaissance 35). L\'écran Droidex du jeu compte les copies Stellaires dans son total unifié de ' +
-        'variantes (590 avec les droïdes fusion, D-O et Protocol), et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
+        'variantes (673 depuis la mise à jour Kyber), et Droidex fait de même, avec des badges d\'exigence RB·STL ; une ' +
         'copie Stellaire valide toute exigence de variante inférieure du même droïde. Les revenus Stellaires sont ' +
         'documentés pour la quasi-totalité des droïdes standard et se complètent à chaque rafraîchissement des ' +
         'données.',
+    },
+  },
+  {
+    q: { en: 'What is the Kyber variant and how do I get Kyber droids?', fr: 'Qu\'est-ce que la variante Kyber et comment obtenir des droïdes Kyber ?' },
+    a: {
+      en: 'Kyber is the newest and eighth variant tier, added above Stellar in the Kyber update of September 26, ' +
+        '2026 (game patch v1.32). Inactive Kyber droids appear at the Sandcrawler on a dedicated Kyber timer and are ' +
+        'activated in a new area of the Cantina; green, blue and purple Kyber droids are sold only by Hu-Yang, and ' +
+        'Kyber Crystals now drop from Cantina Quests and World Missions. The same update added rebirth levels 36 to 40, ' +
+        'each asking for three Kyber-tier droids in your base, with credit costs climbing from 1.19Qa at rebirth 36 ' +
+        'to 15Qa (15 quadrillion) at rebirth 40, and the in-game Droidex now counts 673 variants in its unified ' +
+        'total. Droidex does the same, with RB·KYB requirement badges; a Kyber copy satisfies any lower variant ' +
+        'requirement for the same droid. Kyber income is roughly 10% above Stellar and is documented for about ' +
+        'half the droids so far; Kyber costs are not documented yet. Both fill in at every data refresh.',
+      fr: 'Le Kyber est le huitième et plus récent palier de variante, ajouté au-dessus du Stellaire par la mise à ' +
+        'jour Kyber du 26 septembre 2026 (patch v1.32). Des droïdes Kyber inactifs apparaissent au Sandcrawler sur ' +
+        'un timer Kyber dédié et s\'activent dans une nouvelle zone de la Cantina ; les droïdes Kyber verts, bleus et ' +
+        'violets ne sont vendus que par Hu-Yang, et les cristaux Kyber s\'obtiennent désormais via les quêtes de la ' +
+        'Cantina et les World Missions. La même mise à jour a ajouté les niveaux de renaissance 36 à 40, qui exigent ' +
+        'chacun trois droïdes de palier Kyber dans la base, avec des coûts qui grimpent de 1.19Qa (renaissance 36) à ' +
+        '15Qa, soit 15 billiards (renaissance 40), et l\'écran Droidex du jeu compte désormais 673 variantes dans son ' +
+        'total unifié. Droidex fait de même, avec des badges d\'exigence RB·KYB ; une copie Kyber valide toute ' +
+        'exigence de variante inférieure du même droïde. Les revenus Kyber dépassent ceux du Stellaire d\'environ ' +
+        '10 % et sont documentés pour à peu près la moitié des droïdes ; les coûts Kyber ne le sont pas encore. Les ' +
+        'deux se complètent à chaque rafraîchissement des données.',
     },
   },
   {
@@ -719,12 +749,13 @@ const FAQ = [
         'variant used (two Gold and one Stellar give a Gold copy). Seventeen droids can only be obtained this ' +
         'way: WHL-EX, ZRO-TEC and BTL-R (Rare), N-UL, SCRP-R, ARM-CORE and OPT-AR (Epic), RO-TOR, FUS-3, ' +
         'QIK-BIT and ORB-XL (Legendary), plus RIV-3T, LUG-G, LOW-MO, AXI-POD, SRV-O and X-ONK (Mythic). All ' +
-        'seventeen count in the in-game Droidex — the unified total reached 562 variants, 590 since the Protocol update — and Droidex tracks ' +
+        'seventeen count in the in-game Droidex — the unified total reached 562 variants, then 590 with the Protocol update and 673 with the Kyber update — and Droidex tracks ' +
         'each one like any other droid, with its income, costs and the exact three-droid recipe shown on its ' +
         'card. Fusing three identical droids upgrades the variant instead (three Basic Mouse give one Gold ' +
         'Mouse), and three random droids of the same rarity yield a random droid of the rarity above. The D-O ' +
         'event of August 29, 2026 (patch v1.28) also added D-O, the ninth Iconic droid, whose perk halves ' +
-        'fusion time.',
+        'fusion time. Patch v1.31 (September 18, 2026) raised the income of every fusion droid by about 50%, ' +
+        'and the value list reflects the new figures.',
       fr: 'La fusion de droïdes est une mécanique ajoutée par le patch v1.27 du 22 août 2026, débloquée dès la ' +
         'renaissance 3. Au labo de fusion de votre base, vous combinez trois droïdes fabriqués ; la recette ' +
         'exacte détermine le résultat — deux Mouse plus un ARG donnent un WHL-EX, par exemple — et le droïde ' +
@@ -732,12 +763,13 @@ const FAQ = [
         'Dix-sept droïdes ne s\'obtiennent que par fusion : WHL-EX, ZRO-TEC et BTL-R (Rares), N-UL, SCRP-R, ' +
         'ARM-CORE et OPT-AR (Épiques), RO-TOR, FUS-3, QIK-BIT et ORB-XL (Légendaires), plus RIV-3T, LUG-G, ' +
         'LOW-MO, AXI-POD, SRV-O et X-ONK (Mythiques). Les dix-sept comptent dans le Droidex du jeu — le total ' +
-        'unifié est passé à 562 variantes, 590 depuis la mise à jour Protocol — et Droidex suit chacun comme n\'importe quel droïde, avec ses revenus, ' +
+        'unifié est passé à 562 variantes, puis 590 avec la mise à jour Protocol et 673 avec la mise à jour Kyber — et Droidex suit chacun comme n\'importe quel droïde, avec ses revenus, ' +
         'ses coûts et la recette exacte des trois droïdes affichée sur sa carte. Fusionner trois droïdes ' +
         'identiques monte la variante d\'un cran (trois Mouse Basic donnent un Mouse Or), et trois droïdes ' +
         'quelconques d\'une même rareté donnent un droïde aléatoire de la rareté supérieure. L\'événement D-O ' +
         'du 29 août 2026 (patch v1.28) a aussi ajouté D-O, neuvième droïde Iconique, dont le perk divise le ' +
-        'temps de fusion par deux.',
+        'temps de fusion par deux. Le patch v1.31 (18 septembre 2026) a relevé d\'environ 50 % les revenus de ' +
+        'tous les droïdes fusion, et la liste des valeurs reprend les nouveaux chiffres.',
     },
   },
   {
@@ -763,7 +795,7 @@ const FAQ = [
         'in your Droidex. The odds depend only on the variant you crafted, never on the droid\'s rarity — a Mythic ' +
         'droid is no more likely to roll Flawless than a Common one at the same variant. Base odds are 1 in 1000 for ' +
         'Basic, 1 in 500 for Gold, 1 in 250 for Diamond, 1 in 125 for Rainbow, 1 in 100 for Beskar, 1 in 75 for ' +
-        'Galactic and 1 in 50 for Stellar. Two multipliers stack on top: the Flawless Charm from the Nova Shop (500 Nova crystals) doubles ' +
+        'Galactic and 1 in 50 for Stellar (Kyber odds are not documented yet). Two multipliers stack on top: the Flawless Charm from the Nova Shop (500 Nova crystals) doubles ' +
         'your chance, and events double it as well — running both during an event is the fastest way to fill the ' +
         'Flawless column. Each unique Flawless droid also grants a small permanent income multiplier, with a further ' +
         'reward once 51 unique Flawless droids are collected. Iconic droids cannot roll Flawless, since they are ' +
@@ -773,7 +805,7 @@ const FAQ = [
         'droïde se termine, et conservée à vie dans le Droidex. Les chances dépendent uniquement de la variante ' +
         'craftée, jamais de la rareté du droïde : à variante égale, un Mythique n\'a pas plus de chances qu\'un ' +
         'Commun. Les taux de base sont de 1 sur 1000 en Basic, 1 sur 500 en Or, 1 sur 250 en Diamant, 1 sur 125 en ' +
-        'Arc-en-ciel, 1 sur 100 en Beskar, 1 sur 75 en Galactique et 1 sur 50 en Stellaire. Deux multiplicateurs se cumulent par-dessus : ' +
+        'Arc-en-ciel, 1 sur 100 en Beskar, 1 sur 75 en Galactique et 1 sur 50 en Stellaire (les chances en Kyber ne sont pas encore documentées). Deux multiplicateurs se cumulent par-dessus : ' +
         'le Flawless Charm de la boutique Nova (500 cristaux) double les chances, et les événements les doublent ' +
         'aussi — cumuler les deux pendant un événement est le moyen le plus rapide de remplir la colonne Flawless. ' +
         'Chaque droïde Flawless unique apporte en plus un petit multiplicateur de revenus permanent, avec une ' +
@@ -785,18 +817,19 @@ const FAQ = [
   {
     q: { en: 'How do I get Galactic droids?', fr: 'Comment obtenir des droïdes Galactiques ?' },
     a: {
-      en: 'Galactic droids have several sources, all added over the July 2026 updates. A Galactic timer above the ' +
-        'Sandcrawler spawns Galactic blueprints on its own cycle, the same way the Beskar timer does. Galactic ' +
-        'blueprints can also be earned from Fishing, which is how the tier was first introduced. Since the Cantina ' +
+      en: 'Galactic droids have several sources, most of them added over the July 2026 updates. Galactic ' +
+        'blueprints can be earned from Fishing, which is how the tier was first introduced (the Galactic timer ' +
+        'above the Sandcrawler was removed by the Kyber update of September 26, 2026, which in exchange made ' +
+        'Galactic and Stellar Legendary droids obtainable from Daily Quests). Since the Cantina ' +
         'Shop update, Astromech Missions include dedicated Galactic missions that reward credits, Beskar droids and ' +
         'Galactic droids, making them the most reliable source once you can afford them. Finally, a Rainbow or ' +
         'Beskar droid can be upgraded with Upgrade Chips, and the cost of higher-tier upgrades was significantly ' +
         'reduced in that same update. Droidex tracks every Galactic copy separately, ' +
         'so you can see at a glance which ones your next rebirth still needs.',
-      fr: 'Les droïdes Galactiques ont plusieurs sources, toutes ajoutées au fil des mises à jour de juillet 2026. ' +
-        'Un timer Galactique au-dessus du Sandcrawler fait apparaître des blueprints Galactiques sur son propre ' +
-        'cycle, comme le fait le timer Beskar. Les blueprints Galactiques s\'obtiennent aussi à la pêche, qui a été ' +
-        'le mode d\'obtention d\'origine du palier. Depuis la mise à jour du Cantina Shop, les missions Astromech ' +
+      fr: 'Les droïdes Galactiques ont plusieurs sources, la plupart ajoutées au fil des mises à jour de juillet 2026. ' +
+        'Les blueprints Galactiques s\'obtiennent à la pêche, qui a été le mode d\'obtention d\'origine du palier ' +
+        '(le timer Galactique au-dessus du Sandcrawler a été retiré par la mise à jour Kyber du 26 septembre 2026, ' +
+        'qui rend en échange les droïdes Légendaires Galactiques et Stellaires obtenables via les quêtes quotidiennes). Depuis la mise à jour du Cantina Shop, les missions Astromech ' +
         'comportent des missions Galactiques dédiées qui récompensent des crédits, des droïdes Beskar et des ' +
         'droïdes Galactiques — la source la plus fiable une fois qu\'on peut se les offrir. Enfin, un droïde ' +
         'Arc-en-ciel ou Beskar peut être amélioré avec des Upgrade Chips, dont le coût aux paliers supérieurs a été ' +
@@ -829,7 +862,7 @@ const FAQ = [
         'World Mission Crate, unlocked by completing one of the revamped World Missions shown on your HUD (a ' +
         'new mission starts 10 minutes after the previous one). Their companion perk is a Credit Multiplier that ' +
         'scales with rarity (400% for SA-5 up to 1000% for TDA). C-3PO is now a Protocol droid as well. ' +
-        'Droidex tracks all four across the seven variants, in the unified 590-variant total, with their income per ' +
+        'Droidex tracks all four across all eight variants, in the unified 673-variant total, with their income per ' +
         'variant and Beskar cost; their other variant costs are not documented by any community source yet and will ' +
         'appear at the next data refresh once they are.',
       fr: 'La mise à jour Protocol (patch v1.30 du 12 septembre 2026) ajoute une quatrième classe de droïdes, ' +
@@ -839,7 +872,7 @@ const FAQ = [
         'terminant l\'une des missions du monde refondues affichées sur le HUD (une nouvelle mission démarre ' +
         '10 minutes après la précédente). Leur perk de compagnon est un multiplicateur de crédits qui grandit ' +
         'avec la rareté (400 % pour SA-5 jusqu\'à 1000 % pour TDA). C-3PO est désormais lui aussi un droïde ' +
-        'Protocol. Droidex suit les quatre sur les sept variantes, dans le total unifié de 590, avec leurs revenus ' +
+        'Protocol. Droidex suit les quatre sur les huit variantes, dans le total unifié de 673, avec leurs revenus ' +
         'par variante et leur coût Beskar ; leurs autres coûts de variante ne sont documentés par aucune source ' +
         'communautaire pour l\'instant et apparaîtront au prochain rafraîchissement des données dès qu\'ils le seront.',
     },
@@ -883,14 +916,14 @@ const FAQ = [
 const FAQ_TEXT = {
   en: {
     title: 'Droid Tycoon FAQ — Flawless Odds, Galactic Droids & Super Rebirth | Droidex',
-    description: 'Droid Tycoon FAQ: Flawless odds by variant (1/1000 to 1/75), how to get Galactic and Stellar droids, what a Super Rebirth keeps, and the collection bonus.',
+    description: 'Droid Tycoon FAQ: Flawless odds by variant (1/1000 to 1/75), how to get Galactic, Stellar & Kyber droids, what a Super Rebirth keeps, and the collection bonus.',
     h1: 'Droid Tycoon FAQ',
     intro: `<p class="seo-intro">Answers about how Droidex tracks your Star Wars: Droid Tycoon collection, how ` +
       `rebirth requirements and Super Rebirths work, and what Flawless and the collection bonus mean in the game.</p>`,
   },
   fr: {
     title: 'FAQ Droid Tycoon — chances de Flawless, droïdes Galactiques, Super-renaissance | Droidex',
-    description: 'FAQ Droid Tycoon : chances de Flawless par variante (1/1000 à 1/75), obtenir les droïdes Galactiques et Stellaires, ce que garde la Super-renaissance.',
+    description: 'FAQ Droid Tycoon : chances de Flawless par variante (1/1000 à 1/75), obtenir les droïdes Galactiques, Stellaires et Kyber, ce que garde la Super-renaissance.',
     h1: 'FAQ Droid Tycoon',
     intro: `<p class="seo-intro">Les réponses sur la façon dont Droidex suit votre collection Star Wars: Droid ` +
       `Tycoon, le fonctionnement des exigences de renaissance et des Super-renaissances, et ce que signifient le ` +

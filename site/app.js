@@ -25,9 +25,13 @@ function reqsFor(d){
   return byCycle ? (byCycle[state.targetCycle] || null) : null;
 }
 
+/* Nombre de variantes, dérivé des données (7 à la MàJ Stellar, 8 à la MàJ
+   Kyber du 26/09/2026) : plus aucun compte en dur à rattraper au prochain palier */
+const TIER_COUNT = DROIDS.find(d=>!d.iconic).inc.length;
+
 function ownedTiers(id){
   const v = state.owned[id];
-  return Array.isArray(v) ? v : [0,0,0,0,0,0,0];
+  return Array.isArray(v) ? v : new Array(TIER_COUNT).fill(0);
 }
 /* états par variante : 0 = pas eu, 1 = possédé (Droidex), 2 = en base */
 function meetsReq(id, tier){
@@ -65,7 +69,8 @@ function fmtInc(n){
 /* Normalisation PURE d'un état brut (localStorage, import JSON ou sauvegarde
    serveur) vers le format courant, SANS toucher à l'entrée. Migrations :
    anciens booléens -> 0/1/2, promotion du toggle "en base" historique,
-   padding à 6 variantes (v1.5.0, Galactique), CB-23 reclassé Iconique.
+   padding au nombre de variantes courant (Galactique v1.5.0, Stellar v1.16.0,
+   Kyber v1.20.0), CB-23 reclassé Iconique.
    Utilisée par applyParsedState ET par syncStatesEqual (sync.js) : comparer
    du non-migré à du migré ferait boucler le dialogue de conflit de synchro. */
 function normalizeParsedState(parsed){
@@ -82,8 +87,8 @@ function normalizeParsedState(parsed){
     const v = (parsed.owned || {})[id];
     if(Array.isArray(v) && !iconicIds.has(id)){
       const arr = v.map(x=>x===true?1:(typeof x==='number'?x:0));
-      /* v1.5.0 : padding à 6 entrées (Galactique) ; v1.16.0 : à 7 (Stellar) */
-      while(arr.length<7) arr.push(0);
+      /* padding : 6 entrées (Galactique, v1.5.0), 7 (Stellar, v1.16.0), 8 (Kyber, v1.20.0) */
+      while(arr.length<TIER_COUNT) arr.push(0);
       /* ancien toggle global "en base" -> promotion de la meilleure variante possédée */
       if(out.inBase[id]===true){
         for(let i=arr.length-1;i>=0;i--){ if(arr[i]>=1){ arr[i]=2; break; } }
@@ -258,9 +263,10 @@ function renderProgress(){
     if(d.iconic){total+=1;if(state.owned[d.id]===true)done+=1;}
     else{
       /* total unifié depuis la MàJ Stellar (écran du jeu 20/08/2026 : 229/442,
-         les 7 variantes comptent) ; second compteur du jeu = Flawless x/62 */
+         toutes les variantes comptent — 673 à la MàJ Kyber) ; second compteur
+         du jeu = Flawless */
       const o=ownedTiers(d.id);
-      total+=7;done+=o.filter(v=>v>=1).length;
+      total+=TIER_COUNT;done+=o.filter(v=>v>=1).length;
       flTotal+=1;if(state.flawless[d.id])fl+=1;
     }
   });
