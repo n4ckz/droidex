@@ -1222,6 +1222,8 @@
   "peakCCU": 11943,
   "plays": 263521,
   "recommendations": 265,
+  "retentionD1": 0.53,
+  "retentionD7": 0.52,
   "uniquePlayers": 139333
  },
  "2026-11-04": {
@@ -1253,6 +1255,19 @@
   "peakCCU": 17041,
   "plays": 271557,
   "recommendations": 219,
+  "retentionD1": 0.61,
+  "retentionD7": 0.51,
   "uniquePlayers": 134537
+ },
+ "2026-11-07": {
+  "averageMinutesPerPlayer": 114.45,
+  "favorites": 6201,
+  "minutesPlayed": 19635533,
+  "peakCCU": 26665,
+  "plays": 367200,
+  "recommendations": 421,
+  "retentionD1": 0.64,
+  "retentionD7": 0.52,
+  "uniquePlayers": 171560
  }
 }
